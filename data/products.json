@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "name": "Видеобук Paddington's space adventure",
+    "description": "Задания на лексику, matching, questions, gaps, who said that, +скрипт, +видеоэпизод (mp4). 8 страниц, pdf. 2 варианта- с цветным фоном и без.",
+    "description2": "Беру с 4-6 классами. Смотрим весь мультик, не делим на части по 5 мин, как обычно, потому что он тематический, разделение не совсем удобно. Задания на лексику, matching, questions, gaps, who said that, +скрипт, +видеоэпизод (mp4). 8 страниц, pdf. 2 варианта- с цветным фоном и без.",
+    "price": 250,
+    "salePrice": 150,
+    "inStock": true,
+    "onSale": true,
+    "category": "Paddington videobooks",
+    "tags": ["видеобуки", "мультфильмы", "английский"],
+    "images": ["data/images/Padd_Space_Adv/Pict_1.jpg", "data/images/Padd_Space_Adv/Pict_2.jpg"],
+    "video": "https://vk.com/video_ext.php?oid=-192843316&id=456239201&hd=2&autoplay=0"
+  },
+  {
+    "id": 2,
+    "name": "Paddington makes pancakes'",
+    "description": "Видеобук по знаменитой серии про медвежонка Паддингтона.",
+    "description2": "+ ссылки на Vznanija (4 урока: vocabulary drill, memory, matching, jeopardy) + ссылки на видео эпизод (диск, qr code) 8 pdf pages with title Activities: vocabulary, questions, ordering the pictures, matching phrases to the pictures, Who said it activity.",
+    "price": 250,
+    "salePrice": 100,
+    "inStock": true,
+    "onSale": false,
+    "category": "Paddington videobooks",
+    "tags": ["видеобуки", "мультфильмы", "английский"],
+    "images": ["data/images/Padd_make_Pancackes/Pict_1.jpg"],
+    "video": "https://disk.yandex.ru/d/HUu3KY0Sc0Mzyw"
+  },
+  {
+    "id": 3,
+    "name": "Игра 'Find and Match — Parts of the Body'",
+    "description": "Обучающая игра на запоминание частей тела на английском языке.",
+    "description2": "В комплекте: 20 пар карточек, инструкция на русском и английском языках.",
+    "price": 275,
+    "salePrice": 149,
+    "inStock": false,
+    "onSale": false,
+    "category": "Игры",
+    "tags": ["игра", "тело", "викторина"],
+    "images": ["products/images/bodygame1.jpg", "products/images/bodygame2.jpg"],
+    "video": "https://www.youtube.com/embed/dQw4w9WgXcQ "
+  },
+  {
+    "id": 4,
+    "name": "Аудиокурс 'English for Kids. Level A1'",
+    "description": "Слушай и повторяй! Аудиоуроки для детей 5–9 лет.",
+    "description2": "24 аудиозанятия по 15 минут. Темы: приветствие, семья, цвета, еда, домашние животные.",
+    "price": 699,
+    "salePrice": 249,
+    "inStock": true,
+    "onSale": true,
+    "category": "Аудиоуроки",
+    "tags": ["аудио", "уроки", "начальный уровень"],
+    "images": ["products/images/audio_course1.jpg", "products/images/audio_course2.jpg"],
+    "video": ""
+  },
+  {
+    "id": 5,
+    "name": "Мини-книжка 'My First English Storybook'",
+    "description": "Короткие англоязычные сказки для начинающих читателей.",
+    "description2": "Три истории с простыми предложениями и яркими иллюстрациями. Объём: 25 страниц.",
+    "price": 349,
+    "salePrice": 249,
+    "inStock": true,
+    "onSale": true,
+    "category": "Книги",
+    "tags": ["книга", "сказка", "beginner"],
+    "images": ["products/images/story_book1.jpg", "products/images/story_book2.jpg"],
+    "video": "https://www.youtube.com/embed/dQw4w9WgXcQ "
+  }
+]

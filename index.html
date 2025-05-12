@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>My Crazy English</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="enable-animation">
+    <!-- Шапка -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo animate animate-left">
+                    <img src="assets/logo.png" alt="Логотип My Crazy English" class="logo-img"> 
+                    My Crazy English
+                </a>
+                <ul class="menu" id="menu">
+                    <li><a href="index.html">Наш клуб</a></li>
+                    <li><a href="catalog.html">Разработки</a></li>
+                    <li><a href="about.html">Автор</a></li>
+                    <li><a href="contacts.html">Контакты</a></li>
+                </ul>
+                <button class="burger-menu" id="burger">&#9776;</button>
+
+                <!-- Соцсети -->
+                <div class="social-icons">
+                    <a href="#"><img src="assets/vk.svg" alt="VK"></a>
+                    <a href="#"><img src="assets/tg.svg" alt="Telegram"></a>
+                    <a href="#"><img src="assets/mail.svg" alt="Email"></a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Слайдер -->
+    <section class="slider">
+        <div class="slides-container" id="slides-container">
+            <div class="slide active animate animate-top">
+                <img src="assets/slider1.jpg" alt="Баннер 1">
+				<img src="assets/slider2.jpg" alt="Баннер 2">
+            </div>
+        </div>
+
+        <!-- Кнопки -->
+        <button class="prev">&#10094;</button>
+        <button class="next">&#10095;</button>
+
+        <!-- Точки -->
+        <div class="dots-container">
+            <div class="dots dots-left" id="dots-left"></div>
+            <div class="dots dots-right" id="dots-right"></div>
+        </div>
+
+		
+    </section>
+    <!-- Основной контент -->
+    <main>
+        <section class="hero">
+            <div class="container animate animate-left">
+                <h1>Учим английский весело и с удовольствием!</h1>
+                <p>Творческий подход к обучению детей и взрослых</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
