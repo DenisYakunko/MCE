@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>My Crazy English - Скоро открытие</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            height: 150vh;
+            position: relative;
+        }
+
+        .coming-soon {
+            text-align: center;
+            padding: 260px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .coming-soon h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .coming-soon p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        /* Картинка слева снизу */
+        .corner-image-left {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 500px;
+            z-index: 10;
+        }
+
+        /* Картинка справа снизу */
+        .corner-image-right {
+            position: fixed;
+            bottom: 50px;
+            right: 5px;
+            width: 400px;
+            z-index: 10;
+        }
+
+        /* Анимация появления */
+        .animate {
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+            backface-visibility: hidden;
+        }
+
+        .animate-left {
+            transform: translateX(-20px);
+        }
+
+        .animate-right {
+            transform: translateX(20px);
+        }
+
+        .animate.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="enable-animation">
+
+    <!-- Основной текст -->
+    <div class="coming-soon animate animate-left">
+        <h1>Сайт в разработке</h1>
+        <p>Скоро увидимся! 😊<br>  </p>
+    </div>
+
+    <!-- Картинка слева снизу -->
+    <img src="assets/corner-img-left.png" alt="Картинка слева" class="corner-image-left animate animate-left">
+
+    <!-- Картинка справа снизу -->
+    <img src="assets/corner-img-right.png" alt="Картинка справа" class="corner-image-right animate animate-right">
+
+    <!-- JS Анимация -->
+    <script>
+        // Анимация появления элементов при скролле
+        function initAnimation() {
+            const animateElements = document.querySelectorAll('.animate');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting || entry.intersectionRatio > 0.1) {
+                        entry.target.classList.add('show');
+                        observer.unobserve(entry.target); // Отключаем наблюдение после показа
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            animateElements.forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        if (document.body.classList.contains('enable-animation')) {
+            window.addEventListener('load', () => {
+                setTimeout(initAnimation, 100);
+            });
+        }
+    </script>
+
+</body>
+</html>
