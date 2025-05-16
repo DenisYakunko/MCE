@@ -71,6 +71,22 @@
             z-index: 10;
         }
 
+        /* === Картинка по центру (только для мобильных) === */
+        .mobile-center-img {
+            display: none;
+            width: 120px;
+            position: relative;
+            margin: 40px auto 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+        }
+
+        .mobile-center-img.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
         /* === Анимации === */
         .animate {
             opacity: 0;
@@ -88,15 +104,24 @@
             transform: translateX(20px);
         }
 
+        .animate-bottom {
+            transform: translateY(30px);
+        }
+
         .animate.show {
             opacity: 1;
             transform: translateX(0);
         }
 
+        .animate-bottom.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* === Мобильная версия === */
         @media (max-width: 768px) {
             .coming-soon {
-                padding: 80px 20px 100px;
+                padding: 80px 20px 20px;
                 font-size: 16px;
             }
 
@@ -108,14 +133,13 @@
                 font-size: 16px;
             }
 
-           .corner-image-left,
+            .corner-image-left,
             .corner-image-right {
                 display: none !important;
             }
 
-            .social-badge {
-                top: 15px;
-                right: 15px;
+            .mobile-center-img {
+                display: block;
             }
 
             .social-badge img {
@@ -134,15 +158,18 @@
     </div>
 
     <!-- Кнопка VK -->
-    <a href="https://vk.com/mycrazyenglishgroup" target="_blank" class="social-badge animate animate-right">
+    <a href="https://vk.com/mycrazyenglish " target="_blank" class="social-badge animate animate-right">
         <img src="assets/vk.svg" alt="VK">
     </a>
 
-    <!-- Картинка слева снизу (только для десктопа) -->
+    <!-- Картинка слева снизу (только десктоп) -->
     <img src="assets/corner-img-left.png" alt="Картинка слева" class="corner-image-left animate animate-left">
 
-    <!-- Картинка справа снизу (только для десктопа) -->
+    <!-- Картинка справа снизу (только десктоп) -->
     <img src="assets/corner-img-right.png" alt="Картинка справа" class="corner-image-right animate animate-right">
+
+    <!-- Картинка по центру (только мобильные) -->
+    <img src="assets/mobile-img.png" alt="Мультяшная сова" class="mobile-center-img animate animate-bottom">
 
     <!-- JS Анимация -->
     <script>
