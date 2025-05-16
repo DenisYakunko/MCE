@@ -147,4 +147,30 @@
     <!-- JS Анимация -->
     <script>
         function initAnimation() {
-            const animateElements = document.querySelectorAll('.
+            const animateElements = document.querySelectorAll('.animate');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting || entry.intersectionRatio > 0.1) {
+                        entry.target.classList.add('show');
+                        observer.unobserve(entry.target); // Однократное появление
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            animateElements.forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        if (document.body.classList.contains('enable-animation')) {
+            window.addEventListener('load', () => {
+                setTimeout(initAnimation, 100);
+            });
+        }
+    </script>
+
+</body>
+</html>
