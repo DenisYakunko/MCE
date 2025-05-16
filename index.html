@@ -11,13 +11,15 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f8ff;
             color: #333;
-            height: 150vh;
+            height: auto;
+            min-height: 100vh;
             position: relative;
         }
 
+        /* === Основной блок === */
         .coming-soon {
             text-align: center;
-            padding: 260px 20px;
+            padding: 260px 20px 80px;
             max-width: 600px;
             margin: 0 auto;
         }
@@ -32,7 +34,27 @@
             color: #555;
         }
 
-        /* Картинка слева снизу */
+        /* === Иконка VK (для десктопа и мобильных) === */
+        .social-badge {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 20;
+            transition: transform 0.3s ease;
+        }
+
+        .social-badge img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-badge:hover {
+            transform: scale(1.1);
+        }
+
+        /* === Картинки по углам (только для десктопа) === */
         .corner-image-left {
             position: fixed;
             bottom: 20px;
@@ -41,7 +63,6 @@
             z-index: 10;
         }
 
-        /* Картинка справа снизу */
         .corner-image-right {
             position: fixed;
             bottom: 50px;
@@ -50,7 +71,7 @@
             z-index: 10;
         }
 
-        /* Анимация появления */
+        /* === Анимации === */
         .animate {
             opacity: 0;
             transform: translateX(20px);
@@ -71,6 +92,37 @@
             opacity: 1;
             transform: translateX(0);
         }
+
+        /* === Мобильная версия === */
+        @media (max-width: 768px) {
+            .coming-soon {
+                padding: 80px 20px 100px;
+                font-size: 16px;
+            }
+
+            .coming-soon h1 {
+                font-size: 24px;
+            }
+
+            .coming-soon p {
+                font-size: 16px;
+            }
+
+            .corner-image-left,
+            .corner-image-right {
+                display: none !important;
+            }
+
+            .social-badge {
+                top: 15px;
+                right: 15px;
+            }
+
+            .social-badge img {
+                width: 36px;
+                height: 36px;
+            }
+        }
     </style>
 </head>
 <body class="enable-animation">
@@ -78,43 +130,21 @@
     <!-- Основной текст -->
     <div class="coming-soon animate animate-left">
         <h1>Сайт в разработке</h1>
-        <p>Скоро увидимся! 😊<br>  </p>
+        <p>Скоро увидимся! 😊<br>Инженеры трудятся над чем-то крутеньким…</p>
     </div>
 
-    <!-- Картинка слева снизу -->
+    <!-- Кнопка VK -->
+    <a href="https://vk.com/mycrazyenglish " target="_blank" class="social-badge animate animate-right">
+        <img src="assets/vk.svg" alt="VK">
+    </a>
+
+    <!-- Картинка слева снизу (только для десктопа) -->
     <img src="assets/corner-img-left.png" alt="Картинка слева" class="corner-image-left animate animate-left">
 
-    <!-- Картинка справа снизу -->
+    <!-- Картинка справа снизу (только для десктопа) -->
     <img src="assets/corner-img-right.png" alt="Картинка справа" class="corner-image-right animate animate-right">
 
     <!-- JS Анимация -->
     <script>
-        // Анимация появления элементов при скролле
         function initAnimation() {
-            const animateElements = document.querySelectorAll('.animate');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting || entry.intersectionRatio > 0.1) {
-                        entry.target.classList.add('show');
-                        observer.unobserve(entry.target); // Отключаем наблюдение после показа
-                    }
-                });
-            }, {
-                threshold: 0.1,
-                rootMargin: "0px 0px -50px 0px"
-            });
-
-            animateElements.forEach(el => {
-                observer.observe(el);
-            });
-        }
-
-        if (document.body.classList.contains('enable-animation')) {
-            window.addEventListener('load', () => {
-                setTimeout(initAnimation, 100);
-            });
-        }
-    </script>
-
-</body>
-</html>
+            const animateElements = document.querySelectorAll('.
