@@ -58,6 +58,16 @@ function initReveal() {
   $$('[data-animate]').forEach(n => io.observe(n));
 }
 
+/* ========== КЛИКАБЕЛЬНЫЙ ПРОМО-БЛОК ========== */
+function initPromo() {
+  const promo = $('.promo-block'); if (!promo) return;
+  if (sessionStorage.getItem('promoHidden')) { promo.remove(); return; }
+  $('.promo-close', promo)?.addEventListener('click', e => {
+    e.preventDefault(); e.stopPropagation();
+    promo.remove(); sessionStorage.setItem('promoHidden', '1');
+  });
+}
+
 /* ========== СЛАЙДЕР (баннеры) ========== */
 function initSlider(root, speed) {
   const track = $('.slider-track', root), slides = $$('.slide', track), dots = $('.slider-dots', root);
@@ -107,8 +117,8 @@ function initCarousel(root) {
 
 /* ========== КАРТОЧКИ ========== */
 const BADGE_CLS = { 'Хит': 'badge-hit', 'Новинка': 'badge-new', 'Скидка': 'badge-sale' };
-const badges = (list, pos = true) => (list || []).map(b =>
-  `<span class="badge ${BADGE_CLS[b] || 'badge-default'}" ${pos ? '' : 'style="position:static"'}>${esc(b)}</span>`).join('');
+const badges = list => (list || []).map(b =>
+  `<span class="badge ${BADGE_CLS[b] || 'badge-default'}">${esc(b)}</span>`).join('');
 
 function productCard(p, clickable = false) {
   const c = el(`<article class="card" data-id="${p.id}">
@@ -171,7 +181,7 @@ async function initHome() {
 
 /* ========== КАТАЛОГ ========== */
 let CATS = [], PRODS = [];
-const state = { q: '', cats: new Set(), sort: 'new', page: 1 };
+const state = { q: '', cats: new Set(), badges: new Set(), sort: 'new', page: 1 };
 const PER = 8;
 
 async function initCatalog() {
@@ -188,12 +198,23 @@ async function initCatalog() {
     state.page = 1; render();
   });
 
+  /* Быстрый фильтр по бейджам */
+  const bf = $('#badge-filter');
+  bf.innerHTML = ['Хит', 'Новинка', 'Скидка'].map(b => `<button class="chip-btn" data-b="${b}">${b}</button>`).join('');
+  bf.addEventListener('click', e => {
+    const btn = e.target.closest('.chip-btn'); if (!btn) return;
+    state.badges.has(btn.dataset.b) ? state.badges.delete(btn.dataset.b) : state.badges.add(btn.dataset.b);
+    btn.classList.toggle('active');
+    state.page = 1; render();
+  });
+
   $('#search').addEventListener('input', e => { state.q = e.target.value; state.page = 1; render(); });
   $('#sort').addEventListener('change', e => { state.sort = e.target.value; state.page = 1; render(); });
   $('#reset').addEventListener('click', () => {
-    state.q = ''; state.cats.clear(); state.sort = 'new'; state.page = 1;
+    state.q = ''; state.cats.clear(); state.badges.clear(); state.sort = 'new'; state.page = 1;
     $('#search').value = ''; $('#sort').value = 'new';
     $$('#cat-list input').forEach(i => i.checked = false);
+    $$('#badge-filter .chip-btn').forEach(b => b.classList.remove('active'));
     render();
   });
 
@@ -211,7 +232,8 @@ function filtered() {
     const q = state.q.toLowerCase();
     const okQ = !q || [p.title, p.short, p.full, (p.tags || []).join(' ')].join(' ').toLowerCase().includes(q);
     const okC = !state.cats.size || state.cats.has(p.category);
-    return okQ && okC;
+    const okB = !state.badges.size || [...state.badges].some(b => (p.badges || []).includes(b));
+    return okQ && okC && okB;
   });
   if (state.sort === 'price-asc') list.sort((a, b) => a.price - b.price);
   else if (state.sort === 'price-desc') list.sort((a, b) => b.price - a.price);
@@ -244,6 +266,7 @@ function openModal(p) {
   const cat = CATS.find(c => c.id === p.category);
   $('#m-title').textContent = p.title;
   $('#m-cat').textContent = cat ? cat.title : '';
+  $('#m-badges').innerHTML = (p.badges || []).length ? badges(p.badges) : '';
   $('#m-desc').textContent = p.full;
   $('#m-meta').innerHTML = `<span class="chip">${esc(p.level || '')}</span><span class="chip">${esc(p.age || '')}</span><span class="chip">${esc(p.format || '')}</span>`;
   $('#m-price').innerHTML = `${p.oldPrice ? `<s>${fmtPrice(p.oldPrice)}</s> ` : ''}${fmtPrice(p.price)}`;
@@ -283,7 +306,7 @@ async function initNews() {
     <div class="meta" style="margin-top:14px">${fmtDate(n.date)} · ${esc(n.author)}</div>
     <h1>${esc(n.title)}</h1>
     ${(n.blocks || []).map(b => {
-      if (b.type === 'text') return `<p>${esc(b.content)}</p>`;
+      if (b.type === 'text') return `<p style="white-space:pre-line">${esc(b.content)}</p>`;
       if (b.type === 'image') return `<figure><img src="${b.src}" alt=""><figcaption>${esc(b.caption || '')}</figcaption></figure>`;
       if (b.type === 'quote') return `<div class="quote-block">«${esc(b.content)}»<cite>— ${esc(b.author || '')}</cite></div>`;
       if (b.type === 'video') return `<iframe src="${b.url}" style="width:100%;aspect-ratio:16/9;border:none;border-radius:16px" allowfullscreen></iframe>`;
@@ -312,6 +335,7 @@ async function initGames() {
 document.addEventListener('DOMContentLoaded', () => {
   renderLayout();
   initReveal();
+  initPromo();
   const page = document.body.dataset.page;
   if (page === 'home') initHome();
   if (page === 'catalog') initCatalog();
