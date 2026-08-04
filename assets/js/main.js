@@ -108,6 +108,7 @@ async function initBanners() {
   initSlider(root, +root.dataset.speed || 6000);
 }
 
+
 /* ========== КАРУСЕЛЬ-СКРОЛЛЕР ========== */
 function initCarousel(root) {
   const tr = $('.scroller', root); if (!tr) return;
@@ -121,8 +122,9 @@ function initCarousel(root) {
   });
 
   $('.car-next', root)?.addEventListener('click', () => {
-    if (atEnd()) tr.scrollTo({ left: 0, behavior: 'smooth' });                // с конца — в начало
-    else tr.scrollBy({ left
+    if (atEnd()) tr.scrollTo({ left: 0, behavior: 'smooth' });                 // с конца — в начало
+    else tr.scrollBy({ left: step(), behavior: 'smooth' });
+  });
 }
 
 /* ========== КАРТОЧКИ ========== */
