@@ -1,203 +1,77 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>My Crazy English - Скоро открытие</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f8ff;
-            color: #333;
-            height: auto;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        /* === Основной блок === */
-        .coming-soon {
-            text-align: center;
-            padding: 260px 20px 80px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .coming-soon h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-
-        .coming-soon p {
-            font-size: 18px;
-            color: #555;
-        }
-
-        /* === Иконка VK (для десктопа и мобильных) === */
-        .social-badge {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 20;
-            transition: transform 0.3s ease;
-        }
-
-        .social-badge img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .social-badge:hover {
-            transform: scale(1.1);
-        }
-
-        /* === Картинки по углам (только для десктопа) === */
-        .corner-image-left {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 400px;
-            z-index: 10;
-        }
-
-        .corner-image-right {
-            position: fixed;
-            bottom: 50px;
-            right: 5px;
-            width: 400px;
-            z-index: 10;
-        }
-
-        /* === Картинка по центру (только для мобильных) === */
-        .mobile-center-img {
-            display: none;
-            width: 120px;
-            position: relative;
-            margin: 40px auto 0;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: transform 0.6s ease-out, opacity 0.6s ease-out;
-        }
-
-        .mobile-center-img.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        /* === Анимации === */
-        .animate {
-            opacity: 0;
-            transform: translateX(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-            will-change: opacity, transform;
-            backface-visibility: hidden;
-        }
-
-        .animate-left {
-            transform: translateX(-20px);
-        }
-
-        .animate-right {
-            transform: translateX(20px);
-        }
-
-        .animate-bottom {
-            transform: translateY(30px);
-        }
-
-        .animate.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .animate-bottom.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* === Мобильная версия === */
-        @media (max-width: 768px) {
-            .coming-soon {
-                padding: 180px 20px 20px;
-                font-size: 16px;
-            }
-
-            .coming-soon h1 {
-                font-size: 24px;
-            }
-
-            .coming-soon p {
-                font-size: 16px;
-            }
-
-            .corner-image-left,
-            .corner-image-right {
-                display: none !important;
-            }
-
-            .mobile-center-img {
-                display: block;
-            }
-
-            .social-badge img {
-                width: 36px;
-                height: 36px;
-            }
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Мой удивительный английский — My Crazy English</title>
+  <meta name="description" content="Авторские материалы, видеобуки и онлайн-игры для уроков английского языка.">
+  <link rel="icon" href="assets/img/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
 </head>
-<body class="enable-animation">
+<body data-page="home">
+<header id="header" class="header"></header>
 
-    <!-- Основной текст -->
-    <div class="coming-soon animate animate-left">
-        <h1>Сайт в разработке</h1>
-        <p>Скоро увидимся! 😊<br>Инженеры трудятся над чем-то крутеньким…</p>
+<main>
+  <!-- Баннер-карусель: скорость меняется через data-speed (мс) -->
+  <section class="banner-slider" id="banners" data-speed="6000"></section>
+
+  <!-- О нас -->
+  <section class="section">
+    <div class="container cols-2">
+      <div data-animate="left">
+        <span class="overline">О нас</span>
+        <h1>Английский, который дети ждут с нетерпением</h1>
+        <p>«Мой удивительный английский» — клуб и мастерская авторских материалов: видеобуки, игры, рабочие листы и онлайн-тренажёры для детей и подростков. Мы превращаем уроки в приключение.</p>
+        <a class="btn btn-primary" href="club.html">Наш клуб →</a>
+      </div>
+      <div class="about-media hover-zoom" data-animate="right">
+        <img src="https://placehold.co/800x600/7c3aed/ffffff?text=My+Crazy+English" alt="Наш клуб английского">
+      </div>
     </div>
+  </section>
 
-    <!-- Кнопка VK -->
-    <a href="https://vk.com/mycrazyenglishgroup" target="_blank" class="social-badge animate animate-right">
-        <img src="assets/vk.svg" alt="VK">
-    </a>
+  <!-- Новости -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <h2>Новости</h2><a class="link-all" href="news.html">Все новости →</a>
+      </div>
+      <div id="news-preview" class="grid-3"></div>
+    </div>
+  </section>
 
-    <!-- Картинка слева снизу (только десктоп) -->
-    <img src="assets/corner-img-left.png" alt="Картинка слева" class="corner-image-left animate animate-left">
+  <!-- Разработки -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Разработки</h2><a class="link-all" href="razrabotki.html">Весь каталог →</a>
+      </div>
+      <div class="carousel" id="products-preview">
+        <div class="scroller"></div>
+        <button class="car-btn car-prev" aria-label="Назад">←</button>
+        <button class="car-btn car-next" aria-label="Вперёд">→</button>
+      </div>
+    </div>
+  </section>
 
-    <!-- Картинка справа снизу (только десктоп) -->
-    <img src="assets/corner-img-right.png" alt="Картинка справа" class="corner-image-right animate animate-right">
+  <!-- Отзывы -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head"><h2>Отзывы</h2></div>
+      <div class="carousel" id="reviews">
+        <div class="scroller"></div>
+        <button class="car-btn car-prev" aria-label="Назад">←</button>
+        <button class="car-btn car-next" aria-label="Вперёд">→</button>
+      </div>
+    </div>
+  </section>
+</main>
 
-    <!-- Картинка по центру (только мобильные) -->
-    <img src="assets/mobile-img.png" alt="Мультяшная сова" class="mobile-center-img animate animate-bottom">
-
-    <!-- JS Анимация -->
-    <script>
-        function initAnimation() {
-            const animateElements = document.querySelectorAll('.animate');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting || entry.intersectionRatio > 0.1) {
-                        entry.target.classList.add('show');
-                        observer.unobserve(entry.target); // Однократное появление
-                    }
-                });
-            }, {
-                threshold: 0.1,
-                rootMargin: "0px 0px -50px 0px"
-            });
-
-            animateElements.forEach(el => {
-                observer.observe(el);
-            });
-        }
-
-        if (document.body.classList.contains('enable-animation')) {
-            window.addEventListener('load', () => {
-                setTimeout(initAnimation, 100);
-            });
-        }
-    </script>
-
+<footer id="footer" class="footer"></footer>
+<a class="float-cta" href="https://vk.com/mycrazyenglishgroup" target="_blank" rel="noopener">Мы в VK ✦</a>
+<script src="assets/js/main.js"></script>
 </body>
 </html>
