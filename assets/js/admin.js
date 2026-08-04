@@ -75,10 +75,10 @@ const fCheck = (id, label, val) => `<label class="f check"><input type="checkbox
 const fSelect = (id, label, options, val) => `<label class="f"><span>${label}</span><select id="${id}">${options.map(o => `<option value="${esc(o.id)}" ${o.id === val ? 'selected' : ''}>${esc(o.title)}</option>`).join('')}</select></label>`;
 
 function imgField(id, label, val = '') {
-  return `<div class="f"><span>${label}</span>
+  return `<div class="f">${label ? `<span>${label}</span>` : ''}
     <div class="dropzone" id="${id}-dz">${val ? `<img src="${esc(val)}">` : '📷 Перетащи картинку или кликни'}</div>
     <input type="file" id="${id}-file" accept="image/*" hidden>
-    <input id="${id}" value="${esc(val)}" placeholder="или путь: uploads/products/photo.jpg" style="margin-top:6px">
+    <input class="img-val" id="${id}" value="${esc(val)}" placeholder="или путь: uploads/products/photo.jpg" style="margin-top:6px">
   </div>`;
 }
 function bindImg(id) {
@@ -108,6 +108,17 @@ function setImg(id, f) {
     };
     img.onerror = rej; img.src = url;
   });
+}
+
+/* Слот одного фото товара: drag&drop + поле пути + удаление */
+let imgCounter = 0;
+function imgSlot(val = '') {
+  const id = 'p-img-' + (++imgCounter);
+  const wrap = el(`<div class="img-slot">${imgField(id, '', val)}
+    <button type="button" class="btn btn-danger btn-sm" title="Убрать фото">🗑</button></div>`);
+  $('button', wrap).onclick = () => wrap.remove();
+  bindImg(id);
+  return wrap;
 }
 
 /* ========== РЕДАКТОР ========== */
@@ -145,9 +156,11 @@ function editProduct(item) {
         `<label class="check"><input type="checkbox" data-badge="${b}" ${(p.badges||[]).includes(b) ? 'checked' : ''}><span>${b}</span></label>`).join('')}
       </div>
     </div>
-    ${imgField('p-img1', 'Главное фото (обложка карточки)', p.images[0] || '')}
-    ${imgField('p-img2', 'Доп. фото (галерея в карточке)', p.images[1] || '')}
-    ${fText('p-video', 'Ссылка на видео (VK embed, пусто = нет)', p.video)}
+    <div class="f"><span>Фото товара — сколько угодно (первое = обложка карточки)</span>
+      <div id="p-images"></div>
+      <button type="button" class="btn btn-ghost btn-sm" id="p-add-img" style="margin-top:8px">＋ Добавить фото</button>
+    </div>
+    ${fText('p-video', 'Ссылка на видео (VK embed) — в карточке появится миниатюра ▶', p.video)}
     ${fText('p-buy', 'Ссылка «Приобрести на VK»', p.buyUrl)}
     <div class="f-row">
       ${fText('p-level', 'Уровень', p.level)}
@@ -159,7 +172,7 @@ function editProduct(item) {
   `, () => {
     const title = $('#p-title').value.trim();
     if (!title) { alert('Укажи название'); return; }
-    const images = [$('#p-img1').value.trim(), $('#p-img2').value.trim()].filter(Boolean);
+    const images = $$('#p-images .img-val').map(i => i.value.trim()).filter(Boolean);
     const np = { ...p,
       title,
       short: $('#p-short').value.trim(),
@@ -179,7 +192,12 @@ function editProduct(item) {
     item ? Object.assign(item, np) : DB.products.unshift(np);
     saveDraft(); renderLists(); dlg.close();
   });
-  bindImg('p-img1'); bindImg('p-img2');
+
+  /* список фото: существующие + кнопка добавления */
+  const imgsWrap = $('#p-images');
+  const imgs = p.images && p.images.length ? p.images : [''];
+  imgs.forEach(v => imgsWrap.append(imgSlot(v)));
+  $('#p-add-img').onclick = () => imgsWrap.append(imgSlot(''));
 }
 
 /* ---------- НОВОСТЬ ---------- */
