@@ -244,4 +244,16 @@ a{color:var(--primary)}
 .thumbs .thumb.active{border-color:var(--primary)}
 .thumbs .thumb img{width:100%;height:100%;object-fit:cover}
 .thumbs .thumb-video{display:flex;align-items:center;justify-content:center;color:#fff;font:800 16px 'Manrope';background:var(--night)}
-.thumbs .thumb-video:hover{background:var(--primary)}
+.thumbs .thumb-video:hover{background:var(--primary)} 
+/* ===== КОМПАКТНЫЕ ОТСТУПЫ ===== */
+.section{padding:32px 0}
+.section-head{margin-bottom:18px}
+.page-head{padding:24px 0}
+.cols-2{gap:32px}
+.grid-3,.grid-cards{gap:18px}
+.scroller{gap:16px}
+.catalog-layout{gap:24px}
+.footer{padding:36px 0 0}
+.footer-grid{gap:28px;padding-bottom:28px}
+.footer-bottom{padding:14px 20px}
+@media (max-width:720px){.section{padding:24px 0}}
