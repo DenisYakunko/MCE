@@ -323,7 +323,7 @@ async function initNews() {
   }
   const n = news.find(x => String(x.id) === id);
   if (!n) { wrap.innerHTML = '<p>Новость не найдена.</p>'; return; }
-  wrap.innerHTML = `<article class="article" data-animate="fade">
+  wrap.innerHTML = `<article class="article">
     <a href="news.html">← Все новости</a>
     <div class="meta" style="margin-top:14px">${fmtDate(n.date)} · ${esc(n.author)}</div>
     <h1>${esc(n.title)}</h1>
@@ -335,6 +335,7 @@ async function initNews() {
       return '';
     }).join('')}
   </article>`;
+    requestAnimationFrame(() => wrap.querySelector('.article')?.classList.add('in'));
 }
 
 /* ========== ИГРЫ ========== */
