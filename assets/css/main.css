@@ -118,11 +118,9 @@ a{color:var(--primary)}
 .about-media img{border-radius:var(--r);box-shadow:var(--sh-md)}
 
 /* ============ КАТАЛОГ ============ */
-.page-head{padding:28px 0 0}
-.page-head .container{max-width:960px;background:linear-gradient(135deg,var(--night),#2d1b69);border-radius:var(--r);padding:44px 48px;box-shadow:var(--sh-md)}
-.page-head h1{color:#fff}
-.page-head p{opacity:.85;max-width:60ch;margin-bottom:0}
-@media (max-width:720px){.page-head .container{padding:32px 22px}}
+.page-head{background:linear-gradient(135deg,var(--night),#2d1b69);color:#fff;padding:34px 0}
+.page-head h1{color:#fff;font-size:clamp(24px,3vw,34px);margin-bottom:6px}
+.page-head p{opacity:.85;max-width:640px;margin-bottom:0}
 .catalog-layout{display:grid;grid-template-columns:270px 1fr;gap:32px;align-items:start}
 .filters{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;position:sticky;top:86px}
 .search-bar input{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:var(--r-sm);font:inherit;background:var(--bg)}
