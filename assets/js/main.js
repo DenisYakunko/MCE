@@ -271,22 +271,37 @@ function openModal(p) {
   $('#m-meta').innerHTML = `<span class="chip">${esc(p.level || '')}</span><span class="chip">${esc(p.age || '')}</span><span class="chip">${esc(p.format || '')}</span>`;
   $('#m-price').innerHTML = `${p.oldPrice ? `<s>${fmtPrice(p.oldPrice)}</s> ` : ''}${fmtPrice(p.price)}`;
   $('#m-buy').href = p.buyUrl || 'https://vk.com/market-192843316';
-  const main = $('#m-img'); main.src = p.images[0];
-  const th = $('#m-thumbs'); th.innerHTML = '';
-  p.images.forEach((src, i) => {
-    const t = el(`<img src="${src}" class="${i === 0 ? 'active' : ''}">`);
-    t.onclick = () => { main.src = src; $$('#m-thumbs img').forEach(x => x.classList.remove('active')); t.classList.add('active'); };
+
+  /* Галерея: все фото + видео в одном окне */
+  const media = (p.images || []).map(src => ({ type: 'img', src }));
+  if (p.video) media.push({ type: 'video', src: p.video });
+
+  const imgEl = $('#m-img'), vidEl = $('#m-video'), th = $('#m-thumbs');
+  th.innerHTML = '';
+
+  const show = i => {
+    const m = media[i];
+    if (m.type === 'img') {
+      imgEl.hidden = false; imgEl.src = m.src;
+      vidEl.hidden = true; vidEl.src = '';          // останавливаем видео
+    } else {
+      imgEl.hidden = true;
+      vidEl.hidden = false; vidEl.src = m.src;      // видео в том же окне
+    }
+    $$('.thumb', th).forEach((t, n) => t.classList.toggle('active', n === i));
+  };
+
+  media.forEach((m, i) => {
+    const t = el(m.type === 'img'
+      ? `<button class="thumb" aria-label="Фото ${i + 1}"><img src="${m.src}" alt=""></button>`
+      : `<button class="thumb thumb-video" aria-label="Видео">▶</button>`);
+    t.onclick = () => show(i);
     th.append(t);
   });
-  const vid = $('#m-video');
-  if (p.video) { vid.hidden = false; vid.src = p.video; } else { vid.hidden = true; vid.src = ''; }
+
+  if (media.length) show(0);
   $('#modal').hidden = false;
   document.body.style.overflow = 'hidden';
-}
-function closeModal() {
-  $('#modal').hidden = true;
-  document.body.style.overflow = '';
-  const vid = $('#m-video'); if (vid) vid.src = '';
 }
 
 /* ========== НОВОСТИ ========== */
