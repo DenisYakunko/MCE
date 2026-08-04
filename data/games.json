@@ -1,0 +1,22 @@
+[
+  {
+    "id": "slovolet",
+    "title": "Словолёт",
+    "subtitle": "Один набор слов — двенадцать игр",
+    "description": "Quiz, Memory, Hangman, Word Search, Crossword, Flashcards, Wheel и другие. Работает офлайн, наборы и результаты хранятся в браузере.",
+    "image": "https://placehold.co/800x500/7c3aed/ffffff?text=SlovoLet",
+    "url": "games/slovolet/index.html",
+    "badges": ["Онлайн", "Офлайн"],
+    "published": true
+  },
+  {
+    "id": "slovolet-arcade",
+    "title": "Аркадный Словолёт",
+    "subtitle": "Скоро!",
+    "description": "Аркадная версия Словолёта: ещё больше азарта и скорости в отработке лексики.",
+    "image": "https://placehold.co/800x500/4c1d95/ffffff?text=Arcade",
+    "url": "",
+    "badges": ["Скоро"],
+    "published": true
+  }
+]
