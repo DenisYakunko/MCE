@@ -109,22 +109,40 @@ async function initBanners() {
 }
 
 
-/* ========== КАРУСЕЛЬ-СКРОЛЛЕР ========== */
+/* ========== КАРУСЕЛЬ-СКРОЛЛЕР (бесконечная) ========== */
 function initCarousel(root) {
   const tr = $('.scroller', root); if (!tr) return;
-  const step = () => tr.clientWidth * .85;
-  const atEnd = () => tr.scrollLeft + tr.clientWidth >= tr.scrollWidth - 10;
-  const atStart = () => tr.scrollLeft <= 10;
+  const items = [...tr.children];
+  if (items.length < 2) return;
 
-  $('.car-prev', root)?.addEventListener('click', () => {
-    if (atStart()) tr.scrollTo({ left: tr.scrollWidth, behavior: 'smooth' });  // с начала — в конец
-    else tr.scrollBy({ left: -step(), behavior: 'smooth' });
+  tr.style.scrollSnapType = 'none'; // прокруткой управляем сами
+  const gap = parseFloat(getComputedStyle(tr).gap) || 20;
+  const itemW = () => items[0].getBoundingClientRect().width + gap;
+  const setW = () => items.length * itemW();
+  const realStart = () => items.length * itemW();
+
+  // По комплекту клонов в начало и в конец — это даёт бесконечную ленту
+  items.forEach(it => tr.append(it.cloneNode(true)));
+  [...items].reverse().forEach(it => tr.prepend(it.cloneNode(true)));
+
+  // Стартуем на первом настоящем элементе
+  tr.scrollLeft = realStart();
+  requestAnimationFrame(() => { tr.scrollLeft = realStart(); });
+
+  // Когда уехали в клоны — незаметно возвращаемся на настоящий набор
+  let t;
+  tr.addEventListener('scroll', () => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      const w = setW();
+      if (tr.scrollLeft >= realStart() + w) tr.scrollLeft -= w;       // уехали вправо в клоны
+      else if (tr.scrollLeft <= realStart() - w) tr.scrollLeft += w;  // уехали влево в клоны
+    }, 120);
   });
 
-  $('.car-next', root)?.addEventListener('click', () => {
-    if (atEnd()) tr.scrollTo({ left: 0, behavior: 'smooth' });                 // с конца — в начало
-    else tr.scrollBy({ left: step(), behavior: 'smooth' });
-  });
+  const step = () => Math.max(itemW(), Math.round(tr.clientWidth * .8));
+  $('.car-next', root)?.addEventListener('click', () => tr.scrollBy({ left: step(), behavior: 'smooth' }));
+  $('.car-prev', root)?.addEventListener('click', () => tr.scrollBy({ left: -step(), behavior: 'smooth' }));
 }
 
 /* ========== КАРТОЧКИ ========== */
