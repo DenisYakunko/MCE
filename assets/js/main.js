@@ -111,8 +111,18 @@ async function initBanners() {
 /* ========== КАРУСЕЛЬ-СКРОЛЛЕР ========== */
 function initCarousel(root) {
   const tr = $('.scroller', root); if (!tr) return;
-  $('.car-prev', root)?.addEventListener('click', () => tr.scrollBy({ left: -tr.clientWidth * .85, behavior: 'smooth' }));
-  $('.car-next', root)?.addEventListener('click', () => tr.scrollBy({ left: tr.clientWidth * .85, behavior: 'smooth' }));
+  const step = () => tr.clientWidth * .85;
+  const atEnd = () => tr.scrollLeft + tr.clientWidth >= tr.scrollWidth - 10;
+  const atStart = () => tr.scrollLeft <= 10;
+
+  $('.car-prev', root)?.addEventListener('click', () => {
+    if (atStart()) tr.scrollTo({ left: tr.scrollWidth, behavior: 'smooth' });  // с начала — в конец
+    else tr.scrollBy({ left: -step(), behavior: 'smooth' });
+  });
+
+  $('.car-next', root)?.addEventListener('click', () => {
+    if (atEnd()) tr.scrollTo({ left: 0, behavior: 'smooth' });                // с конца — в начало
+    else tr.scrollBy({ left
 }
 
 /* ========== КАРТОЧКИ ========== */
