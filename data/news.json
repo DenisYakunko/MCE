@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "title": "Мы запустили новый сайт!",
+    "date": "2026-08-01",
+    "author": "Олеся",
+    "cover": "https://placehold.co/800x500/7c3aed/ffffff?text=New+Site",
+    "preview": "Теперь все наши разработки, новости и онлайн-игры — в одном месте.",
+    "published": true,
+    "blocks": [
+      { "type": "text", "content": "Друзья, у нас большая новость: мы запустили новый сайт! Здесь будут собраны все наши разработки, видеобуки, игры и новости клуба." },
+      { "type": "quote", "content": "Мы делаем обучение английским весёлым — и теперь это видно с первого экрана.", "author": "Олеся" },
+      { "type": "text", "content": "Следите за новостями: скоро добавим онлайн-игры и раздел о нашем клубе." }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Новый видеобук по Паддингтону",
+    "date": "2026-07-25",
+    "author": "Олеся",
+    "cover": "https://placehold.co/800x500/6d28d9/ffffff?text=Paddington",
+    "preview": "Paddington's Space Adventure: задания, скрипт и видеоэпизод в одном комплекте.",
+    "published": true,
+    "blocks": [
+      { "type": "text", "content": "Вышел новый видеобук Paddington's Space Adventure! Внутри — задания на лексику, matching, gaps, who said that, скрипт и видеоэпизод." },
+      { "type": "image", "src": "https://placehold.co/900x500/8b5cf6/ffffff?text=Workbook+Preview", "caption": "Страницы из видеобука" },
+      { "type": "video", "url": "https://vk.com/video_ext.php?oid=-192843316&id=456239201&hd=2&autoplay=0" },
+      { "type": "text", "content": "Приобрести материал можно в нашем магазине ВКонтакте." }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Летний марафон чтения завершён",
+    "date": "2026-07-05",
+    "author": "Олеся",
+    "cover": "https://placehold.co/800x500/a855f7/ffffff?text=Summer+Reading",
+    "preview": "Спасибо всем участникам! Лучшие читатели получили подарочные материалы.",
+    "published": true,
+    "blocks": [
+      { "type": "text", "content": "Наш летний марафон чтения завершён. Ребята читали книги Эрика Карла и Джулии Дональдсон, выполняли задания и делились впечатлениями." },
+      { "type": "quote", "content": "Дочка ждала каждое задание марафона как праздник!", "author": "Анна, мама ученицы" }
+    ]
+  }
+]
