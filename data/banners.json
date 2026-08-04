@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "active": true,
+    "title": "Авторские разработки для уроков английского",
+    "subtitle": "Видеобуки, игры и рабочие листы для детей и подростков",
+    "image": "https://placehold.co/1600x600/6d28d9/ffffff?text=My+Crazy+English",
+    "link": "razrabotki.html",
+    "linkText": "Смотреть каталог"
+  },
+  {
+    "id": 2,
+    "active": true,
+    "title": "Словолёт — один набор слов, двенадцать игр",
+    "subtitle": "Онлайн-тренажёры для уроков и домашней практики",
+    "image": "https://placehold.co/1600x600/7c3aed/ffffff?text=SlovoLet",
+    "link": "online-games.html",
+    "linkText": "Играть"
+  },
+  {
+    "id": 3,
+    "active": true,
+    "title": "Мы во ВКонтакте",
+    "subtitle": "Новости, скидки и новые материалы — в нашей группе",
+    "image": "https://placehold.co/1600x600/4c1d95/ffffff?text=VK+Group",
+    "link": "https://vk.com/mycrazyenglishgroup",
+    "linkText": "Перейти в группу"
+  }
+]
