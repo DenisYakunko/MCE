@@ -234,3 +234,14 @@ a{color:var(--primary)}
 .promo-block[data-position="sticky"]{position:sticky;top:90px;z-index:50}
 .promo-close{position:absolute;top:-10px;right:-10px;width:26px;height:26px;border-radius:50%;border:none;background:var(--night);color:#fff;cursor:pointer;font-size:12px;transition:.2s}
 .promo-close:hover{background:var(--primary)}
+
+/* ===== Галерея товара: фото и видео в одном окне ===== */
+.m-stage{position:relative;aspect-ratio:3/2;border-radius:var(--r-sm);overflow:hidden;background:var(--night)}
+.m-stage img,.m-stage iframe{width:100%;height:100%;object-fit:cover;border:none;display:block}
+.m-stage [hidden]{display:none!important}
+.thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.thumbs .thumb{width:64px;height:48px;border-radius:6px;cursor:pointer;border:2px solid transparent;overflow:hidden;padding:0;background:#000}
+.thumbs .thumb.active{border-color:var(--primary)}
+.thumbs .thumb img{width:100%;height:100%;object-fit:cover}
+.thumbs .thumb-video{display:flex;align-items:center;justify-content:center;color:#fff;font:800 16px 'Manrope';background:var(--night)}
+.thumbs .thumb-video:hover{background:var(--primary)}
