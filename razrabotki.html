@@ -4,7 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Разработки — Мой удивительный английский</title>
+  <meta name="description" content="Каталог авторских материалов для преподавателей и репетиторов английского.">
   <link rel="icon" href="assets/img/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -36,6 +39,8 @@
       </aside>
 
       <div>
+        <!-- Быстрый фильтр по бейджам -->
+        <div id="badge-filter" class="chips-row"></div>
         <div class="catalog-top" id="count"></div>
         <div id="grid" class="grid-cards"></div>
         <div id="pagination" class="pagination"></div>
@@ -58,7 +63,8 @@
         <iframe id="m-video" hidden allowfullscreen></iframe>
       </div>
       <div class="modal-info">
-        <p id="m-desc"></p>
+        <div id="m-badges"></div>
+        <div id="m-desc" class="modal-desc"></div>
         <p class="price" id="m-price" style="font-size:24px"></p>
         <a id="m-buy" class="btn btn-primary" target="_blank" rel="noopener">Приобрести на VK →</a>
       </div>
