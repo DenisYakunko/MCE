@@ -261,6 +261,7 @@ function render() {
   }
 }
 
+/* ========== КАРТОЧКА ТОВАРА: фото и видео в одном окне ========== */
 function openModal(p) {
   if (!p) return;
   const cat = CATS.find(c => c.id === p.category);
@@ -302,6 +303,12 @@ function openModal(p) {
   if (media.length) show(0);
   $('#modal').hidden = false;
   document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  $('#modal').hidden = true;
+  document.body.style.overflow = '';
+  const vid = $('#m-video'); if (vid) vid.src = '';
 }
 
 /* ========== НОВОСТИ ========== */
