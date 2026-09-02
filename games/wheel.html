@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Wheel Spinner — MCE</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg1:#1e2a3a;--bg2:#0f1a24;
+  --accent:#FFD966;--accent2:#FF6D00;--accent3:#FF924C;
+  --ok:#4CAF50;--err:#E53935;--info:#1E88E5;
+  --ink:#dfe9f5;--ink-dim:#8a97a5;--ink-dark:#1e2a3a;
+  --card:rgba(255,255,255,.06);--card-border:rgba(255,255,255,.12);
+}
+body{
+  background:linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 100%);
+  font-family:'Segoe UI','Arial',sans-serif;
+  min-height:100vh;user-select:none;-webkit-tap-highlight-color:transparent;
+  overflow-x:hidden;padding:15px;display:flex;flex-direction:column;align-items:center;color:var(--ink);
+}
+.screen{display:none;width:100%;max-width:960px;margin:0 auto;text-align:center}
+.screen.active{display:block}
+h1{color:var(--accent);font-size:2.2em;margin:10px 0 12px;text-shadow:0 4px 20px rgba(255,217,102,.45);
+  letter-spacing:4px;text-transform:uppercase;font-weight:800}
+.subtitle{color:var(--ink-dim);margin-bottom:25px;font-size:1.05em;line-height:1.5}
+.section-title{color:var(--accent);margin:28px 0 14px;font-size:1.15em;letter-spacing:2px;
+  text-transform:uppercase;text-align:left;padding-left:8px;border-left:4px solid var(--accent)}
+
+/* ==== КНОПКА ДОМОЙ ==== */
+.home-btn{
+  position:fixed;top:18px;right:18px;z-index:50;
+  width:46px;height:46px;border-radius:50%;
+  background:rgba(15,26,36,.85);backdrop-filter:blur(6px);
+  border:2px solid var(--accent);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;
+  box-shadow:0 6px 20px rgba(0,0,0,.5);
+}
+.home-btn:hover{background:var(--accent);color:var(--ink-dark);transform:translateY(-2px);box-shadow:0 10px 25px rgba(255,217,102,.3)}
+.home-btn svg{width:22px;height:22px}
+
+/* ==== ОБЩИЕ КНОПКИ ==== */
+.btn{border:none;border-radius:50px;cursor:pointer;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;transition:all .15s;font-family:inherit;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.btn:active{transform:scale(.94)}
+.btn-primary{background:linear-gradient(180deg,var(--accent3),var(--accent2));color:#fff;
+  padding:14px 30px;font-size:1.05em;box-shadow:0 6px 20px rgba(255,109,0,.4),inset 0 -3px 0 rgba(0,0,0,.18)}
+.btn-ok{background:linear-gradient(180deg,#6BCB77,var(--ok));color:#fff;
+  padding:14px 30px;font-size:1.05em;box-shadow:0 6px 20px rgba(76,175,80,.4)}
+.btn-info{background:linear-gradient(180deg,#42A5F5,var(--info));color:#fff;padding:14px 30px;font-size:1.05em}
+.btn-ghost{background:rgba(255,255,255,.1);color:var(--ink);border:2px solid var(--card-border);padding:12px 22px;font-size:.95em}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn-mini{padding:8px 14px;font-size:.8em}
+.btn-danger{background:linear-gradient(180deg,#EF5350,#C62828);color:#fff;padding:8px 14px;font-size:.8em}
+.btn svg{width:18px;height:18px}
+.btn-mini svg{width:14px;height:14px}
+
+/* ==== СЕТКА КАРТОЧЕК ==== */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;text-align:left}
+.card{background:var(--card);border:2px solid var(--card-border);border-radius:18px;padding:20px;
+  display:flex;flex-direction:column;gap:10px;transition:all .2s}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.card h3{color:#fff;font-size:1.1em;font-weight:700}
+.card .meta{color:var(--ink-dim);font-size:.88em}
+.card .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+.empty{text-align:center;color:var(--ink-dim);padding:30px;border:2px dashed var(--card-border);border-radius:18px}
+.btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:25px}
+
+/* ==== МОДАЛКИ ==== */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);
+  display:flex;justify-content:center;align-items:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .3s;padding:15px}
+.modal-overlay.active{opacity:1;pointer-events:all}
+.modal{background:#fff;border-radius:22px;padding:28px;max-width:520px;width:100%;
+  box-shadow:0 25px 65px rgba(0,0,0,.6);transform:translateY(30px) scale(.92);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);color:var(--ink-dark);max-height:90vh;overflow-y:auto}
+.modal-overlay.active .modal{transform:translateY(0) scale(1)}
+.modal h2{font-size:1.35em;margin-bottom:6px;color:var(--ink-dark)}
+.modal .hint{color:#5a6b7d;font-size:.9em;margin-bottom:18px}
+.modal .close-x{position:absolute;top:14px;right:18px;background:none;border:none;cursor:pointer;
+  font-size:1.5em;color:#999;line-height:1}
+.modal-wrap{position:relative}
+
+/* ==== ПОЛЯ ==== */
+.field{width:100%;padding:12px 16px;border:3px solid #e3e8ef;border-radius:12px;
+  font-size:1em;margin-bottom:10px;font-family:inherit;outline:none;transition:border .2s}
+.field:focus{border-color:var(--info)}
+textarea.field{resize:vertical;min-height:80px;font-family:monospace;font-size:.9em}
+
+/* ==== РЕДАКТОР НАБОРА ==== */
+.editor{background:#fff;border-radius:22px;padding:25px;max-width:680px;margin:20px auto 0;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);text-align:left;color:var(--ink-dark);max-height:calc(100vh - 40px);overflow-y:auto}
+.editor h2{margin-bottom:12px;color:var(--ink-dark)}
+.editor .meta{color:#5a6b7d;font-size:.9em;margin:5px 0 12px}
+.item-row{display:flex;align-items:center;gap:10px;background:#f0f4f8;border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.item-row .term{font-weight:800;color:var(--ink-dark);min-width:80px}
+.item-row .def{color:#5a6b7d;font-size:.9em;flex:1;word-break:break-word}
+.item-form{border-top:3px dashed #e3e8ef;margin-top:15px;padding-top:15px}
+
+/* ==== КОЛЕСО ==== */
+.wheel-wrapper{position:relative;display:inline-block;margin:0 auto;width:100%;max-width:500px}
+canvas{display:block;width:100%;height:auto;border-radius:50%;
+  box-shadow:0 0 50px rgba(0,0,0,.7),0 0 90px rgba(255,200,0,.25);cursor:pointer}
+.pointer{position:absolute;top:-15px;left:50%;transform:translateX(-50%);z-index:10;
+  filter:drop-shadow(0 8px 15px rgba(0,0,0,.6));pointer-events:none}
+.pointer svg{width:60px;height:60px}
+.spin-btn{background:linear-gradient(180deg,var(--accent3) 0%,var(--accent2) 100%);color:#fff;border:none;
+  padding:18px 60px;font-size:1.5em;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  border-radius:50px;cursor:pointer;box-shadow:0 8px 25px rgba(255,109,0,.5),inset 0 -4px 0 rgba(0,0,0,.2);
+  margin-top:25px;transition:all .15s}
+.spin-btn:active{transform:scale(.92)}
+.spin-btn:disabled{background:linear-gradient(180deg,#555,#333);cursor:not-allowed;transform:none}
+
+/* ==== МОДАЛКА ЗАДАНИЯ ==== */
+.task-modal .modal{max-width:440px}
+.type-badge{display:inline-block;padding:8px 20px;border-radius:30px;font-weight:800;
+  letter-spacing:1px;margin:8px 0 15px;text-transform:uppercase;color:#fff;font-size:.9em}
+.type-badge.plus{background:var(--ok)}.type-badge.minus{background:var(--err)}.type-badge.q{background:var(--info)}
+.prompt{font-size:1.2em;font-weight:700;color:var(--ink-dark);background:#f0f4f8;
+  padding:15px 20px;border-radius:15px;margin:10px 0 18px;word-break:break-word}
+.answer-input{width:100%;padding:16px 20px;font-size:1.1em;border:3px solid #ddd;
+  border-radius:15px;outline:none;transition:border .25s;margin-bottom:15px;font-family:inherit;box-sizing:border-box}
+.answer-input:focus{border-color:var(--info);box-shadow:0 0 15px rgba(30,136,229,.15)}
+.btn-group{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.feedback{margin-top:15px;padding:12px 15px;border-radius:12px;font-weight:700;display:none;word-break:break-word}
+.feedback.success{display:block;background:#e8f5e9;color:#2e7d32;border-left:5px solid var(--ok)}
+.feedback.error{display:block;background:#ffebee;color:#c62828;border-left:5px solid var(--err)}
+.correct-answer{font-weight:800;color:#1565c0;margin-top:5px}
+
+/* ==== ШАРИНГ ==== */
+.share-url{display:flex;gap:8px;margin-top:10px}
+.share-url input{flex:1;padding:10px 14px;border:2px solid #ddd;border-radius:10px;font-size:.9em;font-family:monospace;color:var(--ink-dark)}
+.qr-wrap{display:flex;justify-content:center;margin:20px 0}
+.qr-wrap canvas,.qr-wrap img{border-radius:10px}
+
+/* ==== ТОСТ ==== */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--bg1);color:#fff;padding:12px 22px;border-radius:40px;opacity:0;
+  transition:.3s;z-index:200;border:2px solid var(--accent);pointer-events:none;font-weight:600}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ==== EMBED ==== */
+.embed-code{background:#1e2a3a;color:#FFD966;padding:14px;border-radius:10px;
+  font-family:monospace;font-size:.85em;word-break:break-all;margin:10px 0}
+
+@media(max-width:600px){
+  h1{font-size:1.5em;letter-spacing:2px}
+  .spin-btn{padding:14px 40px;font-size:1.2em}
+  .pointer svg{width:45px;height:45px}
+  .home-btn{width:40px;height:40px;top:12px;right:12px}
+  .section-title{font-size:1em}
+}
+</style>
+</head>
+<body>
+
+<button class="home-btn" onclick="goHome()" title="На главную">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/>
+  </svg>
+</button>
+
+<!-- =============== ЭКРАН: ДОМ =============== -->
+<div id="screen-home" class="screen active">
+  <h1>WHEEL SPINNER</h1>
+  <p class="subtitle">Создавай наборы слов — и запускай из них разные игры.<br>
+    Сейчас: <b>Wheel Spinner</b>. Скоро — Quiz, Match-up, Flashcards.</p>
+
+  <h2 class="section-title">Мои наборы</h2>
+  <div class="grid" id="setsGrid"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="openSetEditor(null)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Создать набор
+    </button>
+    <label class="btn btn-ghost">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Импорт JSON
+      <input type="file" id="importFile" accept=".json" hidden onchange="importSet(event)">
+    </label>
+  </div>
+
+  <h2 class="section-title">Готовые примеры</h2>
+  <div class="grid" id="presetsGrid"></div>
+</div>
+
+<!-- =============== ЭКРАН: РЕДАКТОР НАБОРА =============== -->
+<div id="screen-editor" class="screen">
+  <div class="editor">
+    <h2 id="editorTitle">Создать набор</h2>
+    <input class="field" id="setTitle" placeholder="Название набора (напр. Present Simple: BE)">
+    <input class="field" id="setTags" placeholder="Теги через запятую (grammar, a1)">
+    <p class="meta" id="itemsCount">Элементов: 0 (минимум 2)</p>
+
+    <div id="itemsList"></div>
+
+    <div class="item-form">
+      <h3 style="margin-bottom:10px">Добавить элемент</h3>
+      <input class="field" id="itemTerm" placeholder="Термин / слово (на колесе)">
+      <input class="field" id="itemDef" placeholder="Определение / ответ">
+      <input class="field" id="itemPrompt" placeholder="Подсказка (слова вперемешку, опционально)">
+      <input class="field" id="itemExtra" placeholder="Дополнительно: тип (+/-/?), категория и т.д.">
+      <div class="btn-group" style="justify-content:flex-start">
+        <button class="btn btn-ok btn-mini" id="itemSaveBtn" onclick="saveItem()">Добавить</button>
+        <button class="btn btn-ghost btn-mini" onclick="clearItemForm()">Отмена</button>
+      </div>
+    </div>
+
+    <div class="btn-group" style="margin-top:20px">
+      <button class="btn btn-ok" onclick="saveSet()">Сохранить набор</button>
+      <button class="btn btn-primary" onclick="playSetFromEditor()">Играть сейчас</button>
+      <button class="btn btn-ghost" onclick="goHome()">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<!-- =============== ЭКРАН: ИГРА =============== -->
+<div id="screen-game" class="screen">
+  <h1 id="gameTitle">WHEEL</h1>
+  <div class="wheel-wrapper">
+    <div class="pointer"><svg viewBox="0 0 60 60">
+      <polygon points="30,55 10,10 50,10" fill="#E53935" stroke="#B71C1C" stroke-width="2"/>
+      <circle cx="30" cy="15" r="6" fill="#FFD966" stroke="#FFB347" stroke-width="2"/>
+    </svg></div>
+    <canvas id="wheelCanvas" width="500" height="500"></canvas>
+  </div>
+  <button class="spin-btn" id="spinBtn" onclick="spinWheel()">КРУТИТЬ</button>
+  <div class="btn-row" style="margin-top:30px">
+    <button class="btn btn-info btn-mini" onclick="openShareModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Поделиться
+    </button>
+    <button class="btn btn-ghost btn-mini" onclick="openEmbedModal()">Встроить в учебник</button>
+  </div>
+</div>
+
+<!-- =============== МОДАЛКА: ЗАДАНИЕ =============== -->
+<div class="modal-overlay task-modal" id="taskOverlay">
+  <div class="modal-wrap"><div class="modal">
+    <h2>Собери ответ</h2>
+    <div id="typeBadge" class="type-badge" style="display:none"></div>
+    <div class="prompt" id="taskPrompt"></div>
+    <input type="text" class="answer-input" id="answerInput" placeholder="Введи ответ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <div class="btn-group">
+      <button class="btn btn-ok" onclick="checkAnswer()">Проверить</button>
+      <button class="btn btn-primary" onclick="closeTask()">Следующий</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div></div>
+</div>
+
+<!-- =============== МОДАЛКА: ШАРИНГ =============== -->
+<div class="modal-overlay" id="shareOverlay">
+  <div class="modal-wrap"><div class="modal">
+    <button class="close-x" onclick="closeShare()">&#215;</button>
+    <h2>Поделиться игрой</h2>
+    <p class="hint">Скопируй ссылку или распечатай QR для пособия</p>
+    <div class="share-url">
+      <input type="text" id="shareUrl" readonly>
+      <button class="btn btn-info btn-mini" onclick="copyShareUrl()">Копировать</button>
+    </div>
+    <div class="qr-wrap" id="qrBox"></div>
+    <p style="text-align:center;color:#5a6b7d;font-size:.85em">Сканируй телефоном — игра откроется сразу</p>
+  </div></div>
+</div>
+
+<!-- =============== МОДАЛКА: EMBED =============== -->
+<div class="modal-overlay" id="embedOverlay">
+  <div class="modal-wrap"><div class="modal">
+    <button class="close-x" onclick="closeEmbed()">&#215;</button>
+    <h2>Встроить в пособие</h2>
+    <p class="hint">Скопируй код и вставь в HTML-страницу или учебник</p>
+    <div class="embed-code" id="embedCode"></div>
+    <button class="btn btn-info btn-mini" onclick="copyEmbed()">Копировать код</button>
+  </div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   АРХИТЕКТУРА: DATA SET + ACTIVITY TEMPLATE + ACTIVITY
+   ============================================================ */
+
+const LS_KEY = 'mce.wheel.v1';
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => 'id-' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+
+/* ---------- Предустановленные наборы (Data Sets) ---------- */
+const PRESETS = [
+  { id:'preset-be', title:'Present Simple: BE', tags:['grammar','a1'], items:[
+    {term:'You', def:'You are my best friend.', prompt:'You / friend / best / my', extra:'+'},
+    {term:'Mum and dad', def:'Mum and dad are in the kitchen.', prompt:'Mum and dad / the kitchen / in', extra:'+'},
+    {term:'An orange', def:'An orange is a juicy fruit.', prompt:'An orange / a fruit / juicy', extra:'+'},
+    {term:'Those horses', def:'Those horses are brown.', prompt:'Those horses / brown', extra:'+'},
+    {term:'I', def:'I am not hungry now.', prompt:'I / now / hungry / not', extra:'-'},
+    {term:'Granny', def:'Granny is not in the living room.', prompt:'Granny / the living room / not / in', extra:'-'},
+    {term:'We', def:'We are not in the garden.', prompt:'We / the garden / not / in', extra:'-'},
+    {term:'You', def:'Are you in Year 6?', prompt:'You / Year 6 / in', extra:'?'},
+    {term:'Your cat', def:'Is your cat in the kitchen now?', prompt:'Your cat / the kitchen / now / in', extra:'?'},
+    {term:'Those chips', def:'Are those chips tasty?', prompt:'Those chips / tasty', extra:'?'}
+  ]},
+  { id:'preset-verbs', title:'Irregular Verbs: V2', tags:['grammar','a2'], items:[
+    {term:'go', def:'went'},{term:'see', def:'saw'},{term:'take', def:'took'},
+    {term:'make', def:'made'},{term:'get', def:'got'},{term:'come', def:'came'},
+    {term:'buy', def:'bought'},{term:'think', def:'thought'},
+    {term:'know', def:'knew'},{term:'eat', def:'ate'}
+  ]},
+  { id:'preset-animals', title:'Animals (RU → EN)', tags:['vocabulary','a1'], items:[
+    {term:'🦊 Лиса', def:'fox'},{term:'🐻 Медведь', def:'bear'},
+    {term:'🐰 Кролик', def:'rabbit'},{term:'🐺 Волк', def:'wolf'},
+    {term:'🦌 Олень', def:'deer'},{term:'🐿️ Белка', def:'squirrel'},
+    {term:'🦔 Ёж', def:'hedgehog'},{term:'🐹 Хомяк', def:'hamster'}
+  ]}
+];
+
+/* ---------- Хранилище (localStorage + JSON) ---------- */
+const Storage = {
+  load(){ try { return JSON.parse(localStorage.getItem(LS_KEY)) || {sets:[]} } catch(e){ return {sets:[]} } },
+  save(data){ localStorage.setItem(LS_KEY, JSON.stringify(data)) },
+  getSets(){ return this.load().sets },
+  addSet(s){ const d=this.load(); d.sets.push(s); this.save(d) },
+  updateSet(id, s){ const d=this.load(); const i=d.sets.findIndex(x=>x.id===id); if(i>=0) d.sets[i]=s; this.save(d) },
+  removeSet(id){ const d=this.load(); d.sets=d.sets.filter(x=>x.id!==id); this.save(d) }
+};
+
+/* ---------- Шаринг: кодирование/декодирование активности в URL ---------- */
+const Sharing = {
+  encode(activity){
+    try {
+      const json = JSON.stringify(activity);
+      // base64 безопасно для URL
+      return btoa(unescape(encodeURIComponent(json)));
+    } catch(e){ return null }
+  },
+  decode(b64){
+    try {
+      const json = decodeURIComponent(escape(atob(b64)));
+      return JSON.parse(json);
+    } catch(e){ return null }
+  },
+  buildUrl(activity){
+    const base = window.location.origin + window.location.pathname;
+    const code = this.encode(activity);
+    if(!code) return null;
+    return base + '?share=' + code;
+  },
+  readFromUrl(){
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('share');
+    if(!code) return null;
+    return this.decode(code);
+  }
+};
+
+/* ---------- Тост ---------- */
+let toastTimer;
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2500); }
+
+/* ---------- Экраны ---------- */
+function showScreen(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active', s.id==='screen-'+n));
+  window.scrollTo(0,0);
+}
+function goHome(){ closeTask(); renderHome(); showScreen('home'); }
+
+/* ---------- Рендеринг списка наборов ---------- */
+function setCardHTML(s, isMine){
+  return `<div class="card">
+    <h3>${esc(s.title)}</h3>
+    <div class="meta">${s.items.length} элементов ${s.tags?.length? '· '+s.tags.map(esc).join(', '):''}</div>
+    <div class="actions">
+      <button class="btn btn-primary btn-mini" onclick="launchSetById('${s.id}', ${isMine})">Играть</button>
+      <button class="btn btn-ghost btn-mini" onclick="shareSetById('${s.id}', ${isMine})">QR</button>
+      ${isMine
+        ? `<button class="btn btn-ghost btn-mini" onclick="editSetById('${s.id}')">Ред.</button>
+           <button class="btn btn-ghost btn-mini" onclick="exportSet('${s.id}')">JSON</button>
+           <button class="btn btn-danger btn-mini" onclick="deleteSet('${s.id}')">Удалить</button>`
+        : `<button class="btn btn-ghost btn-mini" onclick="copyPreset('${s.id}')">Копировать</button>`}
+    </div>
+  </div>`;
+}
+function renderHome(){
+  const mine = Storage.getSets();
+  $('setsGrid').innerHTML = mine.length
+    ? mine.map(s=>setCardHTML(s,true)).join('')
+    : '<div class="empty">Наборов пока нет. Создай первый, импортируй JSON или скопируй пример ниже.</div>';
+  $('presetsGrid').innerHTML = PRESETS.map(s=>setCardHTML(s,false)).join('');
+}
+
+/* ---------- Действия с наборами ---------- */
+function findSet(id, isMine){
+  return isMine ? Storage.getSets().find(x=>x.id===id) : PRESETS.find(x=>x.id===id);
+}
+function launchSetById(id, isMine){ const s=findSet(id,isMine); if(s) launchSet(s); }
+function shareSetById(id, isMine){ const s=findSet(id,isMine); if(s){ currentSet=s; openShareModal(); }}
+function editSetById(id){ openSetEditor(id); }
+function deleteSet(id){ if(!confirm('Удалить набор?')) return; Storage.removeSet(id); renderHome(); toast('Набор удалён'); }
+function exportSet(id){
+  const s=Storage.getSets().find(x=>x.id===id); if(!s) return;
+  const blob=new Blob([JSON.stringify(s,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=(s.title||'set')+'.json'; a.click(); URL.revokeObjectURL(a.href);
+}
+function copyPreset(id){
+  const s=PRESETS.find(x=>x.id===id); if(!s) return;
+  const c=JSON.parse(JSON.stringify(s)); c.id=uid(); c.title+=' (копия)';
+  Storage.addSet(c); renderHome(); toast('Набор скопирован в «Мои наборы»');
+}
+function importSet(ev){
+  const f=ev.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const obj=JSON.parse(r.result);
+      if(!obj || !Array.isArray(obj.items) || obj.items.length<2) throw 0;
+      const clean = {
+        id: obj.id || uid(),
+        title: obj.title || 'Без названия',
+        tags: Array.isArray(obj.tags)?obj.tags:[],
+        items: obj.items.filter(i=>i && i.term && i.def).map(i=>({
+          term:String(i.term), def:String(i.def),
+          prompt:i.prompt?String(i.prompt):'', extra:i.extra?String(i.extra):''
+        }))
+      };
+      Storage.addSet(clean); renderHome(); toast('Набор импортирован');
+    }catch(e){ toast('Ошибка чтения JSON'); }
+  };
+  r.readAsText(f); ev.target.value='';
+}
+
+/* ---------- Редактор набора ---------- */
+let draft=null, editingIdx=-1;
+function openSetEditor(id){
+  if(id){
+    draft = JSON.parse(JSON.stringify(Storage.getSets().find(x=>x.id===id)));
+    $('editorTitle').textContent = 'Редактировать набор';
+  } else {
+    draft = {id:uid(), title:'', tags:[], items:[]};
+    $('editorTitle').textContent = 'Создать набор';
+  }
+  editingIdx=-1;
+  $('setTitle').value = draft.title;
+  $('setTags').value = (draft.tags||[]).join(', ');
+  clearItemForm(); renderItems(); showScreen('editor');
+}
+function renderItems(){
+  $('itemsList').innerHTML = draft.items.length
+    ? draft.items.map((it,i)=>`
+      <div class="item-row">
+        <span class="term">${esc(it.term)}</span>
+        <span class="def">${esc(it.prompt||'')} ${it.prompt?'→':''} <b>${esc(it.def)}</b>${it.extra?' <small>('+esc(it.extra)+')</small>':''}</span>
+        <button class="btn btn-ghost btn-mini" onclick="editItem(${i})">Ред.</button>
+        <button class="btn btn-danger btn-mini" onclick="removeItem(${i})">Удалить</button>
+      </div>`).join('')
+    : '<div class="empty">Добавь минимум 2 элемента</div>';
+  $('itemsCount').textContent = `Элементов: ${draft.items.length} (минимум 2)`;
+}
+function editItem(i){
+  editingIdx=i; const it=draft.items[i];
+  $('itemTerm').value=it.term; $('itemDef').value=it.def;
+  $('itemPrompt').value=it.prompt||''; $('itemExtra').value=it.extra||'';
+  $('itemSaveBtn').textContent='Сохранить';
+}
+function removeItem(i){ draft.items.splice(i,1); if(editingIdx===i) clearItemForm(); renderItems(); }
+function clearItemForm(){
+  editingIdx=-1; ['itemTerm','itemDef','itemPrompt','itemExtra'].forEach(id=>$(id).value='');
+  $('itemSaveBtn').textContent='Добавить';
+}
+function saveItem(){
+  const term=$('itemTerm').value.trim(), def=$('itemDef').value.trim();
+  if(!term || !def){ toast('Термин и определение обязательны'); return; }
+  const it = {term, def, prompt:$('itemPrompt').value.trim(), extra:$('itemExtra').value.trim()};
+  if(editingIdx>=0) draft.items[editingIdx]=it; else draft.items.push(it);
+  clearItemForm(); renderItems();
+}
+function collectDraft(){
+  draft.title = $('setTitle').value.trim();
+  draft.tags = $('setTags').value.split(',').map(s=>s.trim()).filter(Boolean);
+  if(!draft.title){ toast('Укажи название набора'); return false; }
+  if(draft.items.length<2){ toast('Нужно минимум 2 элемента'); return false; }
+  return true;
+}
+function saveSet(){ if(!collectDraft()) return;
+  const existing = Storage.getSets().find(x=>x.id===draft.id);
+  if(existing) Storage.updateSet(draft.id, draft); else Storage.addSet(draft);
+  goHome(); toast('Набор сохранён');
+}
+function playSetFromEditor(){ if(!collectDraft()) return; launchSet(draft); }
+
+/* ============================================================
+   ИГРА: WHEEL SPINNER (Activity Template)
+   ============================================================ */
+let currentSet = null;
+let sectors = [], numSectors = 0, sectorAngle = 0;
+const COLORS = ['#FF4D4D','#FFD966','#6BCB77','#4D9DE0','#E86A92','#FF924C','#9B5DE5',
+                '#00BBF9','#FEE440','#F15BB5','#00B4D8','#A7C957','#FF6D00'];
+const canvas = $('wheelCanvas'), ctx = canvas.getContext('2d');
+const CX = canvas.width/2, CY = canvas.height/2, R = 230;
+let angle = 0, spinning = false, target = -1;
+let audioCtx = null, spinTone = null, toneCount = 0;
+
+function launchSet(s){
+  if(!s || !Array.isArray(s.items) || s.items.length<2){ toast('Недостаточно элементов'); return; }
+  currentSet = s;
+  sectors = s.items; numSectors = s.items.length; sectorAngle = 2*Math.PI/numSectors; angle = 0;
+  $('gameTitle').textContent = s.title.toUpperCase();
+  drawWheel(0); showScreen('game');
+  // Обновляем URL: добавляем ?share=
+  const url = Sharing.buildUrl(s);
+  if(url) history.replaceState(null,'',url);
+}
+
+function drawWheel(rot){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.beginPath(); ctx.arc(CX,CY,R+20,0,2*Math.PI); ctx.fillStyle='#FFD966'; ctx.fill();
+  ctx.beginPath(); ctx.arc(CX,CY,R+12,0,2*Math.PI); ctx.fillStyle='#FFB347'; ctx.fill();
+  for(let i=0;i<numSectors;i++){
+    const st=rot+i*sectorAngle, en=st+sectorAngle;
+    ctx.beginPath(); ctx.moveTo(CX,CY); ctx.arc(CX,CY,R,st,en); ctx.closePath();
+    ctx.fillStyle = COLORS[i%COLORS.length]; ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=3; ctx.stroke();
+    const mid=st+sectorAngle/2, tr=R*0.55;
+    ctx.save(); ctx.translate(CX+Math.cos(mid)*tr, CY+Math.sin(mid)*tr);
+    let a=mid; if(mid>Math.PI/2 && mid<3*Math.PI/2) a=mid+Math.PI;
+    ctx.rotate(a);
+    const raw=sectors[i].term, shown=raw.length>16?raw.slice(0,15)+'…':raw;
+    const fs=shown.length<=8?22:shown.length<=12?18:15;
+    ctx.fillStyle='#1e2a3a'; ctx.font='bold '+fs+'px "Segoe UI", Arial, sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(shown,0,0);
+    ctx.restore();
+  }
+  ctx.beginPath(); ctx.arc(CX,CY,55,0,2*Math.PI); ctx.fillStyle='#fff'; ctx.fill();
+  ctx.strokeStyle='#FFD966'; ctx.lineWidth=6; ctx.stroke();
+  ctx.fillStyle='#FF6D00'; ctx.font='bold 36px "Segoe UI", Arial, sans-serif';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  // SVG-подобний "значок" — круг с точкой
+  ctx.fillText('●', CX, CY);
+}
+
+/* Звук */
+function initAudio(){ if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended') audioCtx.resume(); }
+function tone(f,d=0.1,v=0.15){ if(!audioCtx) return;
+  const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+  o.type='sine'; o.frequency.value=f; g.gain.value=v;
+  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime+d);
+  o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+d); }
+function startSpinTone(){ if(spinTone) clearInterval(spinTone); toneCount=0;
+  spinTone=setInterval(()=>{ tone(Math.min(160+toneCount*20,400),0.1,0.15); toneCount++; },150); }
+function stopSpinTone(){ if(spinTone){ clearInterval(spinTone); spinTone=null; }}
+function playStop(){ tone(880,0.2,0.2); setTimeout(()=>tone(1250,0.3,0.2),200); }
+function playOk(){ tone(523,0.12,0.2); setTimeout(()=>tone(659,0.12,0.2),120); setTimeout(()=>tone(784,0.2,0.25),240); }
+function playErr(){ tone(300,0.3,0.25); setTimeout(()=>tone(250,0.4,0.25),150); }
+
+function spinWheel(){
+  if(spinning) return; spinning=true; $('spinBtn').disabled=true;
+  initAudio(); startSpinTone();
+  target = Math.floor(Math.random()*numSectors);
+  const extra = 7+Math.floor(Math.random()*7);
+  const mid = target*sectorAngle + sectorAngle/2;
+  const tgt = -Math.PI/2 - mid;
+  const total = extra*2*Math.PI + (tgt - (angle%(2*Math.PI)));
+  const dur = 6000+Math.random()*3000, start=performance.now(), startA=angle;
+  (function anim(now){
+    const p=Math.min((now-start)/dur,1), e=1-Math.pow(1-p,3);
+    angle = startA + total*e; drawWheel(angle);
+    if(p<1) requestAnimationFrame(anim);
+    else { spinning=false; $('spinBtn').disabled=false;
+      stopSpinTone(); playStop(); setTimeout(()=>showTask(target),300); }
+  })(performance.now());
+}
+
+/* Задание */
+function showTask(i){
+  const d=sectors[i], badge=$('typeBadge');
+  $('feedback').className='feedback';
+  $('answerInput').value=''; $('answerInput').disabled=false;
+  const type = (d.extra||'').trim();
+  if(type && '+-?'.includes(type)){
+    badge.style.display='inline-block';
+    badge.className = 'type-badge ' + (type==='+'?'plus':type==='-'?'minus':'q');
+    badge.textContent = type==='+'?'Утверждение':type==='-'?'Отрицание':'Вопрос';
+  } else badge.style.display='none';
+  $('taskPrompt').textContent = d.prompt || `${d.term} → ?`;
+  window.currentItemIdx = i;
+  $('taskOverlay').classList.add('active');
+  setTimeout(()=>$('answerInput').focus(),350);
+}
+function closeTask(){ $('taskOverlay').classList.remove('active'); $('feedback').className='feedback'; }
+
+function normalize(s){
+  let n=s.toLowerCase();
+  n = n.replace(/\s+([.,!?])/g,'$1').replace(/([.,!?])\s+/g,'$1').replace(/\s+/g,' ').trim();
+  n = n.replace(/are\s+not/g,"aren't").replace(/is\s+not/g,"isn't");
+  return n;
+}
+function checkAnswer(){
+  if(window.currentItemIdx==null) return;
+  const d=sectors[window.currentItemIdx], fb=$('feedback');
+  const user = normalize($('answerInput').value.trim());
+  const correct = normalize(d.def);
+  const type = (d.extra||'').trim();
+  let ok = user.replace(/[.!?]+$/,'') === correct.replace(/[.!?]+$/,'');
+  if(ok && type){
+    if(type==='?') ok = user.endsWith('?');
+    else ok = user.endsWith('.');
+  }
+  if(ok){
+    fb.className='feedback success';
+    fb.innerHTML='Правильно!<br><b>'+esc(d.def)+'</b>';
+    $('answerInput').disabled=true; playOk();
+  } else {
+    fb.className='feedback error';
+    fb.innerHTML='Не совсем. Правильный ответ:<br><span class="correct-answer">'+esc(d.def)+'</span>';
+    playErr();
+  }
+}
+
+/* ---------- Шаринг (QR + ссылка) ---------- */
+let qrInstance=null;
+function openShareModal(){
+  if(!currentSet){ toast('Нет активной игры'); return; }
+  const url = Sharing.buildUrl(currentSet);
+  if(!url){ toast('Не удалось создать ссылку'); return; }
+  $('shareUrl').value = url;
+  $('qrBox').innerHTML='';
+  qrInstance = new QRCode($('qrBox'), {
+    text:url, width:240, height:240,
+    colorDark:'#1e2a3a', colorLight:'#ffffff',
+    correctLevel:QRCode.CorrectLevel.M
+  });
+  $('shareOverlay').classList.add('active');
+}
+function closeShare(){ $('shareOverlay').classList.remove('active'); }
+function copyShareUrl(){
+  $('shareUrl').select(); document.execCommand('copy');
+  toast('Ссылка скопирована');
+}
+
+/* ---------- Embed-код для учебных пособий ---------- */
+function openEmbedModal(){
+  if(!currentSet){ toast('Нет активной игры'); return; }
+  const url = Sharing.buildUrl(currentSet);
+  const code = `<iframe src="${url}" width="640" height="720" frameborder="0" allowfullscreen style="border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.2)"></iframe>`;
+  $('embedCode').textContent = code;
+  $('embedOverlay').classList.add('active');
+}
+function closeEmbed(){ $('embedOverlay').classList.remove('active'); }
+function copyEmbed(){
+  const t=$('embedCode').textContent;
+  navigator.clipboard.writeText(t).then(()=>toast('Код скопирован')).catch(()=>{
+    const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy'); document.body.removeChild(ta); toast('Код скопирован');
+  });
+}
+
+/* ---------- События ---------- */
+$('answerInput').addEventListener('keydown', e=>{
+  if(e.key==='Enter'){ e.preventDefault(); if(!e.target.disabled) checkAnswer(); }
+});
+$('taskOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeTask(); });
+$('shareOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeShare(); });
+$('embedOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeEmbed(); });
+
+/* ---------- Инициализация ---------- */
+function init(){
+  renderHome();
+  // Автозапуск из шаринг-ссылки
+  const shared = Sharing.readFromUrl();
+  if(shared && Array.isArray(shared.items) && shared.items.length>=2){
+    launchSet(shared);
+  }
+}
+init();
+</script>
+</body>
+</html>
