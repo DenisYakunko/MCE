@@ -25,16 +25,19 @@ body{
 .screen{display:none;width:100%;max-width:960px;margin:0 auto;text-align:center;padding:15px}
 .screen.active{display:block}
 
-/* ===== ЗАГОЛОВОК: поднят вверх на широких экранах ===== */
+/* ===== ЭКРАН ИГРЫ — на всю ширину, чтобы панель ушла вправо ===== */
+#screen-game{max-width:100%}
+/* Зазор между заголовком и колесом */
+#screen-game h1{margin-bottom:48px}
+
 h1{color:var(--accent);font-size:2.2em;
-  margin:24px 0 12px;               /* было 80px — теперь высоко */
+  margin:24px 0 12px;
   text-shadow:0 4px 20px rgba(255,217,102,.45);
   letter-spacing:4px;text-transform:uppercase;font-weight:800}
 .subtitle{color:var(--ink-dim);margin-bottom:25px;font-size:1.05em;line-height:1.5}
 .section-title{color:var(--accent);margin:28px 0 14px;font-size:1.15em;letter-spacing:2px;
   text-transform:uppercase;text-align:left;padding-left:8px;border-left:4px solid var(--accent)}
 
-/* Кнопка "Домой" — fixed справа сверху */
 .home-btn{
   position:fixed;top:18px;right:18px;z-index:50;
   width:46px;height:46px;border-radius:50%;
@@ -47,7 +50,6 @@ h1{color:var(--accent);font-size:2.2em;
 .home-btn:hover{background:var(--accent);color:var(--ink-dark);transform:translateY(-2px);box-shadow:0 10px 25px rgba(255,217,102,.3)}
 .home-btn svg{width:22px;height:22px}
 
-/* Кнопка "К моим наборам" — fixed, слева от home-btn */
 .back-link{
   position:fixed;
   top:22px;
@@ -65,7 +67,6 @@ h1{color:var(--accent);font-size:2.2em;
 .back-link:hover{color:var(--accent);border-color:var(--accent);transform:translateY(-2px)}
 .back-link svg{width:16px;height:16px}
 
-/* Кнопки общие */
 .btn{border:none;border-radius:50px;cursor:pointer;font-weight:700;letter-spacing:1px;
   text-transform:uppercase;transition:all .15s;font-family:inherit;display:inline-flex;align-items:center;gap:8px;justify-content:center}
 .btn:active{transform:scale(.94)}
@@ -82,7 +83,6 @@ h1{color:var(--accent);font-size:2.2em;
 .btn svg{width:18px;height:18px}
 .btn-mini svg{width:14px;height:14px}
 
-/* Карточки наборов */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;text-align:left}
 .card{background:var(--card);border:2px solid var(--card-border);border-radius:18px;padding:20px;
   display:flex;flex-direction:column;gap:10px;transition:all .2s}
@@ -93,7 +93,6 @@ h1{color:var(--accent);font-size:2.2em;
 .empty{text-align:center;color:var(--ink-dim);padding:30px;border:2px dashed var(--card-border);border-radius:18px}
 .btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:25px}
 
-/* Модалки */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);
   display:flex;justify-content:center;align-items:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .3s;padding:15px}
 .modal-overlay.active{opacity:1;pointer-events:all}
@@ -120,23 +119,22 @@ h1{color:var(--accent);font-size:2.2em;
 .item-row .def{color:#5a6b7d;font-size:.9em;flex:1;word-break:break-word}
 .item-form{border-top:3px dashed #e3e8ef;margin-top:15px;padding-top:15px}
 
-/* ===== LAYOUT ИГРЫ: колесо по центру, панель absolute справа ===== */
+/* ===== LAYOUT ИГРЫ ===== */
 .game-stage{
   position:relative;
   width:100%;
   display:flex;
-  justify-content:center;      /* колесо центрируется независимо от панели */
+  justify-content:center;
   align-items:flex-start;
   margin:0 auto;
 }
 .wheel-col{
   display:flex;flex-direction:column;align-items:center;min-width:0;
 }
-/* Панель кнопок — прижата к правому краю, опущена ниже */
 .side-panel{
   position:absolute;
-  right:30px;                  /* максимально вправо */
-  top:70px;                    /* чуть ниже */
+  right:30px;
+  top:70px;
   width:250px;
   display:flex;flex-direction:column;gap:12px;
 }
@@ -146,7 +144,6 @@ h1{color:var(--accent);font-size:2.2em;
   text-align:left;padding-left:4px;margin-top:8px;
 }
 
-/* Колесо */
 .wheel-wrapper{position:relative;display:inline-block;width:100%;max-width:600px}
 canvas{display:block;width:100%;height:auto;border-radius:50%;
   box-shadow:0 0 50px rgba(0,0,0,.7),0 0 120px rgba(255,200,0,.25);cursor:pointer}
@@ -154,7 +151,6 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   filter:drop-shadow(0 8px 15px rgba(0,0,0,.6));pointer-events:none}
 .pointer svg{width:65px;height:65px}
 
-/* КРУТИТЬ — в боковой панели */
 .spin-btn{
   background:linear-gradient(180deg,var(--accent3) 0%,var(--accent2) 100%);
   color:#fff;border:none;
@@ -169,7 +165,6 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 .spin-btn:active{transform:scale(.92)}
 .spin-btn:disabled{background:linear-gradient(180deg,#555,#333);cursor:not-allowed;transform:none}
 
-/* Модалка задания */
 .task-modal .modal{max-width:440px}
 .type-badge{display:inline-block;padding:8px 20px;border-radius:30px;font-weight:800;
   letter-spacing:1px;margin:8px 0 15px;text-transform:uppercase;color:#fff;font-size:.9em}
@@ -196,18 +191,16 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ===== АДАПТИВ ===== */
-/* Средние экраны: заголовок ниже, чтобы не пересечься с fixed-кнопками */
 @media(max-width:1400px){h1{margin-top:80px}}
-/* Панель перестаёт быть absolute и уходит под колесо */
 @media(max-width:1200px){
   .game-stage{flex-direction:column;align-items:center}
   .side-panel{position:static;width:100%;max-width:400px;margin-top:24px}
 }
 @media(max-width:900px){h1{margin-top:90px}}
-/* Низкие экраны: колесо чуть меньше, чтобы всё влезало */
 @media(max-height:900px){.wheel-wrapper{max-width:520px}}
 @media(max-width:600px){
   h1{font-size:1.5em;letter-spacing:2px;margin-top:120px}
+  #screen-game h1{margin-bottom:30px}
   .back-link{right:70px;font-size:.8em;padding:8px 14px;top:18px}
   .home-btn{width:40px;height:40px;top:14px;right:14px}
   .wheel-wrapper{max-width:420px}
@@ -294,7 +287,6 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   <h1 id="gameTitle">WHEEL</h1>
 
   <div class="game-stage">
-    <!-- Колесо по центру -->
     <div class="wheel-col">
       <div class="wheel-wrapper">
         <div class="pointer"><svg viewBox="0 0 60 60">
@@ -305,7 +297,6 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
       </div>
     </div>
 
-    <!-- Панель absolute справа, опущена -->
     <div class="side-panel">
       <button class="spin-btn" id="spinBtn" onclick="spinWheel()">КРУТИТЬ</button>
       <button class="btn btn-info btn-block" onclick="openShareModal()">
@@ -698,6 +689,9 @@ $('answerInput').addEventListener('keydown', e=>{
 });
 $('taskOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeTask(); });
 $('shareOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeShare(); });
+
+/* Клик по колесу тоже крутит */
+canvas.addEventListener('click', spinWheel);
 
 function init(){
   renderHome();
