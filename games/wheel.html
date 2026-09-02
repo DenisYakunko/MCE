@@ -25,9 +25,7 @@ body{
 .screen{display:none;width:100%;max-width:960px;margin:0 auto;text-align:center;padding:15px}
 .screen.active{display:block}
 
-/* ===== ЭКРАН ИГРЫ — на всю ширину, чтобы панель ушла вправо ===== */
 #screen-game{max-width:100%}
-/* Зазор между заголовком и колесом */
 #screen-game h1{margin-bottom:48px}
 
 h1{color:var(--accent);font-size:2.2em;
@@ -119,7 +117,6 @@ h1{color:var(--accent);font-size:2.2em;
 .item-row .def{color:#5a6b7d;font-size:.9em;flex:1;word-break:break-word}
 .item-form{border-top:3px dashed #e3e8ef;margin-top:15px;padding-top:15px}
 
-/* ===== LAYOUT ИГРЫ ===== */
 .game-stage{
   position:relative;
   width:100%;
@@ -144,6 +141,7 @@ h1{color:var(--accent);font-size:2.2em;
   text-align:left;padding-left:4px;margin-top:8px;
 }
 
+/* Колесо: крупное по умолчанию */
 .wheel-wrapper{position:relative;display:inline-block;width:100%;max-width:600px}
 canvas{display:block;width:100%;height:auto;border-radius:50%;
   box-shadow:0 0 50px rgba(0,0,0,.7),0 0 120px rgba(255,200,0,.25);cursor:pointer}
@@ -197,7 +195,9 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   .side-panel{position:static;width:100%;max-width:400px;margin-top:24px}
 }
 @media(max-width:900px){h1{margin-top:90px}}
-@media(max-height:900px){.wheel-wrapper{max-width:520px}}
+/* Мягкое уменьшение только на ОЧЕНЬ низких экранах */
+@media(max-height:860px){.wheel-wrapper{max-width:540px}}
+@media(max-height:740px){.wheel-wrapper{max-width:460px}}
 @media(max-width:600px){
   h1{font-size:1.5em;letter-spacing:2px;margin-top:120px}
   #screen-game h1{margin-bottom:30px}
@@ -351,6 +351,7 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid = () => 'id-' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 
+/* ===== НАБОРЫ: перевод убран, только английский на колесе ===== */
 const PRESETS = [
   { id:'preset-be', title:'Present Simple: BE', tags:['grammar','a1'], items:[
     {term:'My brother', def:'My brother is at the park now.', prompt:'My brother / at the park / now', extra:'+'},
@@ -370,11 +371,15 @@ const PRESETS = [
     {term:'buy', def:'bought'},{term:'think', def:'thought'},
     {term:'know', def:'knew'},{term:'eat', def:'ate'}
   ]},
-  { id:'preset-animals', title:'Animals (RU -> EN)', tags:['vocabulary','a1'], items:[
-    {term:'Fox / Лиса', def:'fox'},{term:'Bear / Медведь', def:'bear'},
-    {term:'Rabbit / Кролик', def:'rabbit'},{term:'Wolf / Волк', def:'wolf'},
-    {term:'Deer / Олень', def:'deer'},{term:'Squirrel / Белка', def:'squirrel'},
-    {term:'Hedgehog / Ёж', def:'hedgehog'},{term:'Hamster / Хомяк', def:'hamster'}
+  { id:'preset-animals', title:'Animals', tags:['vocabulary','a1'], items:[
+    {term:'Fox', def:'fox', prompt:'Лиса'},
+    {term:'Bear', def:'bear', prompt:'Медведь'},
+    {term:'Rabbit', def:'rabbit', prompt:'Кролик'},
+    {term:'Wolf', def:'wolf', prompt:'Волк'},
+    {term:'Deer', def:'deer', prompt:'Олень'},
+    {term:'Squirrel', def:'squirrel', prompt:'Белка'},
+    {term:'Hedgehog', def:'hedgehog', prompt:'Ёж'},
+    {term:'Hamster', def:'hamster', prompt:'Хомяк'}
   ]}
 ];
 
@@ -576,7 +581,8 @@ function drawWheel(rot){
     let a=mid; if(mid>Math.PI/2 && mid<3*Math.PI/2) a=mid+Math.PI;
     ctx.rotate(a);
     const raw=sectors[i].term, shown=raw.length>16?raw.slice(0,15)+'…':raw;
-    const fs=shown.length<=8?24:shown.length<=12?20:16;
+    /* Крупный шрифт: короткие надписи = крупнее */
+    const fs=shown.length<=8?30:shown.length<=12?26:20;
     ctx.fillStyle='#1e2a3a'; ctx.font='bold '+fs+'px "Segoe UI", Arial, sans-serif';
     ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(shown,0,0);
     ctx.restore();
@@ -689,8 +695,6 @@ $('answerInput').addEventListener('keydown', e=>{
 });
 $('taskOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeTask(); });
 $('shareOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeShare(); });
-
-/* Клик по колесу тоже крутит */
 canvas.addEventListener('click', spinWheel);
 
 function init(){
