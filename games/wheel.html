@@ -19,17 +19,22 @@ body{
   background:linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 100%);
   font-family:'Segoe UI','Arial',sans-serif;
   min-height:100vh;user-select:none;-webkit-tap-highlight-color:transparent;
-  overflow-x:hidden;padding:15px;display:flex;flex-direction:column;align-items:center;color:var(--ink);
+  overflow-x:hidden;padding:0;
+  display:flex;flex-direction:column;align-items:center;color:var(--ink);
 }
-.screen{display:none;width:100%;max-width:960px;margin:0 auto;text-align:center}
+.screen{display:none;width:100%;max-width:960px;margin:0 auto;text-align:center;padding:15px}
 .screen.active{display:block}
-h1{color:var(--accent);font-size:2.2em;margin:10px 0 12px;text-shadow:0 4px 20px rgba(255,217,102,.45);
+
+/* Заголовок с отступом под fixed-кнопки */
+h1{color:var(--accent);font-size:2.2em;
+  margin:80px 0 12px;
+  text-shadow:0 4px 20px rgba(255,217,102,.45);
   letter-spacing:4px;text-transform:uppercase;font-weight:800}
 .subtitle{color:var(--ink-dim);margin-bottom:25px;font-size:1.05em;line-height:1.5}
 .section-title{color:var(--accent);margin:28px 0 14px;font-size:1.15em;letter-spacing:2px;
   text-transform:uppercase;text-align:left;padding-left:8px;border-left:4px solid var(--accent)}
 
-/* Кнопка "К играм MCE" (плавающая в углу) */
+/* Кнопка "Домой" — fixed в правом верхнем углу */
 .home-btn{
   position:fixed;top:18px;right:18px;z-index:50;
   width:46px;height:46px;border-radius:50%;
@@ -42,16 +47,25 @@ h1{color:var(--accent);font-size:2.2em;margin:10px 0 12px;text-shadow:0 4px 20px
 .home-btn:hover{background:var(--accent);color:var(--ink-dark);transform:translateY(-2px);box-shadow:0 10px 25px rgba(255,217,102,.3)}
 .home-btn svg{width:22px;height:22px}
 
-/* Ссылка "К наборам" в шапке экрана игры */
+/* Кнопка "К моим наборам" — fixed, слева от home-btn */
 .back-link{
+  position:fixed;
+  top:22px;
+  right:80px;
+  z-index:49;
   display:inline-flex;align-items:center;gap:6px;
-  color:var(--ink-dim);text-decoration:none;font-weight:600;font-size:.95em;
-  padding:8px 14px;border-radius:30px;background:var(--card);border:1px solid var(--card-border);
-  transition:all .2s;margin-bottom:14px;
+  color:var(--ink-dim);text-decoration:none;font-weight:600;font-size:.9em;
+  padding:10px 18px;border-radius:30px;
+  background:rgba(15,26,36,.85);backdrop-filter:blur(6px);
+  border:2px solid var(--card-border);
+  transition:all .2s;
+  box-shadow:0 6px 20px rgba(0,0,0,.5);
+  cursor:pointer;
 }
-.back-link:hover{color:var(--accent);border-color:var(--accent)}
+.back-link:hover{color:var(--accent);border-color:var(--accent);transform:translateY(-2px)}
 .back-link svg{width:16px;height:16px}
 
+/* Кнопки общие */
 .btn{border:none;border-radius:50px;cursor:pointer;font-weight:700;letter-spacing:1px;
   text-transform:uppercase;transition:all .15s;font-family:inherit;display:inline-flex;align-items:center;gap:8px;justify-content:center}
 .btn:active{transform:scale(.94)}
@@ -68,6 +82,7 @@ h1{color:var(--accent);font-size:2.2em;margin:10px 0 12px;text-shadow:0 4px 20px
 .btn svg{width:18px;height:18px}
 .btn-mini svg{width:14px;height:14px}
 
+/* Карточки наборов */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;text-align:left}
 .card{background:var(--card);border:2px solid var(--card-border);border-radius:18px;padding:20px;
   display:flex;flex-direction:column;gap:10px;transition:all .2s}
@@ -78,6 +93,7 @@ h1{color:var(--accent);font-size:2.2em;margin:10px 0 12px;text-shadow:0 4px 20px
 .empty{text-align:center;color:var(--ink-dim);padding:30px;border:2px dashed var(--card-border);border-radius:18px}
 .btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:25px}
 
+/* Модалки */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);
   display:flex;justify-content:center;align-items:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .3s;padding:15px}
 .modal-overlay.active{opacity:1;pointer-events:all}
@@ -104,34 +120,51 @@ h1{color:var(--accent);font-size:2.2em;margin:10px 0 12px;text-shadow:0 4px 20px
 .item-row .def{color:#5a6b7d;font-size:.9em;flex:1;word-break:break-word}
 .item-form{border-top:3px dashed #e3e8ef;margin-top:15px;padding-top:15px}
 
-/* ===== ЭКРАН ИГРЫ: КОЛЕСО + ПАНЕЛЬ СПРАВА ===== */
+/* ===== Layout игры: колесо + боковая панель ===== */
 .game-stage{
-  display:flex;gap:30px;align-items:center;justify-content:center;width:100%;max-width:1100px;margin:0 auto;
+  display:flex;gap:30px;
+  align-items:flex-start;
+  justify-content:center;
+  width:100%;max-width:1100px;margin:0 auto;
 }
 .wheel-col{
   flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;
 }
 .side-panel{
-  width:220px;flex-shrink:0;display:flex;flex-direction:column;gap:12px;
+  width:240px;flex-shrink:0;
+  display:flex;flex-direction:column;gap:12px;
+  padding-top:10px;
 }
-.side-panel .btn{justify-content:flex-start}
+.side-panel .btn{width:100%;justify-content:center}
 .side-panel .panel-title{
   font-size:.75em;letter-spacing:2px;text-transform:uppercase;color:var(--ink-dim);
   text-align:left;padding-left:4px;margin-top:8px;
 }
+
+/* Колесо */
 .wheel-wrapper{position:relative;display:inline-block;width:100%;max-width:600px}
 canvas{display:block;width:100%;height:auto;border-radius:50%;
   box-shadow:0 0 50px rgba(0,0,0,.7),0 0 120px rgba(255,200,0,.25);cursor:pointer}
 .pointer{position:absolute;top:-15px;left:50%;transform:translateX(-50%);z-index:10;
   filter:drop-shadow(0 8px 15px rgba(0,0,0,.6));pointer-events:none}
 .pointer svg{width:65px;height:65px}
-.spin-btn{background:linear-gradient(180deg,var(--accent3) 0%,var(--accent2) 100%);color:#fff;border:none;
-  padding:20px 70px;font-size:1.6em;font-weight:800;letter-spacing:3px;text-transform:uppercase;
-  border-radius:50px;cursor:pointer;box-shadow:0 8px 25px rgba(255,109,0,.5),inset 0 -4px 0 rgba(0,0,0,.2);
-  margin-top:25px;transition:all .15s}
+
+/* КРУТИТЬ — теперь в боковой панели */
+.spin-btn{
+  background:linear-gradient(180deg,var(--accent3) 0%,var(--accent2) 100%);
+  color:#fff;border:none;
+  padding:22px 30px;
+  font-size:1.4em;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  border-radius:50px;cursor:pointer;
+  box-shadow:0 8px 25px rgba(255,109,0,.5),inset 0 -4px 0 rgba(0,0,0,.2);
+  transition:all .15s;
+  width:100%;
+  margin:0;
+}
 .spin-btn:active{transform:scale(.92)}
 .spin-btn:disabled{background:linear-gradient(180deg,#555,#333);cursor:not-allowed;transform:none}
 
+/* Модалка задания */
 .task-modal .modal{max-width:440px}
 .type-badge{display:inline-block;padding:8px 20px;border-radius:30px;font-weight:800;
   letter-spacing:1px;margin:8px 0 15px;text-transform:uppercase;color:#fff;font-size:.9em}
@@ -159,19 +192,26 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 
 /* ===== АДАПТИВ ===== */
 @media(max-width:900px){
-  .game-stage{flex-direction:column}
-  .side-panel{width:100%;flex-direction:row;flex-wrap:wrap;gap:10px}
-  .side-panel .btn{flex:1;min-width:120px;justify-content:center}
-  .side-panel .panel-title{width:100%;text-align:center}
+  .game-stage{flex-direction:column;align-items:center}
+  .side-panel{width:100%;max-width:400px;flex-direction:column}
   .wheel-wrapper{max-width:500px}
 }
 @media(max-width:600px){
-  h1{font-size:1.5em;letter-spacing:2px}
-  .spin-btn{padding:14px 40px;font-size:1.2em}
-  .pointer svg{width:50px;height:50px}
-  .home-btn{width:40px;height:40px;top:12px;right:12px}
-  .section-title{font-size:1em}
+  h1{font-size:1.5em;letter-spacing:2px;margin-top:120px}
+  .back-link{
+    right:70px;
+    font-size:.8em;
+    padding:8px 14px;
+    top:18px;
+  }
+  .home-btn{width:40px;height:40px;top:14px;right:14px}
   .wheel-wrapper{max-width:420px}
+  .spin-btn{padding:16px 20px;font-size:1.1em}
+}
+@media(max-width:400px){
+  h1{font-size:1.2em;margin-top:140px}
+  .back-link{position:relative;right:auto;top:auto;margin:10px auto;display:inline-flex}
+  .home-btn{top:14px;right:14px}
 }
 </style>
 </head>
@@ -209,12 +249,8 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 
 <!-- =============== ЭКРАН: РЕДАКТОР НАБОРА =============== -->
 <div id="screen-editor" class="screen">
-  <a class="back-link" onclick="backToSets();return false;" href="#">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-    К списку наборов
-  </a>
+  <h1 id="editorTitle">Создать набор</h1>
   <div class="editor">
-    <h2 id="editorTitle">Создать набор</h2>
     <input class="field" id="setTitle" placeholder="Название набора (напр. Present Simple: BE)">
     <input class="field" id="setTags" placeholder="Теги через запятую (grammar, a1)">
     <p class="meta" id="itemsCount">Элементов: 0 (минимум 2)</p>
@@ -243,10 +279,14 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 
 <!-- =============== ЭКРАН: ИГРА =============== -->
 <div id="screen-game" class="screen">
+  <!-- Кнопка "К моим наборам" — fixed в углу -->
   <a class="back-link" onclick="backToSets();return false;" href="#">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
     К моим наборам
   </a>
+
   <h1 id="gameTitle">WHEEL</h1>
 
   <div class="game-stage">
@@ -259,13 +299,16 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
         </svg></div>
         <canvas id="wheelCanvas" width="600" height="600"></canvas>
       </div>
-      <button class="spin-btn" id="spinBtn" onclick="spinWheel()">КРУТИТЬ</button>
     </div>
 
-    <!-- Панель сбоку справа -->
+    <!-- Панель сбоку справа: КРУТИТЬ + Поделиться + навигация -->
     <div class="side-panel">
+      <button class="spin-btn" id="spinBtn" onclick="spinWheel()">КРУТИТЬ</button>
       <button class="btn btn-info btn-block" onclick="openShareModal()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
         Поделиться
       </button>
       <span class="panel-title">Навигация</span>
@@ -313,7 +356,7 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid = () => 'id-' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 
-/* ---------- Предустановленные наборы (ОБНОВЛЁН preset-be) ---------- */
+/* ---------- Предустановленные наборы ---------- */
 const PRESETS = [
   { id:'preset-be', title:'Present Simple: BE', tags:['grammar','a1'], items:[
     {term:'My brother', def:'My brother is at the park now.', prompt:'My brother / at the park / now', extra:'+'},
@@ -380,7 +423,6 @@ function showScreen(n){
   window.scrollTo(0,0);
 }
 
-/* Навигация */
 function goToMceGames(){ closeTask(); window.location.href = '../online-games.html'; }
 function backToSets(){ closeTask(); showScreen('home'); }
 
