@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Wheel Spinner — MCE</title>
+<title>Wheel Spinner — Мой удивительный английский</title>
+<link rel="icon" href="../assets/img/logo.png">
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -28,7 +29,6 @@ h1{color:var(--accent);font-size:2.2em;margin:10px 0 12px;text-shadow:0 4px 20px
 .section-title{color:var(--accent);margin:28px 0 14px;font-size:1.15em;letter-spacing:2px;
   text-transform:uppercase;text-align:left;padding-left:8px;border-left:4px solid var(--accent)}
 
-/* ==== КНОПКА ДОМОЙ ==== */
 .home-btn{
   position:fixed;top:18px;right:18px;z-index:50;
   width:46px;height:46px;border-radius:50%;
@@ -41,7 +41,6 @@ h1{color:var(--accent);font-size:2.2em;margin:10px 0 12px;text-shadow:0 4px 20px
 .home-btn:hover{background:var(--accent);color:var(--ink-dark);transform:translateY(-2px);box-shadow:0 10px 25px rgba(255,217,102,.3)}
 .home-btn svg{width:22px;height:22px}
 
-/* ==== ОБЩИЕ КНОПКИ ==== */
 .btn{border:none;border-radius:50px;cursor:pointer;font-weight:700;letter-spacing:1px;
   text-transform:uppercase;transition:all .15s;font-family:inherit;display:inline-flex;align-items:center;gap:8px;justify-content:center}
 .btn:active{transform:scale(.94)}
@@ -57,7 +56,6 @@ h1{color:var(--accent);font-size:2.2em;margin:10px 0 12px;text-shadow:0 4px 20px
 .btn svg{width:18px;height:18px}
 .btn-mini svg{width:14px;height:14px}
 
-/* ==== СЕТКА КАРТОЧЕК ==== */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;text-align:left}
 .card{background:var(--card);border:2px solid var(--card-border);border-radius:18px;padding:20px;
   display:flex;flex-direction:column;gap:10px;transition:all .2s}
@@ -68,7 +66,6 @@ h1{color:var(--accent);font-size:2.2em;margin:10px 0 12px;text-shadow:0 4px 20px
 .empty{text-align:center;color:var(--ink-dim);padding:30px;border:2px dashed var(--card-border);border-radius:18px}
 .btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:25px}
 
-/* ==== МОДАЛКИ ==== */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);
   display:flex;justify-content:center;align-items:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .3s;padding:15px}
 .modal-overlay.active{opacity:1;pointer-events:all}
@@ -82,13 +79,11 @@ h1{color:var(--accent);font-size:2.2em;margin:10px 0 12px;text-shadow:0 4px 20px
   font-size:1.5em;color:#999;line-height:1}
 .modal-wrap{position:relative}
 
-/* ==== ПОЛЯ ==== */
 .field{width:100%;padding:12px 16px;border:3px solid #e3e8ef;border-radius:12px;
   font-size:1em;margin-bottom:10px;font-family:inherit;outline:none;transition:border .2s}
 .field:focus{border-color:var(--info)}
 textarea.field{resize:vertical;min-height:80px;font-family:monospace;font-size:.9em}
 
-/* ==== РЕДАКТОР НАБОРА ==== */
 .editor{background:#fff;border-radius:22px;padding:25px;max-width:680px;margin:20px auto 0;
   box-shadow:0 20px 60px rgba(0,0,0,.6);text-align:left;color:var(--ink-dark);max-height:calc(100vh - 40px);overflow-y:auto}
 .editor h2{margin-bottom:12px;color:var(--ink-dark)}
@@ -98,7 +93,6 @@ textarea.field{resize:vertical;min-height:80px;font-family:monospace;font-size:.
 .item-row .def{color:#5a6b7d;font-size:.9em;flex:1;word-break:break-word}
 .item-form{border-top:3px dashed #e3e8ef;margin-top:15px;padding-top:15px}
 
-/* ==== КОЛЕСО ==== */
 .wheel-wrapper{position:relative;display:inline-block;margin:0 auto;width:100%;max-width:500px}
 canvas{display:block;width:100%;height:auto;border-radius:50%;
   box-shadow:0 0 50px rgba(0,0,0,.7),0 0 90px rgba(255,200,0,.25);cursor:pointer}
@@ -112,7 +106,6 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 .spin-btn:active{transform:scale(.92)}
 .spin-btn:disabled{background:linear-gradient(180deg,#555,#333);cursor:not-allowed;transform:none}
 
-/* ==== МОДАЛКА ЗАДАНИЯ ==== */
 .task-modal .modal{max-width:440px}
 .type-badge{display:inline-block;padding:8px 20px;border-radius:30px;font-weight:800;
   letter-spacing:1px;margin:8px 0 15px;text-transform:uppercase;color:#fff;font-size:.9em}
@@ -128,21 +121,17 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 .feedback.error{display:block;background:#ffebee;color:#c62828;border-left:5px solid var(--err)}
 .correct-answer{font-weight:800;color:#1565c0;margin-top:5px}
 
-/* ==== ШАРИНГ ==== */
 .share-url{display:flex;gap:8px;margin-top:10px}
 .share-url input{flex:1;padding:10px 14px;border:2px solid #ddd;border-radius:10px;font-size:.9em;font-family:monospace;color:var(--ink-dark)}
 .qr-wrap{display:flex;justify-content:center;margin:20px 0}
 .qr-wrap canvas,.qr-wrap img{border-radius:10px}
+.embed-code{background:#1e2a3a;color:#FFD966;padding:14px;border-radius:10px;
+  font-family:monospace;font-size:.85em;word-break:break-all;margin:10px 0}
 
-/* ==== ТОСТ ==== */
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);
   background:var(--bg1);color:#fff;padding:12px 22px;border-radius:40px;opacity:0;
   transition:.3s;z-index:200;border:2px solid var(--accent);pointer-events:none;font-weight:600}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* ==== EMBED ==== */
-.embed-code{background:#1e2a3a;color:#FFD966;padding:14px;border-radius:10px;
-  font-family:monospace;font-size:.85em;word-break:break-all;margin:10px 0}
 
 @media(max-width:600px){
   h1{font-size:1.5em;letter-spacing:2px}
@@ -155,7 +144,7 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 </head>
 <body>
 
-<button class="home-btn" onclick="goHome()" title="На главную">
+<button class="home-btn" onclick="goHome()" title="На главную MCE">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M3 12L12 3l9 9"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/>
   </svg>
@@ -279,16 +268,12 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 <div class="toast" id="toast"></div>
 
 <script>
-/* ============================================================
-   АРХИТЕКТУРА: DATA SET + ACTIVITY TEMPLATE + ACTIVITY
-   ============================================================ */
-
 const LS_KEY = 'mce.wheel.v1';
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid = () => 'id-' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 
-/* ---------- Предустановленные наборы (Data Sets) ---------- */
+/* ---------- Предустановленные наборы ---------- */
 const PRESETS = [
   { id:'preset-be', title:'Present Simple: BE', tags:['grammar','a1'], items:[
     {term:'You', def:'You are my best friend.', prompt:'You / friend / best / my', extra:'+'},
@@ -308,15 +293,14 @@ const PRESETS = [
     {term:'buy', def:'bought'},{term:'think', def:'thought'},
     {term:'know', def:'knew'},{term:'eat', def:'ate'}
   ]},
-  { id:'preset-animals', title:'Animals (RU → EN)', tags:['vocabulary','a1'], items:[
-    {term:'🦊 Лиса', def:'fox'},{term:'🐻 Медведь', def:'bear'},
-    {term:'🐰 Кролик', def:'rabbit'},{term:'🐺 Волк', def:'wolf'},
-    {term:'🦌 Олень', def:'deer'},{term:'🐿️ Белка', def:'squirrel'},
-    {term:'🦔 Ёж', def:'hedgehog'},{term:'🐹 Хомяк', def:'hamster'}
+  { id:'preset-animals', title:'Animals (RU -> EN)', tags:['vocabulary','a1'], items:[
+    {term:'Fox / Лиса', def:'fox'},{term:'Bear / Медведь', def:'bear'},
+    {term:'Rabbit / Кролик', def:'rabbit'},{term:'Wolf / Волк', def:'wolf'},
+    {term:'Deer / Олень', def:'deer'},{term:'Squirrel / Белка', def:'squirrel'},
+    {term:'Hedgehog / Ёж', def:'hedgehog'},{term:'Hamster / Хомяк', def:'hamster'}
   ]}
 ];
 
-/* ---------- Хранилище (localStorage + JSON) ---------- */
 const Storage = {
   load(){ try { return JSON.parse(localStorage.getItem(LS_KEY)) || {sets:[]} } catch(e){ return {sets:[]} } },
   save(data){ localStorage.setItem(LS_KEY, JSON.stringify(data)) },
@@ -326,20 +310,12 @@ const Storage = {
   removeSet(id){ const d=this.load(); d.sets=d.sets.filter(x=>x.id!==id); this.save(d) }
 };
 
-/* ---------- Шаринг: кодирование/декодирование активности в URL ---------- */
 const Sharing = {
   encode(activity){
-    try {
-      const json = JSON.stringify(activity);
-      // base64 безопасно для URL
-      return btoa(unescape(encodeURIComponent(json)));
-    } catch(e){ return null }
+    try { return btoa(unescape(encodeURIComponent(JSON.stringify(activity)))); } catch(e){ return null }
   },
   decode(b64){
-    try {
-      const json = decodeURIComponent(escape(atob(b64)));
-      return JSON.parse(json);
-    } catch(e){ return null }
+    try { return JSON.parse(decodeURIComponent(escape(atob(b64)))); } catch(e){ return null }
   },
   buildUrl(activity){
     const base = window.location.origin + window.location.pathname;
@@ -355,19 +331,22 @@ const Sharing = {
   }
 };
 
-/* ---------- Тост ---------- */
 let toastTimer;
 function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show');
   clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),2500); }
 
-/* ---------- Экраны ---------- */
 function showScreen(n){
   document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active', s.id==='screen-'+n));
   window.scrollTo(0,0);
 }
-function goHome(){ closeTask(); renderHome(); showScreen('home'); }
 
-/* ---------- Рендеринг списка наборов ---------- */
+/* ===== Кнопка "Домой" — на главную MCE ===== */
+function goHome(){
+  closeTask();
+  // Возврат на страницу со списком игр
+  window.location.href = '../online-games.html';
+}
+
 function setCardHTML(s, isMine){
   return `<div class="card">
     <h3>${esc(s.title)}</h3>
@@ -391,7 +370,6 @@ function renderHome(){
   $('presetsGrid').innerHTML = PRESETS.map(s=>setCardHTML(s,false)).join('');
 }
 
-/* ---------- Действия с наборами ---------- */
 function findSet(id, isMine){
   return isMine ? Storage.getSets().find(x=>x.id===id) : PRESETS.find(x=>x.id===id);
 }
@@ -432,7 +410,6 @@ function importSet(ev){
   r.readAsText(f); ev.target.value='';
 }
 
-/* ---------- Редактор набора ---------- */
 let draft=null, editingIdx=-1;
 function openSetEditor(id){
   if(id){
@@ -452,7 +429,7 @@ function renderItems(){
     ? draft.items.map((it,i)=>`
       <div class="item-row">
         <span class="term">${esc(it.term)}</span>
-        <span class="def">${esc(it.prompt||'')} ${it.prompt?'→':''} <b>${esc(it.def)}</b>${it.extra?' <small>('+esc(it.extra)+')</small>':''}</span>
+        <span class="def">${esc(it.prompt||'')} ${it.prompt?'->':''} <b>${esc(it.def)}</b>${it.extra?' <small>('+esc(it.extra)+')</small>':''}</span>
         <button class="btn btn-ghost btn-mini" onclick="editItem(${i})">Ред.</button>
         <button class="btn btn-danger btn-mini" onclick="removeItem(${i})">Удалить</button>
       </div>`).join('')
@@ -491,9 +468,7 @@ function saveSet(){ if(!collectDraft()) return;
 }
 function playSetFromEditor(){ if(!collectDraft()) return; launchSet(draft); }
 
-/* ============================================================
-   ИГРА: WHEEL SPINNER (Activity Template)
-   ============================================================ */
+/* ===================== ИГРА ===================== */
 let currentSet = null;
 let sectors = [], numSectors = 0, sectorAngle = 0;
 const COLORS = ['#FF4D4D','#FFD966','#6BCB77','#4D9DE0','#E86A92','#FF924C','#9B5DE5',
@@ -509,7 +484,6 @@ function launchSet(s){
   sectors = s.items; numSectors = s.items.length; sectorAngle = 2*Math.PI/numSectors; angle = 0;
   $('gameTitle').textContent = s.title.toUpperCase();
   drawWheel(0); showScreen('game');
-  // Обновляем URL: добавляем ?share=
   const url = Sharing.buildUrl(s);
   if(url) history.replaceState(null,'',url);
 }
@@ -536,12 +510,9 @@ function drawWheel(rot){
   ctx.beginPath(); ctx.arc(CX,CY,55,0,2*Math.PI); ctx.fillStyle='#fff'; ctx.fill();
   ctx.strokeStyle='#FFD966'; ctx.lineWidth=6; ctx.stroke();
   ctx.fillStyle='#FF6D00'; ctx.font='bold 36px "Segoe UI", Arial, sans-serif';
-  ctx.textAlign='center'; ctx.textBaseline='middle';
-  // SVG-подобний "значок" — круг с точкой
-  ctx.fillText('●', CX, CY);
+  ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('●', CX, CY);
 }
 
-/* Звук */
 function initAudio(){ if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
   if(audioCtx.state==='suspended') audioCtx.resume(); }
 function tone(f,d=0.1,v=0.15){ if(!audioCtx) return;
@@ -574,7 +545,6 @@ function spinWheel(){
   })(performance.now());
 }
 
-/* Задание */
 function showTask(i){
   const d=sectors[i], badge=$('typeBadge');
   $('feedback').className='feedback';
@@ -585,7 +555,7 @@ function showTask(i){
     badge.className = 'type-badge ' + (type==='+'?'plus':type==='-'?'minus':'q');
     badge.textContent = type==='+'?'Утверждение':type==='-'?'Отрицание':'Вопрос';
   } else badge.style.display='none';
-  $('taskPrompt').textContent = d.prompt || `${d.term} → ?`;
+  $('taskPrompt').textContent = d.prompt || `${d.term} -> ?`;
   window.currentItemIdx = i;
   $('taskOverlay').classList.add('active');
   setTimeout(()=>$('answerInput').focus(),350);
@@ -620,7 +590,6 @@ function checkAnswer(){
   }
 }
 
-/* ---------- Шаринг (QR + ссылка) ---------- */
 let qrInstance=null;
 function openShareModal(){
   if(!currentSet){ toast('Нет активной игры'); return; }
@@ -641,7 +610,6 @@ function copyShareUrl(){
   toast('Ссылка скопирована');
 }
 
-/* ---------- Embed-код для учебных пособий ---------- */
 function openEmbedModal(){
   if(!currentSet){ toast('Нет активной игры'); return; }
   const url = Sharing.buildUrl(currentSet);
@@ -658,7 +626,6 @@ function copyEmbed(){
   });
 }
 
-/* ---------- События ---------- */
 $('answerInput').addEventListener('keydown', e=>{
   if(e.key==='Enter'){ e.preventDefault(); if(!e.target.disabled) checkAnswer(); }
 });
@@ -666,10 +633,8 @@ $('taskOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) c
 $('shareOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeShare(); });
 $('embedOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeEmbed(); });
 
-/* ---------- Инициализация ---------- */
 function init(){
   renderHome();
-  // Автозапуск из шаринг-ссылки
   const shared = Sharing.readFromUrl();
   if(shared && Array.isArray(shared.items) && shared.items.length>=2){
     launchSet(shared);
