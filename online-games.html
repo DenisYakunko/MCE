@@ -11,16 +11,31 @@
 <body data-page="games">
 <header id="header" class="header"></header>
 <main>
-  <section class="page-head"><div class="container"><h1>Онлайн игры</h1><p>Наши онлайн-активности для уроков и домашней практики. Работают в браузере, часть — полностью офлайн.</p></div></section>
-  <section class="section"><div class="container"><div id="games-grid" class="grid-3"></div></div></section>
+  <section class="page-head">
+    <div class="container">
+      <h1>Онлайн игры</h1>
+      <p>Наши онлайн-активности для уроков и домашней практики. Работают в браузере, часть — полностью офлайн.</p>
+    </div>
+  </section>
 
-  <div class="game-card">
-  <span class="tag offline">Офлайн</span>
-  <h3>Wheel Spinner</h3>
-  <p>Крути колесо — отвечай на вопросы. Один набор слов, свои правила.</p>
-  <a href="/MCE/games/wheel.html" class="btn">Играть ▸</a>
-</div>
-  
+  <section class="section">
+    <div class="container">
+      <div id="games-grid" class="grid-3">
+
+        <!-- Карточка Wheel Spinner -->
+        <div class="game-card">
+          <span class="tag offline">Офлайн</span>
+          <h3>Wheel Spinner</h3>
+          <p>Крути колесо — отвечай на вопросы. Один набор слов, свои правила.</p>
+          <a href="games/wheel.html" class="btn">Играть ▸</a>
+        </div>
+
+        <!-- Сюда же можно добавить остальные карточки,
+             если они рендерятся не из main.js -->
+
+      </div>
+    </div>
+  </section>
 </main>
 <footer id="footer" class="footer"></footer>
 <script src="assets/js/main.js"></script>
