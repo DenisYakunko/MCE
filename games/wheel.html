@@ -25,16 +25,16 @@ body{
 .screen{display:none;width:100%;max-width:960px;margin:0 auto;text-align:center;padding:15px}
 .screen.active{display:block}
 
-/* Заголовок с отступом под fixed-кнопки */
+/* ===== ЗАГОЛОВОК: поднят вверх на широких экранах ===== */
 h1{color:var(--accent);font-size:2.2em;
-  margin:80px 0 12px;
+  margin:24px 0 12px;               /* было 80px — теперь высоко */
   text-shadow:0 4px 20px rgba(255,217,102,.45);
   letter-spacing:4px;text-transform:uppercase;font-weight:800}
 .subtitle{color:var(--ink-dim);margin-bottom:25px;font-size:1.05em;line-height:1.5}
 .section-title{color:var(--accent);margin:28px 0 14px;font-size:1.15em;letter-spacing:2px;
   text-transform:uppercase;text-align:left;padding-left:8px;border-left:4px solid var(--accent)}
 
-/* Кнопка "Домой" — fixed в правом верхнем углу */
+/* Кнопка "Домой" — fixed справа сверху */
 .home-btn{
   position:fixed;top:18px;right:18px;z-index:50;
   width:46px;height:46px;border-radius:50%;
@@ -120,20 +120,25 @@ h1{color:var(--accent);font-size:2.2em;
 .item-row .def{color:#5a6b7d;font-size:.9em;flex:1;word-break:break-word}
 .item-form{border-top:3px dashed #e3e8ef;margin-top:15px;padding-top:15px}
 
-/* ===== Layout игры: колесо + боковая панель ===== */
+/* ===== LAYOUT ИГРЫ: колесо по центру, панель absolute справа ===== */
 .game-stage{
-  display:flex;gap:30px;
+  position:relative;
+  width:100%;
+  display:flex;
+  justify-content:center;      /* колесо центрируется независимо от панели */
   align-items:flex-start;
-  justify-content:center;
-  width:100%;max-width:1100px;margin:0 auto;
+  margin:0 auto;
 }
 .wheel-col{
-  flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;
+  display:flex;flex-direction:column;align-items:center;min-width:0;
 }
+/* Панель кнопок — прижата к правому краю, опущена ниже */
 .side-panel{
-  width:240px;flex-shrink:0;
+  position:absolute;
+  right:30px;                  /* максимально вправо */
+  top:70px;                    /* чуть ниже */
+  width:250px;
   display:flex;flex-direction:column;gap:12px;
-  padding-top:10px;
 }
 .side-panel .btn{width:100%;justify-content:center}
 .side-panel .panel-title{
@@ -149,7 +154,7 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   filter:drop-shadow(0 8px 15px rgba(0,0,0,.6));pointer-events:none}
 .pointer svg{width:65px;height:65px}
 
-/* КРУТИТЬ — теперь в боковой панели */
+/* КРУТИТЬ — в боковой панели */
 .spin-btn{
   background:linear-gradient(180deg,var(--accent3) 0%,var(--accent2) 100%);
   color:#fff;border:none;
@@ -191,19 +196,19 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ===== АДАПТИВ ===== */
-@media(max-width:900px){
+/* Средние экраны: заголовок ниже, чтобы не пересечься с fixed-кнопками */
+@media(max-width:1400px){h1{margin-top:80px}}
+/* Панель перестаёт быть absolute и уходит под колесо */
+@media(max-width:1200px){
   .game-stage{flex-direction:column;align-items:center}
-  .side-panel{width:100%;max-width:400px;flex-direction:column}
-  .wheel-wrapper{max-width:500px}
+  .side-panel{position:static;width:100%;max-width:400px;margin-top:24px}
 }
+@media(max-width:900px){h1{margin-top:90px}}
+/* Низкие экраны: колесо чуть меньше, чтобы всё влезало */
+@media(max-height:900px){.wheel-wrapper{max-width:520px}}
 @media(max-width:600px){
   h1{font-size:1.5em;letter-spacing:2px;margin-top:120px}
-  .back-link{
-    right:70px;
-    font-size:.8em;
-    padding:8px 14px;
-    top:18px;
-  }
+  .back-link{right:70px;font-size:.8em;padding:8px 14px;top:18px}
   .home-btn{width:40px;height:40px;top:14px;right:14px}
   .wheel-wrapper{max-width:420px}
   .spin-btn{padding:16px 20px;font-size:1.1em}
@@ -279,7 +284,6 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 
 <!-- =============== ЭКРАН: ИГРА =============== -->
 <div id="screen-game" class="screen">
-  <!-- Кнопка "К моим наборам" — fixed в углу -->
   <a class="back-link" onclick="backToSets();return false;" href="#">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
       <polyline points="15 18 9 12 15 6"/>
@@ -290,7 +294,7 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   <h1 id="gameTitle">WHEEL</h1>
 
   <div class="game-stage">
-    <!-- Колонка колеса (по центру, flex:1) -->
+    <!-- Колесо по центру -->
     <div class="wheel-col">
       <div class="wheel-wrapper">
         <div class="pointer"><svg viewBox="0 0 60 60">
@@ -301,7 +305,7 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
       </div>
     </div>
 
-    <!-- Панель сбоку справа: КРУТИТЬ + Поделиться + навигация -->
+    <!-- Панель absolute справа, опущена -->
     <div class="side-panel">
       <button class="spin-btn" id="spinBtn" onclick="spinWheel()">КРУТИТЬ</button>
       <button class="btn btn-info btn-block" onclick="openShareModal()">
@@ -356,7 +360,6 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid = () => 'id-' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 
-/* ---------- Предустановленные наборы ---------- */
 const PRESETS = [
   { id:'preset-be', title:'Present Simple: BE', tags:['grammar','a1'], items:[
     {term:'My brother', def:'My brother is at the park now.', prompt:'My brother / at the park / now', extra:'+'},
