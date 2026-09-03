@@ -26,6 +26,6 @@
     "description": "Крути колесо — отвечай на вопросы. Один набор слов, свои правила. Создавай наборы, делись QR-кодом.",
     "image": "assets/wheel_logo.PNG",
     "url": "games/wheel.html",
-    "badges": ["Офлайн"]
+    "badges": ["Онлайн"]
   }
 ]
