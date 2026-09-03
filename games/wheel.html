@@ -28,39 +28,26 @@ body{
 #screen-game{max-width:100%}
 #screen-game h1{margin-bottom:48px}
 
-h1{color:var(--accent);font-size:2.2em;
-  margin:24px 0 12px;
-  text-shadow:0 4px 20px rgba(255,217,102,.45);
+h1{color:var(--accent);font-size:2.2em;margin:24px 0 12px;text-shadow:0 4px 20px rgba(255,217,102,.45);
   letter-spacing:4px;text-transform:uppercase;font-weight:800}
 .subtitle{color:var(--ink-dim);margin-bottom:25px;font-size:1.05em;line-height:1.5}
 .section-title{color:var(--accent);margin:28px 0 14px;font-size:1.15em;letter-spacing:2px;
   text-transform:uppercase;text-align:left;padding-left:8px;border-left:4px solid var(--accent)}
 
 .home-btn{
-  position:fixed;top:18px;right:18px;z-index:50;
-  width:46px;height:46px;border-radius:50%;
-  background:rgba(15,26,36,.85);backdrop-filter:blur(6px);
-  border:2px solid var(--accent);color:var(--accent);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .2s;
+  position:fixed;top:18px;right:18px;z-index:50;width:46px;height:46px;border-radius:50%;
+  background:rgba(15,26,36,.85);backdrop-filter:blur(6px);border:2px solid var(--accent);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;
   box-shadow:0 6px 20px rgba(0,0,0,.5);
 }
-.home-btn:hover{background:var(--accent);color:var(--ink-dark);transform:translateY(-2px);box-shadow:0 10px 25px rgba(255,217,102,.3)}
+.home-btn:hover{background:var(--accent);color:var(--ink-dark);transform:translateY(-2px)}
 .home-btn svg{width:22px;height:22px}
 
 .back-link{
-  position:fixed;
-  top:22px;
-  right:80px;
-  z-index:49;
-  display:inline-flex;align-items:center;gap:6px;
-  color:var(--ink-dim);text-decoration:none;font-weight:600;font-size:.9em;
-  padding:10px 18px;border-radius:30px;
-  background:rgba(15,26,36,.85);backdrop-filter:blur(6px);
-  border:2px solid var(--card-border);
-  transition:all .2s;
-  box-shadow:0 6px 20px rgba(0,0,0,.5);
-  cursor:pointer;
+  position:fixed;top:22px;right:80px;z-index:49;
+  display:inline-flex;align-items:center;gap:6px;color:var(--ink-dim);text-decoration:none;font-weight:600;font-size:.9em;
+  padding:10px 18px;border-radius:30px;background:rgba(15,26,36,.85);backdrop-filter:blur(6px);
+  border:2px solid var(--card-border);transition:all .2s;box-shadow:0 6px 20px rgba(0,0,0,.5);cursor:pointer;
 }
 .back-link:hover{color:var(--accent);border-color:var(--accent);transform:translateY(-2px)}
 .back-link svg{width:16px;height:16px}
@@ -70,8 +57,7 @@ h1{color:var(--accent);font-size:2.2em;
 .btn:active{transform:scale(.94)}
 .btn-primary{background:linear-gradient(180deg,var(--accent3),var(--accent2));color:#fff;
   padding:14px 30px;font-size:1.05em;box-shadow:0 6px 20px rgba(255,109,0,.4),inset 0 -3px 0 rgba(0,0,0,.18)}
-.btn-ok{background:linear-gradient(180deg,#6BCB77,var(--ok));color:#fff;
-  padding:14px 30px;font-size:1.05em;box-shadow:0 6px 20px rgba(76,175,80,.4)}
+.btn-ok{background:linear-gradient(180deg,#6BCB77,var(--ok));color:#fff;padding:14px 30px;font-size:1.05em}
 .btn-info{background:linear-gradient(180deg,#42A5F5,var(--info));color:#fff;padding:14px 30px;font-size:1.05em}
 .btn-ghost{background:rgba(255,255,255,.1);color:var(--ink);border:2px solid var(--card-border);padding:12px 22px;font-size:.95em}
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
@@ -94,7 +80,7 @@ h1{color:var(--accent);font-size:2.2em;
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);
   display:flex;justify-content:center;align-items:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .3s;padding:15px}
 .modal-overlay.active{opacity:1;pointer-events:all}
-.modal{background:#fff;border-radius:22px;padding:28px;max-width:520px;width:100%;
+.modal{background:#fff;border-radius:22px;padding:28px;max-width:560px;width:100%;
   box-shadow:0 25px 65px rgba(0,0,0,.6);transform:translateY(30px) scale(.92);
   transition:transform .35s cubic-bezier(.34,1.56,.64,1);color:var(--ink-dark);max-height:90vh;overflow-y:auto}
 .modal-overlay.active .modal{transform:translateY(0) scale(1)}
@@ -107,41 +93,55 @@ h1{color:var(--accent);font-size:2.2em;
 .field{width:100%;padding:12px 16px;border:3px solid #e3e8ef;border-radius:12px;
   font-size:1em;margin-bottom:10px;font-family:inherit;outline:none;transition:border .2s}
 .field:focus{border-color:var(--info)}
+select.field{background:#fff;cursor:pointer}
 
-.editor{background:#fff;border-radius:22px;padding:25px;max-width:680px;margin:20px auto 0;
+.editor{background:#fff;border-radius:22px;padding:25px;max-width:720px;margin:20px auto 0;
   box-shadow:0 20px 60px rgba(0,0,0,.6);text-align:left;color:var(--ink-dark);max-height:calc(100vh - 40px);overflow-y:auto}
 .editor h2{margin-bottom:12px;color:var(--ink-dark)}
 .editor .meta{color:#5a6b7d;font-size:.9em;margin:5px 0 12px}
 .item-row{display:flex;align-items:center;gap:10px;background:#f0f4f8;border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.item-row .idx{font-weight:800;color:#fff;background:var(--info);width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.9em}
 .item-row .term{font-weight:800;color:var(--ink-dark);min-width:80px}
 .item-row .def{color:#5a6b7d;font-size:.9em;flex:1;word-break:break-word}
 .item-form{border-top:3px dashed #e3e8ef;margin-top:15px;padding-top:15px}
 
+/* ===== НАСТРОЙКИ КОЛЕСА В РЕДАКТОРЕ ===== */
+.config-section{
+  border-top:3px dashed #e3e8ef;margin-top:20px;padding-top:20px;
+}
+.config-section h3{margin-bottom:14px;color:var(--ink-dark)}
+.preset-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.preset-chip{
+  padding:8px 16px;border-radius:20px;border:2px solid #e3e8ef;background:#fff;
+  cursor:pointer;font-weight:600;font-size:.9em;transition:all .2s;font-family:inherit;color:var(--ink-dark);
+}
+.preset-chip:hover{border-color:var(--accent2);color:var(--accent2)}
+.preset-chip.active{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+.cfg-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;
+  border-bottom:1px solid #f0f4f8;gap:12px;flex-wrap:wrap}
+.cfg-row label{font-weight:600;color:var(--ink-dark);font-size:.95em}
+.cfg-row .cfg-hint{font-size:.8em;color:#8a97a5;margin-top:2px}
+.cfg-toggle{display:flex;gap:8px}
+.cfg-toggle button{
+  padding:6px 14px;border-radius:16px;border:2px solid #e3e8ef;background:#fff;
+  cursor:pointer;font-weight:600;font-size:.85em;transition:all .15s;font-family:inherit;color:#5a6b7d;
+}
+.cfg-toggle button:hover{border-color:var(--accent2)}
+.cfg-toggle button.active{background:var(--info);color:#fff;border-color:var(--info)}
+
+/* ===== ИГРОВОЙ LAYOUT ===== */
 .game-stage{
-  position:relative;
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-  margin:0 auto;
+  position:relative;width:100%;display:flex;justify-content:center;align-items:flex-start;margin:0 auto;
 }
-.wheel-col{
-  display:flex;flex-direction:column;align-items:center;min-width:0;
-}
+.wheel-col{display:flex;flex-direction:column;align-items:center;min-width:0}
 .side-panel{
-  position:absolute;
-  right:30px;
-  top:70px;
-  width:250px;
-  display:flex;flex-direction:column;gap:12px;
+  position:absolute;right:30px;top:70px;width:250px;display:flex;flex-direction:column;gap:12px;
 }
 .side-panel .btn{width:100%;justify-content:center}
-.side-panel .panel-title{
-  font-size:.75em;letter-spacing:2px;text-transform:uppercase;color:var(--ink-dim);
-  text-align:left;padding-left:4px;margin-top:8px;
-}
+.side-panel .panel-title{font-size:.75em;letter-spacing:2px;text-transform:uppercase;color:var(--ink-dim);
+  text-align:left;padding-left:4px;margin-top:8px}
 
-/* Колесо: крупное по умолчанию */
 .wheel-wrapper{position:relative;display:inline-block;width:100%;max-width:600px}
 canvas{display:block;width:100%;height:auto;border-radius:50%;
   box-shadow:0 0 50px rgba(0,0,0,.7),0 0 120px rgba(255,200,0,.25);cursor:pointer}
@@ -149,19 +149,37 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   filter:drop-shadow(0 8px 15px rgba(0,0,0,.6));pointer-events:none}
 .pointer svg{width:65px;height:65px}
 
+/* SPIN сбоку (режим trainer) */
 .spin-btn{
-  background:linear-gradient(180deg,var(--accent3) 0%,var(--accent2) 100%);
-  color:#fff;border:none;
-  padding:22px 30px;
-  font-size:1.4em;font-weight:800;letter-spacing:3px;text-transform:uppercase;
-  border-radius:50px;cursor:pointer;
-  box-shadow:0 8px 25px rgba(255,109,0,.5),inset 0 -4px 0 rgba(0,0,0,.2);
-  transition:all .15s;
-  width:100%;
-  margin:0;
+  background:linear-gradient(180deg,var(--accent3) 0%,var(--accent2) 100%);color:#fff;border:none;
+  padding:22px 30px;font-size:1.4em;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  border-radius:50px;cursor:pointer;box-shadow:0 8px 25px rgba(255,109,0,.5),inset 0 -4px 0 rgba(0,0,0,.2);
+  transition:all .15s;width:100%;margin:0;
 }
 .spin-btn:active{transform:scale(.92)}
 .spin-btn:disabled{background:linear-gradient(180deg,#555,#333);cursor:not-allowed;transform:none}
+
+/* SPIN в центре (режим questions/draw) */
+.center-spin{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;
+  width:150px;height:150px;border-radius:50%;
+  background:linear-gradient(135deg,#FFD700 0%,#FFED4E 100%);
+  border:8px solid #fff;color:var(--ink-dark);
+  font-size:1.8em;font-weight:900;letter-spacing:2px;
+  cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.6),inset 0 -4px 0 rgba(0,0,0,.15);
+  transition:all .15s;
+}
+.center-spin:active{transform:translate(-50%,-50%) scale(.94)}
+.center-spin:disabled{background:linear-gradient(135deg,#888 0%,#aaa 100%);cursor:not-allowed}
+
+/* Счётчик оставшихся секторов (eliminate mode) */
+.session-counter{
+  margin-top:16px;padding:10px 18px;border-radius:30px;
+  background:rgba(255,255,255,.08);border:1px solid var(--card-border);
+  font-weight:600;font-size:.95em;color:var(--ink-dim);
+  display:inline-flex;gap:6px;align-items:center;
+}
+.session-counter .num{color:var(--accent);font-weight:800;font-size:1.1em}
 
 .task-modal .modal{max-width:440px}
 .type-badge{display:inline-block;padding:8px 20px;border-radius:30px;font-weight:800;
@@ -177,6 +195,23 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 .feedback.success{display:block;background:#e8f5e9;color:#2e7d32;border-left:5px solid var(--ok)}
 .feedback.error{display:block;background:#ffebee;color:#c62828;border-left:5px solid var(--err)}
 .correct-answer{font-weight:800;color:#1565c0;margin-top:5px}
+
+/* Карточка-показ (show-card mode) */
+.card-modal .modal{max-width:520px;border-top:8px solid var(--accent2)}
+.card-modal .card-num{
+  font-size:4em;font-weight:900;color:var(--accent2);margin-bottom:10px;line-height:1;
+}
+.card-modal .card-text{
+  font-size:1.25em;line-height:1.5;color:var(--ink-dark);padding:20px;
+  background:#f0f4f8;border-radius:15px;margin-bottom:20px;word-break:break-word;
+}
+
+/* Простой показ выпавшего (none mode) */
+.none-modal .modal{max-width:420px}
+.none-modal .picked-term{
+  font-size:2em;font-weight:800;color:var(--accent2);padding:20px;
+  text-align:center;margin:10px 0;
+}
 
 .share-url{display:flex;gap:8px;margin-top:10px}
 .share-url input{flex:1;padding:10px 14px;border:2px solid #ddd;border-radius:10px;font-size:.9em;font-family:monospace;color:var(--ink-dark)}
@@ -195,7 +230,6 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   .side-panel{position:static;width:100%;max-width:400px;margin-top:24px}
 }
 @media(max-width:900px){h1{margin-top:90px}}
-/* Мягкое уменьшение только на ОЧЕНЬ низких экранах */
 @media(max-height:860px){.wheel-wrapper{max-width:540px}}
 @media(max-height:740px){.wheel-wrapper{max-width:460px}}
 @media(max-width:600px){
@@ -205,6 +239,7 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   .home-btn{width:40px;height:40px;top:14px;right:14px}
   .wheel-wrapper{max-width:420px}
   .spin-btn{padding:16px 20px;font-size:1.1em}
+  .center-spin{width:110px;height:110px;font-size:1.3em;border-width:6px}
 }
 @media(max-width:400px){
   h1{font-size:1.2em;margin-top:140px}
@@ -224,8 +259,8 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 <!-- =============== ЭКРАН: СПИСОК НАБОРОВ =============== -->
 <div id="screen-home" class="screen active">
   <h1>WHEEL SPINNER</h1>
-  <p class="subtitle">Создавай наборы слов — и запускай из них разные игры.<br>
-    Сейчас: <b>Wheel Spinner</b>. Скоро — Quiz, Match-up, Flashcards.</p>
+  <p class="subtitle">Создавай наборы слов — и выбирай, как их крутить.<br>
+    Тренажёр, розыгрыш вопросов, выбор случайного ученика.</p>
 
   <h2 class="section-title">Мои наборы</h2>
   <div class="grid" id="setsGrid"></div>
@@ -258,12 +293,67 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
     <div class="item-form">
       <h3 style="margin-bottom:10px">Добавить элемент</h3>
       <input class="field" id="itemTerm" placeholder="Термин / слово (на колесе)">
-      <input class="field" id="itemDef" placeholder="Определение / ответ">
-      <input class="field" id="itemPrompt" placeholder="Подсказка (слова вперемешку, опционально)">
-      <input class="field" id="itemExtra" placeholder="Дополнительно: тип (+/-/?), категория и т.д.">
+      <input class="field" id="itemDef" placeholder="Определение / ответ / описание">
+      <input class="field" id="itemPrompt" placeholder="Подсказка (для режима 'ввод ответа', опционально)">
+      <input class="field" id="itemExtra" placeholder="Тип (+/-/?) — для режима тренажёра">
       <div class="btn-group" style="justify-content:flex-start">
         <button class="btn btn-ok btn-mini" id="itemSaveBtn" onclick="saveItem()">Добавить</button>
         <button class="btn btn-ghost btn-mini" onclick="clearItemForm()">Отмена</button>
+      </div>
+    </div>
+
+    <!-- ===== НАСТРОЙКИ КОЛЕСА ===== -->
+    <div class="config-section">
+      <h3>Настройки колеса</h3>
+      <div class="preset-row">
+        <button class="preset-chip" data-preset="trainer" onclick="applyPreset('trainer')">Тренажёр</button>
+        <button class="preset-chip" data-preset="questions" onclick="applyPreset('questions')">Вопросы</button>
+        <button class="preset-chip" data-preset="draw" onclick="applyPreset('draw')">Розыгрыш</button>
+      </div>
+
+      <div class="cfg-row">
+        <div>
+          <label>На секторах</label>
+          <div class="cfg-hint">Что показывать на секторах колеса</div>
+        </div>
+        <div class="cfg-toggle" data-cfg="sectorLabel">
+          <button data-val="text" onclick="setCfg('sectorLabel','text')">Текст</button>
+          <button data-val="number" onclick="setCfg('sectorLabel','number')">Номера</button>
+        </div>
+      </div>
+
+      <div class="cfg-row">
+        <div>
+          <label>Кнопка SPIN</label>
+          <div class="cfg-hint">Расположение кнопки запуска</div>
+        </div>
+        <div class="cfg-toggle" data-cfg="spinButton">
+          <button data-val="panel" onclick="setCfg('spinButton','panel')">Сбоку</button>
+          <button data-val="center" onclick="setCfg('spinButton','center')">В центре</button>
+        </div>
+      </div>
+
+      <div class="cfg-row">
+        <div>
+          <label>После выпадения</label>
+          <div class="cfg-hint">Что делать, когда сектор выбран</div>
+        </div>
+        <div class="cfg-toggle" data-cfg="taskMode">
+          <button data-val="type-answer" onclick="setCfg('taskMode','type-answer')">Ввод ответа</button>
+          <button data-val="show-card" onclick="setCfg('taskMode','show-card')">Показать карточку</button>
+          <button data-val="none" onclick="setCfg('taskMode','none')">Ничего</button>
+        </div>
+      </div>
+
+      <div class="cfg-row">
+        <div>
+          <label>Убирать выпавшие</label>
+          <div class="cfg-hint">Автоматически удалять с круга (количество секторов уменьшается)</div>
+        </div>
+        <div class="cfg-toggle" data-cfg="eliminateUsed">
+          <button data-val="false" onclick="setCfg('eliminateUsed',false)">Выкл</button>
+          <button data-val="true" onclick="setCfg('eliminateUsed',true)">Вкл</button>
+        </div>
       </div>
     </div>
 
@@ -288,23 +378,37 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 
   <div class="game-stage">
     <div class="wheel-col">
-      <div class="wheel-wrapper">
+      <div class="wheel-wrapper" id="wheelWrapper">
         <div class="pointer"><svg viewBox="0 0 60 60">
           <polygon points="30,55 10,10 50,10" fill="#E53935" stroke="#B71C1C" stroke-width="2"/>
           <circle cx="30" cy="15" r="6" fill="#FFD966" stroke="#FFB347" stroke-width="2"/>
         </svg></div>
         <canvas id="wheelCanvas" width="600" height="600"></canvas>
+        <!-- Центральная кнопка SPIN (появляется при spinButton=center) -->
+        <button class="center-spin" id="centerSpinBtn" style="display:none" onclick="spinWheel()">SPIN</button>
       </div>
+
+      <div class="session-counter" id="sessionCounter" style="display:none">
+        Осталось: <span class="num" id="remainCount">0</span> из <span class="num" id="totalCount">0</span>
+      </div>
+
+      <!-- Боковая кнопка SPIN (появляется при spinButton=panel) -->
+      <button class="spin-btn" id="spinBtn" style="display:none">КРУТИТЬ</button>
     </div>
 
     <div class="side-panel">
-      <button class="spin-btn" id="spinBtn" onclick="spinWheel()">КРУТИТЬ</button>
       <button class="btn btn-info btn-block" onclick="openShareModal()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
           <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
           <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
         </svg>
         Поделиться
+      </button>
+      <button class="btn btn-ghost btn-block" onclick="openConfigModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+        Настройки
       </button>
       <span class="panel-title">Навигация</span>
       <button class="btn btn-ghost btn-mini btn-block" onclick="backToSets()">Мои наборы</button>
@@ -313,7 +417,7 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   </div>
 </div>
 
-<!-- =============== МОДАЛКА: ЗАДАНИЕ =============== -->
+<!-- =============== МОДАЛКА: ВВОД ОТВЕТА =============== -->
 <div class="modal-overlay task-modal" id="taskOverlay">
   <div class="modal-wrap"><div class="modal">
     <h2>Собери ответ</h2>
@@ -328,10 +432,78 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   </div></div>
 </div>
 
+<!-- =============== МОДАЛКА: КАРТОЧКА (show-card mode) =============== -->
+<div class="modal-overlay card-modal" id="cardOverlay">
+  <div class="modal-wrap"><div class="modal">
+    <div class="card-num" id="cardNum">1</div>
+    <div class="card-text" id="cardText">...</div>
+    <div class="btn-group">
+      <button class="btn btn-danger" id="btnEliminate" onclick="eliminateAndClose()">Убрать с круга</button>
+      <button class="btn btn-primary" onclick="closeCard()">Дальше</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- =============== МОДАЛКА: NONE MODE =============== -->
+<div class="modal-overlay none-modal" id="noneOverlay">
+  <div class="modal-wrap"><div class="modal">
+    <h2>Выпало</h2>
+    <div class="picked-term" id="pickedTerm">—</div>
+    <div class="btn-group">
+      <button class="btn btn-danger" id="btnEliminateNone" onclick="eliminateAndClose()">Убрать с круга</button>
+      <button class="btn btn-primary" onclick="closeNone()">Дальше</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- =============== МОДАЛКА: БЫСТРЫЕ НАСТРОЙКИ НА ЭКРАНЕ ИГРЫ =============== -->
+<div class="modal-overlay" id="configOverlay">
+  <div class="modal-wrap"><div class="modal">
+    <button class="close-x" onclick="closeConfigModal()">×</button>
+    <h2>Настройки игры</h2>
+    <p class="hint">Изменения применяются сразу и сохраняются вместе с набором</p>
+
+    <div class="cfg-row">
+      <div><label>На секторах</label></div>
+      <div class="cfg-toggle" data-cfg-live="sectorLabel">
+        <button data-val="text" onclick="setCfgLive('sectorLabel','text')">Текст</button>
+        <button data-val="number" onclick="setCfgLive('sectorLabel','number')">Номера</button>
+      </div>
+    </div>
+    <div class="cfg-row">
+      <div><label>Кнопка SPIN</label></div>
+      <div class="cfg-toggle" data-cfg-live="spinButton">
+        <button data-val="panel" onclick="setCfgLive('spinButton','panel')">Сбоку</button>
+        <button data-val="center" onclick="setCfgLive('spinButton','center')">В центре</button>
+      </div>
+    </div>
+    <div class="cfg-row">
+      <div><label>После выпадения</label></div>
+      <div class="cfg-toggle" data-cfg-live="taskMode">
+        <button data-val="type-answer" onclick="setCfgLive('taskMode','type-answer')">Ввод ответа</button>
+        <button data-val="show-card" onclick="setCfgLive('taskMode','show-card')">Карточка</button>
+        <button data-val="none" onclick="setCfgLive('taskMode','none')">Ничего</button>
+      </div>
+    </div>
+    <div class="cfg-row">
+      <div><label>Убирать выпавшие</label></div>
+      <div class="cfg-toggle" data-cfg-live="eliminateUsed">
+        <button data-val="false" onclick="setCfgLive('eliminateUsed',false)">Выкл</button>
+        <button data-val="true" onclick="setCfgLive('eliminateUsed',true)">Вкл</button>
+      </div>
+    </div>
+
+    <div class="btn-group" style="margin-top:20px">
+      <button class="btn btn-ok" onclick="applyLiveConfigAndClose()">Применить и закрыть</button>
+      <button class="btn btn-ghost" onclick="resetSession()">Сбросить выбывших</button>
+    </div>
+  </div></div>
+</div>
+
 <!-- =============== МОДАЛКА: ШАРИНГ =============== -->
 <div class="modal-overlay" id="shareOverlay">
   <div class="modal-wrap"><div class="modal">
-    <button class="close-x" onclick="closeShare()">&#215;</button>
+    <button class="close-x" onclick="closeShare()">×</button>
     <h2>Поделиться игрой</h2>
     <p class="hint">Скопируй ссылку или распечатай QR-код для пособия</p>
     <div class="share-url">
@@ -346,71 +518,88 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 <div class="toast" id="toast"></div>
 
 <script>
-const LS_KEY = 'mce.wheel.v1';
+const LS_KEY = 'mce.wheel.v2';
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid = () => 'id-' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 
-/* ===== НАБОРЫ: перевод убран, только английский на колесе ===== */
+/* ========== DEFAULT CONFIG ========== */
+const DEFAULT_CONFIG = {
+  sectorLabel: 'text',       // 'text' | 'number'
+  spinButton:  'panel',      // 'panel' | 'center'
+  taskMode:    'type-answer',// 'type-answer' | 'show-card' | 'none'
+  eliminateUsed: false
+};
+
+/* ========== PRESETS ========== */
+const WHEEL_PRESETS = {
+  trainer:   { sectorLabel:'text',   spinButton:'panel',  taskMode:'type-answer', eliminateUsed:false },
+  questions: { sectorLabel:'number', spinButton:'center', taskMode:'show-card',   eliminateUsed:false },
+  draw:      { sectorLabel:'text',   spinButton:'center', taskMode:'none',        eliminateUsed:true  }
+};
+
+function normCfg(c){ return {...DEFAULT_CONFIG, ...(c||{})}; }
+
+/* ========== PRESETS DATA ========== */
 const PRESETS = [
-  { id:'preset-be', title:'Present Simple: BE', tags:['grammar','a1'], items:[
-    {term:'My brother', def:'My brother is at the park now.', prompt:'My brother / at the park / now', extra:'+'},
-    {term:'Emma and Tom', def:'Emma and Tom are my classmates.', prompt:'Emma and Tom / my / classmates', extra:'+'},
-    {term:'The red ball', def:'The red ball is under the bed.', prompt:'The red ball / under the bed', extra:'+'},
-    {term:'My new bike', def:'My new bike is very fast.', prompt:'My new bike / very / fast', extra:'+'},
-    {term:'The flowers', def:'The flowers are on the table.', prompt:'The flowers / on the table', extra:'+'},
-    {term:'I', def:'I am not at the cinema.', prompt:'I / at the cinema / not', extra:'-'},
-    {term:'She', def:'She is not happy today.', prompt:'She / happy / today / not', extra:'-'},
-    {term:'The windows', def:'The windows are not dirty.', prompt:'The windows / dirty / not', extra:'-'},
-    {term:'The dogs', def:'Are the dogs in the garden now?', prompt:'The dogs / in the garden / now', extra:'?'},
-    {term:'Your teacher', def:'Is your teacher from Russia?', prompt:'Your teacher / from / Russia', extra:'?'}
-  ]},
-  { id:'preset-verbs', title:'Irregular Verbs: V2', tags:['grammar','a2'], items:[
-    {term:'go', def:'went'},{term:'see', def:'saw'},{term:'take', def:'took'},
-    {term:'make', def:'made'},{term:'get', def:'got'},{term:'come', def:'came'},
-    {term:'buy', def:'bought'},{term:'think', def:'thought'},
-    {term:'know', def:'knew'},{term:'eat', def:'ate'}
-  ]},
-  { id:'preset-animals', title:'Animals', tags:['vocabulary','a1'], items:[
-    {term:'Fox', def:'fox', prompt:'Лиса'},
-    {term:'Bear', def:'bear', prompt:'Медведь'},
-    {term:'Rabbit', def:'rabbit', prompt:'Кролик'},
-    {term:'Wolf', def:'wolf', prompt:'Волк'},
-    {term:'Deer', def:'deer', prompt:'Олень'},
-    {term:'Squirrel', def:'squirrel', prompt:'Белка'},
-    {term:'Hedgehog', def:'hedgehog', prompt:'Ёж'},
-    {term:'Hamster', def:'hamster', prompt:'Хомяк'}
-  ]}
+  { id:'preset-be', title:'Present Simple: BE', tags:['grammar','a1'],
+    config: normCfg(WHEEL_PRESETS.trainer),
+    items:[
+      {term:'My brother', def:'My brother is at the park now.', prompt:'My brother / at the park / now', extra:'+'},
+      {term:'Emma and Tom', def:'Emma and Tom are my classmates.', prompt:'Emma and Tom / my / classmates', extra:'+'},
+      {term:'The red ball', def:'The red ball is under the bed.', prompt:'The red ball / under the bed', extra:'+'},
+      {term:'My new bike', def:'My new bike is very fast.', prompt:'My new bike / very / fast', extra:'+'},
+      {term:'The flowers', def:'The flowers are on the table.', prompt:'The flowers / on the table', extra:'+'},
+      {term:'I', def:'I am not at the cinema.', prompt:'I / at the cinema / not', extra:'-'},
+      {term:'She', def:'She is not happy today.', prompt:'She / happy / today / not', extra:'-'},
+      {term:'The windows', def:'The windows are not dirty.', prompt:'The windows / dirty / not', extra:'-'},
+      {term:'The dogs', def:'Are the dogs in the garden now?', prompt:'The dogs / in the garden / now', extra:'?'},
+      {term:'Your teacher', def:'Is your teacher from Russia?', prompt:'Your teacher / from / Russia', extra:'?'}
+    ]},
+  { id:'preset-questions', title:'Back to School: 16 вопросов', tags:['speaking','a2'],
+    config: normCfg(WHEEL_PRESETS.questions),
+    items:[
+      {term:'1', def:'What was the most exciting thing you did during the summer?'},
+      {term:'2', def:'Did you travel anywhere new or interesting during the holidays?'},
+      {term:'3', def:'Did you try any new activities or hobbies over the summer?'},
+      {term:'4', def:'Did you make new friends during the summer?'},
+      {term:'5', def:'Did you read any good books or watch any interesting movies?'},
+      {term:'6', def:'Did you learn anything new or get any new skills?'},
+      {term:'7', def:'Did you participate in any sports this summer?'},
+      {term:'8', def:'Did you attend any special events or festivals?'},
+      {term:'9', def:'Are you excited to be back in school?'},
+      {term:'10', def:'Did you set any goals over the summer?'},
+      {term:'11', def:'How did you spend your free time?'},
+      {term:'12', def:'Is there anything you are proud of this summer?'},
+      {term:'13', def:'Did you visit any interesting museums or attractions?'},
+      {term:'14', def:'Did you have a favorite summer song?'},
+      {term:'15', def:'What are you looking forward to this school year?'},
+      {term:'16', def:'Do you have your favourite summer photo? Describe it.'}
+    ]},
+  { id:'preset-students', title:'Класс: 10 учеников', tags:['classroom'],
+    config: normCfg(WHEEL_PRESETS.draw),
+    items:[
+      {term:'Alex'},{term:'Ben'},{term:'Chris'},{term:'Diana'},{term:'Elena'},
+      {term:'Frank'},{term:'Grace'},{term:'Henry'},{term:'Iris'},{term:'Jack'}
+    ]}
 ];
 
+/* ========== STORAGE ========== */
 const Storage = {
   load(){ try { return JSON.parse(localStorage.getItem(LS_KEY)) || {sets:[]} } catch(e){ return {sets:[]} } },
-  save(data){ localStorage.setItem(LS_KEY, JSON.stringify(data)) },
+  save(d){ localStorage.setItem(LS_KEY, JSON.stringify(d)) },
   getSets(){ return this.load().sets },
   addSet(s){ const d=this.load(); d.sets.push(s); this.save(d) },
-  updateSet(id, s){ const d=this.load(); const i=d.sets.findIndex(x=>x.id===id); if(i>=0) d.sets[i]=s; this.save(d) },
+  updateSet(id,s){ const d=this.load(); const i=d.sets.findIndex(x=>x.id===id); if(i>=0) d.sets[i]=s; this.save(d) },
   removeSet(id){ const d=this.load(); d.sets=d.sets.filter(x=>x.id!==id); this.save(d) }
 };
 
+/* ========== SHARING ========== */
 const Sharing = {
-  encode(activity){
-    try { return btoa(unescape(encodeURIComponent(JSON.stringify(activity)))); } catch(e){ return null }
-  },
-  decode(b64){
-    try { return JSON.parse(decodeURIComponent(escape(atob(b64)))); } catch(e){ return null }
-  },
-  buildUrl(activity){
-    const base = window.location.origin + window.location.pathname;
-    const code = this.encode(activity);
-    if(!code) return null;
-    return base + '?share=' + code;
-  },
-  readFromUrl(){
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get('share');
-    if(!code) return null;
-    return this.decode(code);
-  }
+  encode(o){ try { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); } catch(e){ return null } },
+  decode(b){ try { return JSON.parse(decodeURIComponent(escape(atob(b)))); } catch(e){ return null } },
+  buildUrl(o){ const base = location.origin + location.pathname; const code = this.encode(o); return code ? base+'?share='+code : null },
+  readFromUrl(){ const p = new URLSearchParams(location.search).get('share'); return p ? this.decode(p) : null }
 };
 
 let toastTimer;
@@ -421,14 +610,26 @@ function showScreen(n){
   document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active', s.id==='screen-'+n));
   window.scrollTo(0,0);
 }
+function goToMceGames(){ closeAllModals(); location.href = '../online-games.html'; }
+function backToSets(){ closeAllModals(); showScreen('home'); }
+function closeAllModals(){
+  ['taskOverlay','cardOverlay','noneOverlay','configOverlay','shareOverlay'].forEach(id=>{
+    const el=$(id); if(el) el.classList.remove('active');
+  });
+  $('feedback') && ($('feedback').className='feedback');
+}
 
-function goToMceGames(){ closeTask(); window.location.href = '../online-games.html'; }
-function backToSets(){ closeTask(); showScreen('home'); }
-
+/* ========== HOME RENDER ========== */
 function setCardHTML(s, isMine){
+  const cfg = normCfg(s.config);
+  const modeText = {
+    'type-answer':'тренажёр',
+    'show-card':'карточки',
+    'none':'выбор'
+  }[cfg.taskMode] || 'тренажёр';
   return `<div class="card">
     <h3>${esc(s.title)}</h3>
-    <div class="meta">${s.items.length} элементов ${s.tags?.length? '· '+s.tags.map(esc).join(', '):''}</div>
+    <div class="meta">${s.items.length} элементов · режим: ${modeText}</div>
     <div class="actions">
       <button class="btn btn-primary btn-mini" onclick="launchSetById('${s.id}', ${isMine})">Играть</button>
       <button class="btn btn-ghost btn-mini" onclick="shareSetById('${s.id}', ${isMine})">QR</button>
@@ -444,13 +645,11 @@ function renderHome(){
   const mine = Storage.getSets();
   $('setsGrid').innerHTML = mine.length
     ? mine.map(s=>setCardHTML(s,true)).join('')
-    : '<div class="empty">Наборов пока нет. Создай первый, загрузи файл или скопируй пример ниже.</div>';
+    : '<div class="empty">Наборов пока нет. Создай первый или скопируй пример ниже.</div>';
   $('presetsGrid').innerHTML = PRESETS.map(s=>setCardHTML(s,false)).join('');
 }
 
-function findSet(id, isMine){
-  return isMine ? Storage.getSets().find(x=>x.id===id) : PRESETS.find(x=>x.id===id);
-}
+function findSet(id, isMine){ return isMine ? Storage.getSets().find(x=>x.id===id) : PRESETS.find(x=>x.id===id); }
 function launchSetById(id, isMine){ const s=findSet(id,isMine); if(s) launchSet(s); }
 function shareSetById(id, isMine){ const s=findSet(id,isMine); if(s){ currentSet=s; openShareModal(); }}
 function editSetById(id){ openSetEditor(id); }
@@ -464,7 +663,7 @@ function exportSet(id){
 function copyPreset(id){
   const s=PRESETS.find(x=>x.id===id); if(!s) return;
   const c=JSON.parse(JSON.stringify(s)); c.id=uid(); c.title+=' (копия)';
-  Storage.addSet(c); renderHome(); toast('Набор скопирован в «Мои наборы»');
+  Storage.addSet(c); renderHome(); toast('Набор скопирован');
 }
 function importSet(ev){
   const f=ev.target.files[0]; if(!f) return;
@@ -477,6 +676,7 @@ function importSet(ev){
         id: obj.id || uid(),
         title: obj.title || 'Без названия',
         tags: Array.isArray(obj.tags)?obj.tags:[],
+        config: normCfg(obj.config),
         items: obj.items.filter(i=>i && i.term && i.def).map(i=>({
           term:String(i.term), def:String(i.def),
           prompt:i.prompt?String(i.prompt):'', extra:i.extra?String(i.extra):''
@@ -488,26 +688,32 @@ function importSet(ev){
   r.readAsText(f); ev.target.value='';
 }
 
-let draft=null, editingIdx=-1;
+/* ========== EDITOR ========== */
+let draft=null, editingIdx=-1, draftCfg=normCfg();
+
 function openSetEditor(id){
   if(id){
     draft = JSON.parse(JSON.stringify(Storage.getSets().find(x=>x.id===id)));
+    draftCfg = normCfg(draft.config);
     $('editorTitle').textContent = 'Редактировать набор';
   } else {
     draft = {id:uid(), title:'', tags:[], items:[]};
+    draftCfg = normCfg(WHEEL_PRESETS.trainer);
     $('editorTitle').textContent = 'Создать набор';
   }
   editingIdx=-1;
   $('setTitle').value = draft.title;
   $('setTags').value = (draft.tags||[]).join(', ');
-  clearItemForm(); renderItems(); showScreen('editor');
+  clearItemForm(); renderItems(); refreshEditorCfgUI(); showScreen('editor');
 }
+
 function renderItems(){
   $('itemsList').innerHTML = draft.items.length
     ? draft.items.map((it,i)=>`
       <div class="item-row">
+        <span class="idx">${i+1}</span>
         <span class="term">${esc(it.term)}</span>
-        <span class="def">${esc(it.prompt||'')} ${it.prompt?'->':''} <b>${esc(it.def)}</b>${it.extra?' <small>('+esc(it.extra)+')</small>':''}</span>
+        <span class="def">${esc(it.prompt||'')} ${it.prompt?'→':''} <b>${esc(it.def)}</b>${it.extra?' <small>('+esc(it.extra)+')</small>':''}</span>
         <button class="btn btn-ghost btn-mini" onclick="editItem(${i})">Ред.</button>
         <button class="btn btn-danger btn-mini" onclick="removeItem(${i})">Удалить</button>
       </div>`).join('')
@@ -532,9 +738,31 @@ function saveItem(){
   if(editingIdx>=0) draft.items[editingIdx]=it; else draft.items.push(it);
   clearItemForm(); renderItems();
 }
+
+/* Editor config UI */
+function refreshEditorCfgUI(){
+  document.querySelectorAll('[data-cfg]').forEach(group=>{
+    const key = group.dataset.cfg;
+    group.querySelectorAll('button').forEach(btn=>{
+      let val = btn.dataset.val;
+      if(val==='true') val=true; else if(val==='false') val=false;
+      btn.classList.toggle('active', draftCfg[key]===val);
+    });
+  });
+  // preset chips — подсветка активного
+  document.querySelectorAll('.preset-chip').forEach(c=>{
+    const p = WHEEL_PRESETS[c.dataset.preset];
+    const same = p && Object.keys(p).every(k=>draftCfg[k]===p[k]);
+    c.classList.toggle('active', same);
+  });
+}
+function setCfg(key, val){ draftCfg[key]=val; refreshEditorCfgUI(); }
+function applyPreset(name){ draftCfg = normCfg(WHEEL_PRESETS[name]); refreshEditorCfgUI(); }
+
 function collectDraft(){
   draft.title = $('setTitle').value.trim();
   draft.tags = $('setTags').value.split(',').map(s=>s.trim()).filter(Boolean);
+  draft.config = {...draftCfg};
   if(!draft.title){ toast('Укажи название набора'); return false; }
   if(draft.items.length<2){ toast('Нужно минимум 2 элемента'); return false; }
   return true;
@@ -547,30 +775,71 @@ function saveSet(){
 }
 function playSetFromEditor(){ if(!collectDraft()) return; launchSet(draft); }
 
-/* ===================== ИГРА ===================== */
+/* ========== GAME ========== */
 let currentSet = null;
-let sectors = [], numSectors = 0, sectorAngle = 0;
+let sessionItems = [];       // копия для eliminate
+let numSectors = 0, sectorAngle = 0;
 const COLORS = ['#FF4D4D','#FFD966','#6BCB77','#4D9DE0','#E86A92','#FF924C','#9B5DE5',
                 '#00BBF9','#FEE440','#F15BB5','#00B4D8','#A7C957','#FF6D00'];
 const canvas = $('wheelCanvas'), ctx = canvas.getContext('2d');
 const CX = canvas.width/2, CY = canvas.height/2, R = 280;
-let angle = 0, spinning = false, target = -1;
+let angle = 0, spinning = false, target = -1, lastPickedItem = null;
 let audioCtx = null, spinTone = null, toneCount = 0;
 
 function launchSet(s){
   if(!s || !Array.isArray(s.items) || s.items.length<2){ toast('Недостаточно элементов'); return; }
   currentSet = s;
-  sectors = s.items; numSectors = s.items.length; sectorAngle = 2*Math.PI/numSectors; angle = 0;
+  resetSession();
   $('gameTitle').textContent = s.title.toUpperCase();
-  drawWheel(0); showScreen('game');
+  applyLiveConfig();
+  showScreen('game');
   const url = Sharing.buildUrl(s);
   if(url) history.replaceState(null,'',url);
 }
 
+function resetSession(){
+  sessionItems = currentSet.items.map((it,i)=>({...it, origIdx:i}));
+  renderGameWheel();
+  updateCounter();
+}
+
+function renderGameWheel(){
+  numSectors = sessionItems.length;
+  sectorAngle = numSectors ? 2*Math.PI/numSectors : 0;
+  angle = 0;
+  drawWheel(0);
+}
+
+function updateCounter(){
+  const cfg = normCfg(currentSet.config);
+  const show = cfg.eliminateUsed;
+  $('sessionCounter').style.display = show ? 'inline-flex' : 'none';
+  if(show){
+    $('remainCount').textContent = sessionItems.length;
+    $('totalCount').textContent = currentSet.items.length;
+  }
+}
+
+function applyLiveConfig(){
+  const cfg = normCfg(currentSet.config);
+  // SPIN button placement
+  const centerOn = cfg.spinButton==='center';
+  $('centerSpinBtn').style.display = centerOn ? 'block' : 'none';
+  $('spinBtn').style.display    = centerOn ? 'none'  : 'block';
+  updateCounter();
+  renderGameWheel();
+}
+
 function drawWheel(rot){
   ctx.clearRect(0,0,canvas.width,canvas.height);
+  if(!numSectors){
+    ctx.fillStyle='#555'; ctx.font='bold 28px "Segoe UI"'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('Колесо пустое', CX, CY);
+    return;
+  }
   ctx.beginPath(); ctx.arc(CX,CY,R+20,0,2*Math.PI); ctx.fillStyle='#FFD966'; ctx.fill();
   ctx.beginPath(); ctx.arc(CX,CY,R+12,0,2*Math.PI); ctx.fillStyle='#FFB347'; ctx.fill();
+  const cfg = normCfg(currentSet.config);
   for(let i=0;i<numSectors;i++){
     const st=rot+i*sectorAngle, en=st+sectorAngle;
     ctx.beginPath(); ctx.moveTo(CX,CY); ctx.arc(CX,CY,R,st,en); ctx.closePath();
@@ -580,19 +849,32 @@ function drawWheel(rot){
     ctx.save(); ctx.translate(CX+Math.cos(mid)*tr, CY+Math.sin(mid)*tr);
     let a=mid; if(mid>Math.PI/2 && mid<3*Math.PI/2) a=mid+Math.PI;
     ctx.rotate(a);
-    const raw=sectors[i].term, shown=raw.length>16?raw.slice(0,15)+'…':raw;
-    /* Крупный шрифт: короткие надписи = крупнее */
-    const fs=shown.length<=8?30:shown.length<=12?26:20;
+    const item = sessionItems[i];
+    // Что показывать: в режиме 'number' — номер в исходном списке (origIdx+1)
+    let shown;
+    if(cfg.sectorLabel==='number'){
+      shown = String(item.origIdx + 1);
+    } else {
+      shown = item.term.length>16 ? item.term.slice(0,15)+'…' : item.term;
+    }
+    const fs = cfg.sectorLabel==='number'
+      ? 36
+      : (shown.length<=8?30:shown.length<=12?26:20);
     ctx.fillStyle='#1e2a3a'; ctx.font='bold '+fs+'px "Segoe UI", Arial, sans-serif';
     ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(shown,0,0);
     ctx.restore();
   }
-  ctx.beginPath(); ctx.arc(CX,CY,60,0,2*Math.PI); ctx.fillStyle='#fff'; ctx.fill();
-  ctx.strokeStyle='#FFD966'; ctx.lineWidth=6; ctx.stroke();
-  ctx.fillStyle='#FF6D00'; ctx.font='bold 40px "Segoe UI", Arial, sans-serif';
-  ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('●', CX, CY);
+  // центральный круг — прячем, если в центре SPIN
+  const cfg2 = normCfg(currentSet.config);
+  if(cfg2.spinButton !== 'center'){
+    ctx.beginPath(); ctx.arc(CX,CY,60,0,2*Math.PI); ctx.fillStyle='#fff'; ctx.fill();
+    ctx.strokeStyle='#FFD966'; ctx.lineWidth=6; ctx.stroke();
+    ctx.fillStyle='#FF6D00'; ctx.font='bold 40px "Segoe UI", Arial, sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('●', CX, CY);
+  }
 }
 
+/* Audio */
 function initAudio(){ if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
   if(audioCtx.state==='suspended') audioCtx.resume(); }
 function tone(f,d=0.1,v=0.15){ if(!audioCtx) return;
@@ -608,7 +890,9 @@ function playOk(){ tone(523,0.12,0.2); setTimeout(()=>tone(659,0.12,0.2),120); s
 function playErr(){ tone(300,0.3,0.25); setTimeout(()=>tone(250,0.4,0.25),150); }
 
 function spinWheel(){
-  if(spinning) return; spinning=true; $('spinBtn').disabled=true;
+  if(spinning) return;
+  if(!numSectors){ toast('Колесо пустое — сбросьте выбывших'); return; }
+  spinning=true; $('spinBtn').disabled=true; $('centerSpinBtn').disabled=true;
   initAudio(); startSpinTone();
   target = Math.floor(Math.random()*numSectors);
   const extra = 7+Math.floor(Math.random()*7);
@@ -620,13 +904,29 @@ function spinWheel(){
     const p=Math.min((now-start)/dur,1), e=1-Math.pow(1-p,3);
     angle = startA + total*e; drawWheel(angle);
     if(p<1) requestAnimationFrame(anim);
-    else { spinning=false; $('spinBtn').disabled=false;
-      stopSpinTone(); playStop(); setTimeout(()=>showTask(target),300); }
+    else {
+      spinning=false;
+      $('spinBtn').disabled=false; $('centerSpinBtn').disabled=false;
+      stopSpinTone(); playStop();
+      lastPickedItem = sessionItems[target];
+      setTimeout(()=>showTask(target),300);
+    }
   })(performance.now());
 }
 
+/* ========== TASK MODES ========== */
 function showTask(i){
-  const d=sectors[i], badge=$('typeBadge');
+  const item = sessionItems[i];
+  const cfg = normCfg(currentSet.config);
+  if(cfg.taskMode==='type-answer')   return showTaskTypeAnswer(i);
+  if(cfg.taskMode==='show-card')     return showTaskCard(i);
+  if(cfg.taskMode==='none')          return showTaskNone(i);
+  // fallback
+  showTaskCard(i);
+}
+
+function showTaskTypeAnswer(i){
+  const d=sessionItems[i], badge=$('typeBadge');
   $('feedback').className='feedback';
   $('answerInput').value=''; $('answerInput').disabled=false;
   const type = (d.extra||'').trim();
@@ -635,13 +935,62 @@ function showTask(i){
     badge.className = 'type-badge ' + (type==='+'?'plus':type==='-'?'minus':'q');
     badge.textContent = type==='+'?'Утверждение':type==='-'?'Отрицание':'Вопрос';
   } else badge.style.display='none';
-  $('taskPrompt').textContent = d.prompt || `${d.term} -> ?`;
+  $('taskPrompt').textContent = d.prompt || `${d.term} → ?`;
   window.currentItemIdx = i;
   $('taskOverlay').classList.add('active');
   setTimeout(()=>$('answerInput').focus(),350);
 }
-function closeTask(){ $('taskOverlay').classList.remove('active'); $('feedback').className='feedback'; }
+function showTaskCard(i){
+  const d=sessionItems[i];
+  $('cardNum').textContent = d.origIdx + 1;
+  $('cardText').textContent = d.def;
+  $('btnEliminate').style.display = normCfg(currentSet.config).eliminateUsed ? 'inline-flex' : 'none';
+  $('cardOverlay').classList.add('active');
+  window.currentItemIdx = i;
+}
+function showTaskNone(i){
+  const d=sessionItems[i];
+  $('pickedTerm').textContent = d.term;
+  $('btnEliminateNone').style.display = normCfg(currentSet.config).eliminateUsed ? 'inline-flex' : 'none';
+  $('noneOverlay').classList.add('active');
+  window.currentItemIdx = i;
+}
 
+/* Task close handlers */
+function closeTask(){
+  $('taskOverlay').classList.remove('active');
+  $('feedback').className='feedback';
+  maybeAutoEliminate();
+}
+function closeCard(){
+  $('cardOverlay').classList.remove('active');
+  maybeAutoEliminate();
+}
+function closeNone(){
+  $('noneOverlay').classList.remove('active');
+  maybeAutoEliminate();
+}
+
+function maybeAutoEliminate(){
+  const cfg = normCfg(currentSet.config);
+  if(!cfg.eliminateUsed) return;
+  if(window.currentItemIdx==null) return;
+  eliminateCurrent();
+}
+function eliminateCurrent(){
+  if(window.currentItemIdx==null) return;
+  sessionItems.splice(window.currentItemIdx,1);
+  window.currentItemIdx = null;
+  renderGameWheel();
+  updateCounter();
+}
+function eliminateAndClose(){
+  eliminateCurrent();
+  $('cardOverlay').classList.remove('active');
+  $('noneOverlay').classList.remove('active');
+}
+
+/* type-answer check */
 function normalize(s){
   let n=s.toLowerCase();
   n = n.replace(/\s+([.,!?])/g,'$1').replace(/([.,!?])\s+/g,'$1').replace(/\s+/g,' ').trim();
@@ -650,7 +999,7 @@ function normalize(s){
 }
 function checkAnswer(){
   if(window.currentItemIdx==null) return;
-  const d=sectors[window.currentItemIdx], fb=$('feedback');
+  const d=sessionItems[window.currentItemIdx], fb=$('feedback');
   const user = normalize($('answerInput').value.trim());
   const correct = normalize(d.def);
   const type = (d.extra||'').trim();
@@ -670,6 +1019,43 @@ function checkAnswer(){
   }
 }
 
+/* ========== LIVE CONFIG (on game screen) ========== */
+let liveCfg = null;
+function openConfigModal(){
+  if(!currentSet) return;
+  liveCfg = {...normCfg(currentSet.config)};
+  document.querySelectorAll('[data-cfg-live]').forEach(group=>{
+    const key = group.dataset.cfgLive;
+    group.querySelectorAll('button').forEach(btn=>{
+      let val = btn.dataset.val;
+      if(val==='true') val=true; else if(val==='false') val=false;
+      btn.classList.toggle('active', liveCfg[key]===val);
+    });
+  });
+  $('configOverlay').classList.add('active');
+}
+function closeConfigModal(){ $('configOverlay').classList.remove('active'); liveCfg=null; }
+function setCfgLive(key, val){
+  if(!liveCfg) return;
+  liveCfg[key]=val;
+  document.querySelectorAll(`[data-cfg-live="${key}"] button`).forEach(btn=>{
+    let v = btn.dataset.val;
+    if(v==='true') v=true; else if(v==='false') v=false;
+    btn.classList.toggle('active', v===val);
+  });
+}
+function applyLiveConfigAndClose(){
+  if(!liveCfg || !currentSet) return;
+  currentSet.config = {...liveCfg};
+  // если это сохранённый набор — обновим
+  const mine = Storage.getSets().find(x=>x.id===currentSet.id);
+  if(mine){ Storage.updateSet(currentSet.id, currentSet); }
+  applyLiveConfig();
+  closeConfigModal();
+  toast('Настройки применены');
+}
+
+/* ========== SHARE ========== */
 let qrInstance=null;
 function openShareModal(){
   if(!currentSet){ toast('Нет активной игры'); return; }
@@ -690,12 +1076,28 @@ function copyShareUrl(){
   toast('Ссылка скопирована');
 }
 
+/* ========== EVENTS ========== */
 $('answerInput').addEventListener('keydown', e=>{
   if(e.key==='Enter'){ e.preventDefault(); if(!e.target.disabled) checkAnswer(); }
 });
 $('taskOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeTask(); });
+$('cardOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeCard(); });
+$('noneOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeNone(); });
+$('configOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeConfigModal(); });
 $('shareOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeShare(); });
-canvas.addEventListener('click', spinWheel);
+
+canvas.addEventListener('click', ()=>{
+  // клик по колесу = spin только если SPIN сбоку (чтобы не конфликтовал с центральной кнопкой)
+  const cfg = normCfg(currentSet && currentSet.config);
+  if(cfg && cfg.spinButton==='panel') spinWheel();
+});
+$('spinBtn').addEventListener('click', spinWheel);
+
+/* Reset session button from config modal */
+$('configOverlay').querySelector('.btn-ghost').addEventListener('click', ()=>{
+  resetSession();
+  toast('Сессия сброшена');
+});
 
 function init(){
   renderHome();
