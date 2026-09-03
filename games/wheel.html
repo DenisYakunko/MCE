@@ -107,9 +107,7 @@ select.field{background:#fff;cursor:pointer}
 .item-form{border-top:3px dashed #e3e8ef;margin-top:15px;padding-top:15px}
 
 /* ===== НАСТРОЙКИ КОЛЕСА В РЕДАКТОРЕ ===== */
-.config-section{
-  border-top:3px dashed #e3e8ef;margin-top:20px;padding-top:20px;
-}
+.config-section{border-top:3px dashed #e3e8ef;margin-top:20px;padding-top:20px}
 .config-section h3{margin-bottom:14px;color:var(--ink-dark)}
 .preset-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .preset-chip{
@@ -131,13 +129,9 @@ select.field{background:#fff;cursor:pointer}
 .cfg-toggle button.active{background:var(--info);color:#fff;border-color:var(--info)}
 
 /* ===== ИГРОВОЙ LAYOUT ===== */
-.game-stage{
-  position:relative;width:100%;display:flex;justify-content:center;align-items:flex-start;margin:0 auto;
-}
+.game-stage{position:relative;width:100%;display:flex;justify-content:center;align-items:flex-start;margin:0 auto}
 .wheel-col{display:flex;flex-direction:column;align-items:center;min-width:0}
-.side-panel{
-  position:absolute;right:30px;top:70px;width:250px;display:flex;flex-direction:column;gap:12px;
-}
+.side-panel{position:absolute;right:30px;top:70px;width:250px;display:flex;flex-direction:column;gap:12px}
 .side-panel .btn{width:100%;justify-content:center}
 .side-panel .panel-title{font-size:.75em;letter-spacing:2px;text-transform:uppercase;color:var(--ink-dim);
   text-align:left;padding-left:4px;margin-top:8px}
@@ -149,17 +143,19 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   filter:drop-shadow(0 8px 15px rgba(0,0,0,.6));pointer-events:none}
 .pointer svg{width:65px;height:65px}
 
-/* SPIN сбоку (режим trainer) */
+/* SPIN в боковой панели: равномерное мягкое свечение */
 .spin-btn{
   background:linear-gradient(180deg,var(--accent3) 0%,var(--accent2) 100%);color:#fff;border:none;
-  padding:22px 30px;font-size:1.4em;font-weight:800;letter-spacing:3px;text-transform:uppercase;
-  border-radius:50px;cursor:pointer;box-shadow:0 8px 25px rgba(255,109,0,.5),inset 0 -4px 0 rgba(0,0,0,.2);
+  padding:18px 20px;font-size:1.3em;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  border-radius:50px;cursor:pointer;
+  box-shadow:0 0 16px rgba(255,140,0,.35);
   transition:all .15s;width:100%;margin:0;
 }
-.spin-btn:active{transform:scale(.92)}
-.spin-btn:disabled{background:linear-gradient(180deg,#555,#333);cursor:not-allowed;transform:none}
+.spin-btn:hover{box-shadow:0 0 24px rgba(255,140,0,.5)}
+.spin-btn:active{transform:scale(.96);box-shadow:0 0 12px rgba(255,140,0,.4)}
+.spin-btn:disabled{background:linear-gradient(180deg,#555,#333);cursor:not-allowed;transform:none;box-shadow:none}
 
-/* SPIN в центре (режим questions/draw) */
+/* SPIN в центре + hover-увеличение */
 .center-spin{
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;
   width:150px;height:150px;border-radius:50%;
@@ -169,10 +165,11 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.6),inset 0 -4px 0 rgba(0,0,0,.15);
   transition:all .15s;
 }
+.center-spin:hover{transform:translate(-50%,-50%) scale(1.06);box-shadow:0 8px 34px rgba(0,0,0,.65),0 0 24px rgba(255,215,0,.45)}
 .center-spin:active{transform:translate(-50%,-50%) scale(.94)}
 .center-spin:disabled{background:linear-gradient(135deg,#888 0%,#aaa 100%);cursor:not-allowed}
 
-/* Счётчик оставшихся секторов (eliminate mode) */
+/* Счётчик оставшихся секторов */
 .session-counter{
   margin-top:16px;padding:10px 18px;border-radius:30px;
   background:rgba(255,255,255,.08);border:1px solid var(--card-border);
@@ -196,22 +193,15 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 .feedback.error{display:block;background:#ffebee;color:#c62828;border-left:5px solid var(--err)}
 .correct-answer{font-weight:800;color:#1565c0;margin-top:5px}
 
-/* Карточка-показ (show-card mode) */
+/* Карточка-показ (show-card) */
 .card-modal .modal{max-width:520px;border-top:8px solid var(--accent2)}
-.card-modal .card-num{
-  font-size:4em;font-weight:900;color:var(--accent2);margin-bottom:10px;line-height:1;
-}
-.card-modal .card-text{
-  font-size:1.25em;line-height:1.5;color:var(--ink-dark);padding:20px;
-  background:#f0f4f8;border-radius:15px;margin-bottom:20px;word-break:break-word;
-}
+.card-modal .card-num{font-size:4em;font-weight:900;color:var(--accent2);margin-bottom:10px;line-height:1}
+.card-modal .card-text{font-size:1.25em;line-height:1.5;color:var(--ink-dark);padding:20px;
+  background:#f0f4f8;border-radius:15px;margin-bottom:20px;word-break:break-word}
 
-/* Простой показ выпавшего (none mode) */
+/* Простой показ (none) */
 .none-modal .modal{max-width:420px}
-.none-modal .picked-term{
-  font-size:2em;font-weight:800;color:var(--accent2);padding:20px;
-  text-align:center;margin:10px 0;
-}
+.none-modal .picked-term{font-size:2em;font-weight:800;color:var(--accent2);padding:20px;text-align:center;margin:10px 0}
 
 .share-url{display:flex;gap:8px;margin-top:10px}
 .share-url input{flex:1;padding:10px 14px;border:2px solid #ddd;border-radius:10px;font-size:.9em;font-family:monospace;color:var(--ink-dark)}
@@ -348,7 +338,7 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
       <div class="cfg-row">
         <div>
           <label>Убирать выпавшие</label>
-          <div class="cfg-hint">Автоматически удалять с круга (количество секторов уменьшается)</div>
+          <div class="cfg-hint">Автоматически удалять с круга (секторов становится меньше)</div>
         </div>
         <div class="cfg-toggle" data-cfg="eliminateUsed">
           <button data-val="false" onclick="setCfg('eliminateUsed',false)">Выкл</button>
@@ -384,19 +374,17 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
           <circle cx="30" cy="15" r="6" fill="#FFD966" stroke="#FFB347" stroke-width="2"/>
         </svg></div>
         <canvas id="wheelCanvas" width="600" height="600"></canvas>
-        <!-- Центральная кнопка SPIN (появляется при spinButton=center) -->
         <button class="center-spin" id="centerSpinBtn" style="display:none" onclick="spinWheel()">SPIN</button>
       </div>
 
       <div class="session-counter" id="sessionCounter" style="display:none">
         Осталось: <span class="num" id="remainCount">0</span> из <span class="num" id="totalCount">0</span>
       </div>
-
-      <!-- Боковая кнопка SPIN (появляется при spinButton=panel) -->
-      <button class="spin-btn" id="spinBtn" style="display:none">КРУТИТЬ</button>
     </div>
 
     <div class="side-panel">
+      <!-- SPIN сбоку: первый элемент панели, над "Поделиться" -->
+      <button class="spin-btn" id="spinBtn" style="display:none">SPIN</button>
       <button class="btn btn-info btn-block" onclick="openShareModal()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
           <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
@@ -432,7 +420,7 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   </div></div>
 </div>
 
-<!-- =============== МОДАЛКА: КАРТОЧКА (show-card mode) =============== -->
+<!-- =============== МОДАЛКА: КАРТОЧКА =============== -->
 <div class="modal-overlay card-modal" id="cardOverlay">
   <div class="modal-wrap"><div class="modal">
     <div class="card-num" id="cardNum">1</div>
@@ -444,7 +432,7 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   </div></div>
 </div>
 
-<!-- =============== МОДАЛКА: NONE MODE =============== -->
+<!-- =============== МОДАЛКА: NONE =============== -->
 <div class="modal-overlay none-modal" id="noneOverlay">
   <div class="modal-wrap"><div class="modal">
     <h2>Выпало</h2>
@@ -456,7 +444,7 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
   </div></div>
 </div>
 
-<!-- =============== МОДАЛКА: БЫСТРЫЕ НАСТРОЙКИ НА ЭКРАНЕ ИГРЫ =============== -->
+<!-- =============== МОДАЛКА: БЫСТРЫЕ НАСТРОЙКИ =============== -->
 <div class="modal-overlay" id="configOverlay">
   <div class="modal-wrap"><div class="modal">
     <button class="close-x" onclick="closeConfigModal()">×</button>
@@ -495,7 +483,7 @@ canvas{display:block;width:100%;height:auto;border-radius:50%;
 
     <div class="btn-group" style="margin-top:20px">
       <button class="btn btn-ok" onclick="applyLiveConfigAndClose()">Применить и закрыть</button>
-      <button class="btn btn-ghost" onclick="resetSession()">Сбросить выбывших</button>
+      <button class="btn btn-ghost" id="resetSessionBtn">Сбросить выбывших</button>
     </div>
   </div></div>
 </div>
@@ -523,15 +511,13 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid = () => 'id-' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
 
-/* ========== DEFAULT CONFIG ========== */
 const DEFAULT_CONFIG = {
-  sectorLabel: 'text',       // 'text' | 'number'
-  spinButton:  'panel',      // 'panel' | 'center'
-  taskMode:    'type-answer',// 'type-answer' | 'show-card' | 'none'
+  sectorLabel: 'text',
+  spinButton:  'panel',
+  taskMode:    'type-answer',
   eliminateUsed: false
 };
 
-/* ========== PRESETS ========== */
 const WHEEL_PRESETS = {
   trainer:   { sectorLabel:'text',   spinButton:'panel',  taskMode:'type-answer', eliminateUsed:false },
   questions: { sectorLabel:'number', spinButton:'center', taskMode:'show-card',   eliminateUsed:false },
@@ -540,7 +526,6 @@ const WHEEL_PRESETS = {
 
 function normCfg(c){ return {...DEFAULT_CONFIG, ...(c||{})}; }
 
-/* ========== PRESETS DATA ========== */
 const PRESETS = [
   { id:'preset-be', title:'Present Simple: BE', tags:['grammar','a1'],
     config: normCfg(WHEEL_PRESETS.trainer),
@@ -584,7 +569,6 @@ const PRESETS = [
     ]}
 ];
 
-/* ========== STORAGE ========== */
 const Storage = {
   load(){ try { return JSON.parse(localStorage.getItem(LS_KEY)) || {sets:[]} } catch(e){ return {sets:[]} } },
   save(d){ localStorage.setItem(LS_KEY, JSON.stringify(d)) },
@@ -594,7 +578,6 @@ const Storage = {
   removeSet(id){ const d=this.load(); d.sets=d.sets.filter(x=>x.id!==id); this.save(d) }
 };
 
-/* ========== SHARING ========== */
 const Sharing = {
   encode(o){ try { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); } catch(e){ return null } },
   decode(b){ try { return JSON.parse(decodeURIComponent(escape(atob(b)))); } catch(e){ return null } },
@@ -616,17 +599,13 @@ function closeAllModals(){
   ['taskOverlay','cardOverlay','noneOverlay','configOverlay','shareOverlay'].forEach(id=>{
     const el=$(id); if(el) el.classList.remove('active');
   });
-  $('feedback') && ($('feedback').className='feedback');
+  if($('feedback')) $('feedback').className='feedback';
 }
 
-/* ========== HOME RENDER ========== */
+/* ========== HOME ========== */
 function setCardHTML(s, isMine){
   const cfg = normCfg(s.config);
-  const modeText = {
-    'type-answer':'тренажёр',
-    'show-card':'карточки',
-    'none':'выбор'
-  }[cfg.taskMode] || 'тренажёр';
+  const modeText = {'type-answer':'тренажёр','show-card':'карточки','none':'выбор'}[cfg.taskMode] || 'тренажёр';
   return `<div class="card">
     <h3>${esc(s.title)}</h3>
     <div class="meta">${s.items.length} элементов · режим: ${modeText}</div>
@@ -739,7 +718,6 @@ function saveItem(){
   clearItemForm(); renderItems();
 }
 
-/* Editor config UI */
 function refreshEditorCfgUI(){
   document.querySelectorAll('[data-cfg]').forEach(group=>{
     const key = group.dataset.cfg;
@@ -749,7 +727,6 @@ function refreshEditorCfgUI(){
       btn.classList.toggle('active', draftCfg[key]===val);
     });
   });
-  // preset chips — подсветка активного
   document.querySelectorAll('.preset-chip').forEach(c=>{
     const p = WHEEL_PRESETS[c.dataset.preset];
     const same = p && Object.keys(p).every(k=>draftCfg[k]===p[k]);
@@ -777,13 +754,13 @@ function playSetFromEditor(){ if(!collectDraft()) return; launchSet(draft); }
 
 /* ========== GAME ========== */
 let currentSet = null;
-let sessionItems = [];       // копия для eliminate
+let sessionItems = [];
 let numSectors = 0, sectorAngle = 0;
 const COLORS = ['#FF4D4D','#FFD966','#6BCB77','#4D9DE0','#E86A92','#FF924C','#9B5DE5',
                 '#00BBF9','#FEE440','#F15BB5','#00B4D8','#A7C957','#FF6D00'];
 const canvas = $('wheelCanvas'), ctx = canvas.getContext('2d');
 const CX = canvas.width/2, CY = canvas.height/2, R = 280;
-let angle = 0, spinning = false, target = -1, lastPickedItem = null;
+let angle = 0, spinning = false, target = -1;
 let audioCtx = null, spinTone = null, toneCount = 0;
 
 function launchSet(s){
@@ -812,9 +789,8 @@ function renderGameWheel(){
 
 function updateCounter(){
   const cfg = normCfg(currentSet.config);
-  const show = cfg.eliminateUsed;
-  $('sessionCounter').style.display = show ? 'inline-flex' : 'none';
-  if(show){
+  $('sessionCounter').style.display = cfg.eliminateUsed ? 'inline-flex' : 'none';
+  if(cfg.eliminateUsed){
     $('remainCount').textContent = sessionItems.length;
     $('totalCount').textContent = currentSet.items.length;
   }
@@ -822,7 +798,6 @@ function updateCounter(){
 
 function applyLiveConfig(){
   const cfg = normCfg(currentSet.config);
-  // SPIN button placement
   const centerOn = cfg.spinButton==='center';
   $('centerSpinBtn').style.display = centerOn ? 'block' : 'none';
   $('spinBtn').style.display    = centerOn ? 'none'  : 'block';
@@ -850,23 +825,15 @@ function drawWheel(rot){
     let a=mid; if(mid>Math.PI/2 && mid<3*Math.PI/2) a=mid+Math.PI;
     ctx.rotate(a);
     const item = sessionItems[i];
-    // Что показывать: в режиме 'number' — номер в исходном списке (origIdx+1)
     let shown;
-    if(cfg.sectorLabel==='number'){
-      shown = String(item.origIdx + 1);
-    } else {
-      shown = item.term.length>16 ? item.term.slice(0,15)+'…' : item.term;
-    }
-    const fs = cfg.sectorLabel==='number'
-      ? 36
-      : (shown.length<=8?30:shown.length<=12?26:20);
+    if(cfg.sectorLabel==='number'){ shown = String(item.origIdx + 1); }
+    else { shown = item.term.length>16 ? item.term.slice(0,15)+'…' : item.term; }
+    const fs = cfg.sectorLabel==='number' ? 36 : (shown.length<=8?30:shown.length<=12?26:20);
     ctx.fillStyle='#1e2a3a'; ctx.font='bold '+fs+'px "Segoe UI", Arial, sans-serif';
     ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(shown,0,0);
     ctx.restore();
   }
-  // центральный круг — прячем, если в центре SPIN
-  const cfg2 = normCfg(currentSet.config);
-  if(cfg2.spinButton !== 'center'){
+  if(cfg.spinButton !== 'center'){
     ctx.beginPath(); ctx.arc(CX,CY,60,0,2*Math.PI); ctx.fillStyle='#fff'; ctx.fill();
     ctx.strokeStyle='#FFD966'; ctx.lineWidth=6; ctx.stroke();
     ctx.fillStyle='#FF6D00'; ctx.font='bold 40px "Segoe UI", Arial, sans-serif';
@@ -908,7 +875,6 @@ function spinWheel(){
       spinning=false;
       $('spinBtn').disabled=false; $('centerSpinBtn').disabled=false;
       stopSpinTone(); playStop();
-      lastPickedItem = sessionItems[target];
       setTimeout(()=>showTask(target),300);
     }
   })(performance.now());
@@ -916,13 +882,11 @@ function spinWheel(){
 
 /* ========== TASK MODES ========== */
 function showTask(i){
-  const item = sessionItems[i];
   const cfg = normCfg(currentSet.config);
-  if(cfg.taskMode==='type-answer')   return showTaskTypeAnswer(i);
-  if(cfg.taskMode==='show-card')     return showTaskCard(i);
-  if(cfg.taskMode==='none')          return showTaskNone(i);
-  // fallback
-  showTaskCard(i);
+  window.currentItemIdx = i;
+  if(cfg.taskMode==='type-answer') return showTaskTypeAnswer(i);
+  if(cfg.taskMode==='show-card')   return showTaskCard(i);
+  return showTaskNone(i);
 }
 
 function showTaskTypeAnswer(i){
@@ -936,7 +900,6 @@ function showTaskTypeAnswer(i){
     badge.textContent = type==='+'?'Утверждение':type==='-'?'Отрицание':'Вопрос';
   } else badge.style.display='none';
   $('taskPrompt').textContent = d.prompt || `${d.term} → ?`;
-  window.currentItemIdx = i;
   $('taskOverlay').classList.add('active');
   setTimeout(()=>$('answerInput').focus(),350);
 }
@@ -946,30 +909,17 @@ function showTaskCard(i){
   $('cardText').textContent = d.def;
   $('btnEliminate').style.display = normCfg(currentSet.config).eliminateUsed ? 'inline-flex' : 'none';
   $('cardOverlay').classList.add('active');
-  window.currentItemIdx = i;
 }
 function showTaskNone(i){
   const d=sessionItems[i];
   $('pickedTerm').textContent = d.term;
   $('btnEliminateNone').style.display = normCfg(currentSet.config).eliminateUsed ? 'inline-flex' : 'none';
   $('noneOverlay').classList.add('active');
-  window.currentItemIdx = i;
 }
 
-/* Task close handlers */
-function closeTask(){
-  $('taskOverlay').classList.remove('active');
-  $('feedback').className='feedback';
-  maybeAutoEliminate();
-}
-function closeCard(){
-  $('cardOverlay').classList.remove('active');
-  maybeAutoEliminate();
-}
-function closeNone(){
-  $('noneOverlay').classList.remove('active');
-  maybeAutoEliminate();
-}
+function closeTask(){ $('taskOverlay').classList.remove('active'); $('feedback').className='feedback'; maybeAutoEliminate(); }
+function closeCard(){ $('cardOverlay').classList.remove('active'); maybeAutoEliminate(); }
+function closeNone(){ $('noneOverlay').classList.remove('active'); maybeAutoEliminate(); }
 
 function maybeAutoEliminate(){
   const cfg = normCfg(currentSet.config);
@@ -990,7 +940,6 @@ function eliminateAndClose(){
   $('noneOverlay').classList.remove('active');
 }
 
-/* type-answer check */
 function normalize(s){
   let n=s.toLowerCase();
   n = n.replace(/\s+([.,!?])/g,'$1').replace(/([.,!?])\s+/g,'$1').replace(/\s+/g,' ').trim();
@@ -1019,7 +968,7 @@ function checkAnswer(){
   }
 }
 
-/* ========== LIVE CONFIG (on game screen) ========== */
+/* ========== LIVE CONFIG ========== */
 let liveCfg = null;
 function openConfigModal(){
   if(!currentSet) return;
@@ -1047,7 +996,6 @@ function setCfgLive(key, val){
 function applyLiveConfigAndClose(){
   if(!liveCfg || !currentSet) return;
   currentSet.config = {...liveCfg};
-  // если это сохранённый набор — обновим
   const mine = Storage.getSets().find(x=>x.id===currentSet.id);
   if(mine){ Storage.updateSet(currentSet.id, currentSet); }
   applyLiveConfig();
@@ -1087,17 +1035,11 @@ $('configOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget)
 $('shareOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeShare(); });
 
 canvas.addEventListener('click', ()=>{
-  // клик по колесу = spin только если SPIN сбоку (чтобы не конфликтовал с центральной кнопкой)
-  const cfg = normCfg(currentSet && currentSet.config);
+  const cfg = currentSet ? normCfg(currentSet.config) : null;
   if(cfg && cfg.spinButton==='panel') spinWheel();
 });
 $('spinBtn').addEventListener('click', spinWheel);
-
-/* Reset session button from config modal */
-$('configOverlay').querySelector('.btn-ghost').addEventListener('click', ()=>{
-  resetSession();
-  toast('Сессия сброшена');
-});
+$('resetSessionBtn').addEventListener('click', ()=>{ resetSession(); toast('Сессия сброшена'); });
 
 function init(){
   renderHome();
