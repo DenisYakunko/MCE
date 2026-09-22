@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCE Donut — Каталог материалов</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px 20px;
+}
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.header-logo {
+    height: 70px;
+    width: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    flex-shrink: 0;
+}
+.header-text {
+    text-align: left;
+}
+.header h1 { 
+    font-size: 1.6em; 
+    margin-bottom: 4px; 
+    line-height: 1.2;
+}
+.header p { 
+    font-size: 1em; 
+    opacity: 0.9; 
+    margin: 0;
+}
+        .search-box {
+            max-width: 700px;
+            margin: -25px auto 20px;
+            padding: 0 15px;
+            position: relative;
+            z-index: 10;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            outline: none;
+            transition: box-shadow 0.3s;
+        }
+        .search-box input:focus {
+            box-shadow: 0 4px 30px rgba(102, 126, 234, 0.4);
+        }
+        .search-icon {
+            position: absolute;
+            left: 35px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.3em;
+        }
+
+        .filters {
+            max-width: 1200px;
+            margin: 0 auto 25px;
+            padding: 0 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .filter-btn:hover { background: #667eea; color: white; }
+        .filter-btn.active { background: #667eea; color: white; }
+
+        .subfilters {
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            padding: 0 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+        }
+        .subfilter-btn {
+            padding: 6px 14px;
+            border: 1px solid #ccc;
+            background: #fff;
+            color: #555;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s;
+        }
+        .subfilter-btn:hover { border-color: #764ba2; color: #764ba2; }
+        .subfilter-btn.active { background: #764ba2; color: white; border-color: #764ba2; }
+
+        .counter {
+            text-align: center;
+            color: #888;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+
+        .cards-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 16px;
+        }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid #667eea;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+        }
+        .card-category {
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #667eea;
+            margin-bottom: 6px;
+        }
+        .card-subcategory {
+            font-size: 0.75em;
+            color: #999;
+            margin-bottom: 8px;
+        }
+        .card-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #222;
+        }
+        .card-desc {
+            font-size: 0.9em;
+            color: #555;
+            flex-grow: 1;
+            margin-bottom: 12px;
+        }
+        .card-link {
+            display: inline-block;
+            padding: 8px 18px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-align: center;
+            transition: opacity 0.3s;
+        }
+        .card-link:hover { opacity: 0.85; }
+        .card-link.no-link {
+            background: #e0e0e0;
+            color: #999;
+            pointer-events: none;
+        }
+
+        .card[data-cat="cinema"] { border-left-color: #e74c3c; }
+        .card[data-cat="cinema"] .card-category { color: #e74c3c; }
+        .card[data-cat="cartoons"] { border-left-color: #f39c12; }
+        .card[data-cat="cartoons"] .card-category { color: #f39c12; }
+        .card[data-cat="coursebooks"] { border-left-color: #2ecc71; }
+        .card[data-cat="coursebooks"] .card-category { color: #2ecc71; }
+        .card[data-cat="games"] { border-left-color: #3498db; }
+        .card[data-cat="games"] .card-category { color: #3498db; }
+        .card[data-cat="readers"] { border-left-color: #9b59b6; }
+        .card[data-cat="readers"] .card-category { color: #9b59b6; }
+        .card[data-cat="grammar"] { border-left-color: #1abc9c; }
+        .card[data-cat="grammar"] .card-category { color: #1abc9c; }
+        .card[data-cat="holidays"] { border-left-color: #e67e22; }
+        .card[data-cat="holidays"] .card-category { color: #e67e22; }
+        .card[data-cat="teacher"] { border-left-color: #34495e; }
+        .card[data-cat="teacher"] .card-category { color: #34495e; }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+            font-size: 1.2em;
+            display: none;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #aaa;
+            font-size: 0.9em;
+        }
+        .footer a { color: #667eea; }
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+		.card-top-text { flex: 1; }
+		.card-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: 10px; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.2); flex-shrink: 0; 		transition: transform .2s; }
+		.card:hover .card-thumb { transform: scale(6.1); }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.4em; }
+            .cards-container { grid-template-columns: 1fr; }
+            .filter-btn { padding: 8px 14px; font-size: 0.85em; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-content">
+        <img src="https://raw.githubusercontent.com/DenisYakunko/MCE/main/assets/img/logo.png" 
+             alt="MCE Logo" 
+             class="header-logo">
+        <div class="header-text">
+            <h1>MCE Donut — Каталог материалов</h1>
+            <p>Мой Невероятный Английский / My Crazy English</p>
+        </div>
+    </div>
+</div>
+
+<div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Поиск по названию или описанию...">
+</div>
+
+<div class="filters" id="filters"></div>
+<div class="subfilters" id="subfilters"></div>
+<div class="counter" id="counter"></div>
+
+<div class="cards-container" id="cardsContainer"></div>
+<div class="no-results" id="noResults">😔 Ничего не найдено. Попробуйте другой запрос.</div>
+
+<div class="footer">
+    <p>© My Crazy English • <a href="https://vk.com/mycrazyenglishgroup" target="_blank">Мы ВКонтакте</a></p>
+</div>
+
+<script>
+
+// ===== 🖼 КАРТИНКИ К ПОСТАМ =====
+// Формат: "ID поста": "ссылка на картинку"
+// Добавляй сюда новые картинки, копируя ID из конца ссылки поста (wall-192843316_12149 → "12149")
+const imgs = {
+"12149": "https://sun9-53.vkuserphoto.ru/s/v1/ig2/ERDrod2mg81W79EljrcZvP01F5OytCQQhI_Sjc8sRKVS8sTDNE0ZiPap7HpJtMoCQtK9L2CttAivqePsvhzwSgja.jpg?quality=95&crop=0,0,538,777&as=32x46,48x69,72x104,108x156,160x231,240x347,360x520,480x693,538x777&from=bu&u=7aIPDxYG0aPM2p-S_BSpVPyLUQUm-mJnP-H8Ddqpres&cs=538x0"
+
+,"1462": "https://sun9-84.vkuserphoto.ru/s/v1/ig2/B0_ZXXTM7__5fnphF5uk8_7SxdbhDyLZXdQkbqGgQEMDsylLW3bZFqMqOjcbr6HxO2BqN9WR9Rf5brR6ezpLIAI_.jpg?quality=96&as=32x42,48x62,72x94,108x140,160x208,240x312,360x468,480x624,540x702,640x832,720x935,1080x1403,1280x1663,1400x1819&from=bu&u=d8OZ4XYH_WQOeWiOA3Ad8Th3F3k9I0xz5AMxn233OSk&cs=1080x0"
+
+
+
+};
+
+const materials = [
+{cat:"cinema", sub:"", title:"The Lord of the Rings", desc:"Кинокласс по захватывающему фильму Питера Джексона с методикой проведения", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1462"},
+{cat:"cinema", sub:"", title:"The Witches of Eastwick", desc:"Великолепная классика американского кинематографа в киноклассе по комедии/фэнтези", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1413"},
+{cat:"cinema", sub:"", title:"Pocahontas", desc:"Классика Уолта Диснея! Кинокласс", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1359"},
+{cat:"cinema", sub:"", title:"Cruella", desc:"Блистательная драма Крейга Гиллеспи. Разработка к 1 эпизоду с выделенным скриптом, вокабуляром, заданиями на понимание. Videobook: episode 1-6", link:"https://vk.ru/wall-192843316_9535"},
+{cat:"cinema", sub:"", title:"Legally Blonde", desc:"Разработка для проведения кинокласса по романтической комедии Роберта Лукетича", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1314"},
+{cat:"cinema", sub:"", title:"The Silence of the Lambs", desc:"Новый кинокласс по американскому психологическому триллеру Джонатана Демми", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1483"},
+{cat:"cinema", sub:"", title:"Aladdin", desc:"Невероятно красивый мультфильм режиссеров Рона Клементса и Джона Маскера — кинокласс с методикой проведения", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1536"},
+{cat:"cinema", sub:"", title:"The English Patient", desc:"Новый movieclass по оскароносной (9 Оскаров!) романтической военной драме", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1612"},
+{cat:"cinema", sub:"", title:"Blind Date", desc:"Отличный кинокласс по блистательной романтической комедии с Kim Basinger и Bruce Willis в главных ролях", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1635"},
+{cat:"cinema", sub:"", title:"Home Alone", desc:"Презентация по фильмам, эпизод 1. Updated version", link:"https://vk.ru/wall-192843316_9190"},
+{cat:"cinema", sub:"", title:"Home Alone 2", desc:"Эпизод, скрипт и задания к нему + Wordwall games", link:"https://vk.ru/wall-192843316_9205"},
+{cat:"cartoons", sub:"Gogo loves English", title:"Спиннер-игра (эпизод 1)", desc:"Интерактивная игра со спиннером для эпизода 1, Gogo loves English", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1473"},
+{cat:"cartoons", sub:"Gogo loves English", title:"Fruit Memory Game (эпизод 7)", desc:"Интерактивная игра Fruit Memory Game к видеоуроку 7, Gogo loves English", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1465"},
+{cat:"cartoons", sub:"Gogo loves English", title:"Онлайн-урок (эпизод 4)", desc:"Онлайн урок по эпизоду 4, Gogo loves English со встроенным плейером и интерактивными заданиями", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1380"},
+{cat:"cartoons", sub:"Gogo loves English", title:"Мини-тест по 1 диску", desc:"7 вопросов с 3 вариантами ответа (1-7 серии)", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1608"},
+{cat:"cartoons", sub:"Gogo loves English", title:"Презентация (эпизод 14)", desc:"Интерактивная презентация по мультику Gogo loves English, episode 14 (Have you got a ruler?)", link:""},
+{cat:"cartoons", sub:"Gogo loves English", title:"Видеоурок на joyteka (эпизод 23)", desc:"Интерактивный видеоурок по мультику Gogo loves English 23 (What are we doing?) на сайте joyteka.com", link:"https://joyteka.com/100007340"},
+{cat:"cartoons", sub:"Gogo loves English", title:"Видеоурок на Взнания (эпизод 2)", desc:"Видеоурок Gogo loves English 2 — What's his name? на vznanija", link:"https://student.vznaniya.ru/home/video/637359?slug=O5rhqtrk&onlypreview=true&post=-192843316_2705&cc_key="},
+{cat:"cartoons", sub:"Gogo loves English", title:"Мультики в HD", desc:"Нашла редкость — мультики про Гого в HD качестве!", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_2603"},
+{cat:"cartoons", sub:"Gogo loves English", title:"Интерактивный урок (эпизод 6)", desc:"Интерактивный урок по мультику Gogo loves English 6 (What colour is it?) с видео в HD качестве на сайте Взнания. Там же урок по лексике из этого мультика", link:""},
+{cat:"cartoons", sub:"Gogo loves English", title:"Игра Wordwall (эпизод 5)", desc:"Игра на Wordwall по мультику Gogo loves English 5 (zoo animals)", link:"https://wordwall.net/resource/34307524/gogo-5-matching-game-crocodilegiraffe"},
+{cat:"cartoons", sub:"Gogo loves English", title:"Диаграмма (эпизод 3)", desc:"Интерактивная диаграмма к видеоуроку по Gogo loves English, episode 3 (тема — family)", link:"https://vk.ru/wall-192843316_2572"},
+{cat:"cartoons", sub:"Gogo loves English", title:"Gogo Readers", desc:"18 текстов про героев мультсериала с лексикой по темам и заданиями к каждому тексту", link:"https://vk.ru/wall-192843316_2496"},
+{cat:"cartoons", sub:"Gogo loves English", title:"8-ми страничные книжки", desc:"Gogo loves English: 8-ми страничные книжки к первым 7 сериям", link:"https://vk.ru/wall-192843316_9432"},
+{cat:"cartoons", sub:"Gogo loves English", title:"Урок-квиз Genially (эпизод 4)", desc:"Gogo loves English, episode 4. Урок-квиз (genially)", link:"https://vk.ru/wall-192843316_8199"},
+{cat:"cartoons", sub:"Peppa Pig", title:"Pancakes", desc:"Классная разработка к чудесному мультфильму Peppa Pig: Pancakes (pdf, ppt)", link:"https://vk.ru/wall-192843316_4046"},
+{cat:"cartoons", sub:"Peppa Pig", title:"Mummy Pig's birthday", desc:"Peppa Pig: Mummy Pig's birthday (Взнания, скрипт)", link:"https://vk.ru/wall-192843316_4423"},
+{cat:"cartoons", sub:"Peppa Pig", title:"St. Patrick Day", desc:"Peppa Pig loves St.Patrick Day (Взнания)", link:"https://vk.ru/wall-192843316_4445"},
+{cat:"cartoons", sub:"Peppa Pig", title:"The Easter Bunny", desc:"Peppa Pig: the Easter Bunny (Взнания)", link:"https://vk.ru/wall-192843316_4583"},
+{cat:"cartoons", sub:"Peppa Pig", title:"Space Adventure", desc:"Тематический урок Peppa pig: Space Adventure (на Взнаниях)", link:"https://vk.ru/wall-192843316_4654"},
+{cat:"cartoons", sub:"Peppa Pig", title:"A trip to the Moon", desc:"Новая презентация по мультику Peppa Pig: A trip to the Moon", link:"https://vk.ru/wall-192843316_4694"},
+{cat:"cartoons", sub:"Peppa Pig", title:"Earth Day — Recycling", desc:"The Earth Day with Peppa Pig — Recycling (на Взнаниях)", link:"https://vk.ru/wall-192843316_4966"},
+{cat:"cartoons", sub:"Peppa Pig", title:"Windy Autumn Day", desc:"Autumn marathon day 6: Peppa Pig: Windy Autumn Day", link:"https://vk.ru/wall-192843316_6854"},
+{cat:"cartoons", sub:"Peppa Pig", title:"Lots of muddy puddles", desc:"Autumn marathon day 7: Peppa Pig: Lots of muddy puddles", link:"https://vk.ru/wall-192843316_6869"},
+{cat:"cartoons", sub:"Peppa Pig", title:"Possessive Case: Peppa Pig family", desc:"Взнания и worksheet (pdf)", link:"https://vk.ru/wall-192843316_6930"},
+{cat:"cartoons", sub:"Pete the Cat", title:"Pete the Cat saves Christmas", desc:"Красочный видеобук по книге и анимированному мультику Pete the Cat saves Christmas! + допматериалы", link:"https://vk.ru/wall-192843316_7571"},
+{cat:"cartoons", sub:"Pete the Cat", title:"Big Easter Adventure", desc:"Pete the Cat: Big Easter Adventure (презентация, видеобук для распечатки, Взнания)", link:"https://vk.ru/wall-192843316_4600"},
+{cat:"cartoons", sub:"Pete the Cat", title:"Falling for autumn", desc:"Autumn marathon day 3: Pete the Cat: Falling for autumn", link:"https://vk.ru/wall-192843316_6815"},
+{cat:"cartoons", sub:"Pete the Cat", title:"The First Thanksgiving", desc:"Набор для онлайн/оффлайн работы по анимированной книге Pete the Cat — the First Thanksgiving! (презентация+пдф)", link:"https://vk.ru/wall-192843316_7305"},
+{cat:"cartoons", sub:"Pete the Cat", title:"The Great Leprechaun Chase", desc:"Новый видеобук + презентация, видеобук в пдф, ссылки", link:"https://vk.ru/wall-192843316_9414"},
+{cat:"cartoons", sub:"Pete the Cat", title:"Big Easter Basket Bandit", desc:"Easter materials: Pete the Cat: Big Easter Basket Bandit", link:""},
+{cat:"cartoons", sub:"Paddington", title:"Autumn wish", desc:"Autumn marathon day 4: Paddington has an autumn wish", link:"https://vk.ru/wall-192843316_6819"},
+{cat:"cartoons", sub:"Paddington", title:"Love Day Cards", desc:"Разработка мультсерии про медвежонка Паддингтона на Взнаниях: Paddington and the Love Day Cards", link:"https://vk.ru/wall-192843316_9315"},
+{cat:"cartoons", sub:"Paddington", title:"Plays football", desc:"Paddington plays football, part 1+2", link:"https://vk.ru/wall-192843316_9424"},
+{cat:"cartoons", sub:"Paddington", title:"Space adventure", desc:"Paddington's space adventure video book (pdf)", link:"https://vk.ru/wall-192843316_9494"},
+{cat:"cartoons", sub:"Paddington", title:"The magic trick", desc:"Paddington and the magic trick videobook", link:"https://vk.ru/wall-192843316_9536"},
+{cat:"cartoons", sub:"Paddington", title:"Poor Mr Curry", desc:"Paddington and Poor Mr Curry", link:"https://vk.ru/wall-192843316_9553"},
+{cat:"cartoons", sub:"Paddington", title:"The treehouse", desc:"Новый видеобук: Paddington and the treehouse", link:"https://vk.ru/wall-192843316_9575"},
+{cat:"cartoons", sub:"Magic Marker", title:"Magic Market ep 19", desc:"Новая серия Magic Market: ep 19 (prepositions of place)", link:"https://vk.ru/wall-192843316_4345"},
+{cat:"cartoons", sub:"Magic Marker", title:"Videobook 28", desc:"Magic Marker videobook 28", link:"https://vk.ru/wall-192843316_9361"},
+{cat:"cartoons", sub:"Magic Marker", title:"Videobook 46", desc:"Magic Marker videobook 46", link:"https://vk.ru/wall-192843316_9478"},
+{cat:"cartoons", sub:"Magic Marker", title:"Videobooks 47, 48", desc:"Magic Marker videobook 47, 48", link:"https://vk.ru/wall-192843316_9546"},
+{cat:"cartoons", sub:"Magic Marker", title:"Серии 49-57", desc:"Продолжаем смотреть сериал Magic Marker для 2-3 классов. Серии 49, 50, 51, 52, 53, 54, 55, 56, 57", link:"https://vk.ru/wall-192843316_10219"},
+{cat:"cartoons", sub:"Ben and Holly", title:"Elf Joke Day", desc:"Elf Joke Day (Ben and Holly) (Взнания)", link:"https://vk.ru/wall-192843316_4480"},
+{cat:"cartoons", sub:"Ben and Holly", title:"Acorn Day", desc:"Autumn marathon day 5: Ben and Holly (Acorn Day)", link:"https://vk.ru/wall-192843316_6849"},
+{cat:"cartoons", sub:"Binka", title:"Binka episodes 1-5", desc:"Videobooks к сериалу Binka, episode 1, 2, 3, 4, 5", link:"https://vk.ru/wall-192843316_9537"},
+{cat:"cartoons", sub:"Binka", title:"Binka and Spit (episode 6)", desc:"Новый видеобук с упражнениями", link:"https://vk.ru/wall-192843316_10182"},
+{cat:"cartoons", sub:"Другие", title:"Wallace and Gromit", desc:"Wallace and Gromit: The curse of the Were-Rabbit, episode 1", link:"https://vk.ru/wall-192843316_9585"},
+{cat:"cartoons", sub:"Другие", title:"Dreaming of spring", desc:"Dreaming of spring cartoon (скрипт, миникнижка с картинками и видео)", link:"https://vk.ru/wall-192843316_4407"},
+{cat:"cartoons", sub:"Другие", title:"One fall day", desc:"Autumn marathon day 2: мультик One fall day, песня Leaf, little leaf", link:"https://vk.ru/wall-192843316_6803"},
+{cat:"cartoons", sub:"Другие", title:"The leaf thief", desc:"Autumn marathon day 9: The leaf thief", link:"https://vk.ru/wall-192843316_6920"},
+{cat:"cartoons", sub:"Другие", title:"We're going on a leaf hunt", desc:"Autumn marathon final day 10: We're going on a leaf hunt", link:"https://vk.ru/wall-192843316_6939"},
+{cat:"cartoons", sub:"Другие", title:"Leaves", desc:"Autumn marathon day 8: Leaves", link:"https://vk.ru/wall-192843316_6895"},
+{cat:"cartoons", sub:"Другие", title:"Stickman", desc:"Stickman: обновления. Уроки по Stickman на Взнания (pdf): лексика и видео уроки", link:"https://vk.ru/wall-192843316_7224"},
+{cat:"cartoons", sub:"Другие", title:"Was-were (видео)", desc:"Введение темы was-were с помощью озвученного видео", link:""},
+{cat:"cartoons", sub:"Другие", title:"Groundhog Day (видео)", desc:"Отличное видео для введения темы Groundhog Day. К нему прилагается миникнижка с текстом для распечатки и скрипт видео + Видео урок на Взнаниях", link:"https://vk.ru/wall-192843316_3968"},
+{cat:"cartoons", sub:"Другие", title:"Koala-friendly видео", desc:"Не смогла пройти мимо этого потрясающего koala-friendly видео: 3 урока про милых и странных коал в папке Meet the animals на Взнаниях", link:"https://vk.ru/wall-192843316_5279"},
+{cat:"cartoons", sub:"Другие", title:"Thanksgiving видео (A2)", desc:"Простое видео к Дню Благодарения с заданиями (A2)", link:"https://vk.ru/wall-192843316_7307"},
+{cat:"cartoons", sub:"Другие", title:"Autumn is coming", desc:"Осенний мультмарафон, день 1: Autumn is coming", link:"https://vk.ru/wall-192843316_6785"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG1: Hammy's grammar 1.2, 1.3, 2.2, 2.3", desc:"Hammy's grammar workbook + board game (1.2)", link:"https://vk.ru/wall-192843316_9831"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG1: Hammy's grammar 3.2", desc:"Hammy's grammar workbook Unit 3.2", link:"https://vk.ru/wall-192843316_9943"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG1: Hammy's grammar 3.3", desc:"There is/are", link:"https://vk.ru/wall-192843316_10049"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG1-2: Clothes", desc:"Новые активитиз с хомячком Hammy", link:"https://vk.ru/wall-192843316_10236"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG2: Unit 0 — Countries", desc:"Все о странах и национальностях, Hammy в национальных одеждах с разными флагами", link:"https://vk.ru/wall-192843316_10125"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG2: Unit 0.2 — Can + verbs", desc:"Can + action verbs, с хомячком Hammy + новые action verbs и бродилка", link:"https://vk.ru/wall-192843316_10162"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG2: Unit 1.3 updates", desc:"Обновления unit 1.3", link:"https://vk.ru/wall-192843316_10273"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG2: Unit 1.5 — Places in school", desc:"Places in a school: updates", link:"https://vk.ru/wall-192843316_10175"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG2: Rooms and furniture", desc:"Matching cards, картинки для подписывания, картинки с вопросами", link:"https://vk.ru/wall-192843316_10185"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG2: Adjectives", desc:"Задания и карточки с хомячком", link:"https://vk.ru/wall-192843316_10246"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG2: School subjects", desc:"School subjects with Hammy", link:"https://vk.ru/wall-192843316_10290"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG2: Интерактивные шаблоны unit 0", desc:"С возможностью впечатывать пропуски", link:"https://vk.ru/wall-192843316_6857"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG3: Back translation — Unit 0", desc:"Карточки с активной лексикой", link:"https://vk.ru/wall-192843316_9973"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG3: Back translation — Units 1-2", desc:"Un 1/1-1/6, 2/1-2/2 + Unit 2 cards", link:"https://vk.ru/wall-192843316_8527"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG3: Back translation — Units 3-4", desc:"Unit 3.1-3, 3.5-3.6, 4.1-4.6 + Speaking cards unit 4", link:"https://vk.ru/wall-192843316_8836"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG3: Back translation — Units 5-6", desc:"Unit 5.1-5.3, Unit 6.1 (cooking)", link:"https://vk.ru/wall-192843316_9228"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG3: Back translation — Units 7-8", desc:"Units 7.2-7.6, 8.1-8.6", link:"https://vk.ru/wall-192843316_9305"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG3: Unit 2.1 — Extra tasks", desc:"Дополнительные задания на повторение лексики (gaps filling, definitions matching)", link:"https://vk.ru/wall-192843316_8513"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG3: Revision 1-8", desc:"Материалы для Revision 1&2, 3&4, 5&6, 7&8 + карточки с активной лексикой", link:""},
+{cat:"coursebooks", sub:"Go Getter", title:"GG4: Шаблоны un 0.3, 0.4", desc:"Шаблоны-таблицы для работы с диалогом из GG4", link:"https://vk.ru/wall-192843316_3174"},
+{cat:"coursebooks", sub:"Go Getter", title:"GG 1,2,3: Placement tests", desc:"Взнания", link:"https://vk.ru/wall-192843316_8747"},
+{cat:"coursebooks", sub:"Own It", title:"OI3: Starter Unit — презентации", desc:"Презентации 0.1-0.6 с самопроверкой, доп. видео, карточками на обратный перевод, Wordwall, ссылка на дз WB на Взнаниях", link:""},
+{cat:"coursebooks", sub:"Own It", title:"OI3: Starter Unit — шаблоны", desc:"Шаблоны к Starter unit + back translation cards 0.1-0.2 для распечатки", link:""},
+{cat:"coursebooks", sub:"Own It", title:"OI3: Unit 1", desc:"Презентации 1.1-1.3, весь юнит 1 + back translation cards 1.1-1.7 + шаблоны к ИТ", link:"https://vk.ru/wall-192843316_10099"},
+{cat:"coursebooks", sub:"Own It", title:"OI3: Unit 2", desc:"Back translation cards + новые шаблоны для интерактивной тетради", link:"https://vk.ru/wall-192843316_10287"},
+{cat:"coursebooks", sub:"Own It", title:"OI3: Unit 3.8", desc:"Презентация", link:"https://vk.ru/wall-192843316_10261"},
+{cat:"coursebooks", sub:"Own It", title:"OI3: Unit 5", desc:"Материалы юнита", link:""},
+{cat:"coursebooks", sub:"Own It", title:"OI3: Unit 6", desc:"Новые уроки на Взнаниях + итоговый тест из WB", link:""},
+{cat:"coursebooks", sub:"Own It", title:"OI3: Unit 7 — Review test", desc:"Новые уроки на Взнания + Review test", link:""},
+{cat:"coursebooks", sub:"Own It", title:"OI3: Unit 9.1", desc:"Презентация с автопроверкой update", link:"https://vk.ru/wall-192843316_9977"},
+{cat:"coursebooks", sub:"Own It", title:"OI3: Review 3", desc:"WB, p. 30-31", link:"https://vk.ru/wall-192843316_9249"},
+{cat:"coursebooks", sub:"Own It", title:"OI4: Unit 0.1", desc:"Повторение travel vocabulary с песней", link:"https://vk.ru/wall-192843316_10215"},
+{cat:"coursebooks", sub:"Family & Friends 2", title:"FF2: Starter Unit", desc:"Новые игры на WordWall + dictionary", link:"https://vk.ru/wall-192843316_8714"},
+{cat:"coursebooks", sub:"Family & Friends 2", title:"FF2: Unit 0, Unit 1", desc:"Словарик-прописи к Unit 0, unit 1. Шаблоны и игры 1.1-1.3. Все шаблоны unit 1", link:""},
+{cat:"coursebooks", sub:"Family & Friends 2", title:"FF2: Unit 2", desc:"Шаблоны", link:"https://vk.ru/wall-192843316_10202"},
+{cat:"coursebooks", sub:"Family & Friends 2", title:"FF2: Unit 3", desc:"Интерактивные шаблоны к юниту 3", link:"https://vk.ru/wall-192843316_10281"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Pig", desc:"Игры Bingo, Memory, picture text, board game, test, dictionary, tracing (2nd & 3rd ed)", link:""},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Hen", desc:"Игры read and match, bingo, memory, board game, test, dictionary, feeding dragon cards (2nd & 3rd ed)", link:"https://vk.ru/wall-192843316_8169"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Bug", desc:"Picture text, board game, bingo, memory, feeding dragon cards, dictionary (2nd ed)", link:""},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Ostrich", desc:"Boardgame (vocabulary revision), bingo, memory, dictionary, test (2nd & 3rd ed)", link:""},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Caterpillar", desc:"Memory, bingo, picture text, flashcards, trace and write dictionary, feed the dragon (2nd & 3rd ed)", link:"https://vk.ru/wall-192843316_9156"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Dog", desc:"Picture text, memory, bingo, dominoes, test, dictionary, board game (2nd ed)", link:"https://vk.ru/wall-192843316_9579"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Hamster", desc:"Словарик, игры bingo, memory, board game, дриллинг to be (+/-), picture text, cards, word formation, test (2nd ed)", link:"https://vk.ru/wall-192843316_9670"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Bird", desc:"Папка с играми, test (2nd ed)", link:"https://vk.ru/wall-192843316_9723"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Raccoon", desc:"Text pictures, bingo, memory, flashcards (coloured), игры и тест (2nd ed)", link:"https://vk.ru/wall-192843316_10095"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Goat", desc:"Словарик, мемори, бинго, picture text, board game, test (2nd & 3rd ed)", link:"https://vk.ru/wall-192843316_10181"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Monkey", desc:"Games + dictionary (2nd ed)", link:"https://vk.ru/wall-192843316_8995"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Elephant", desc:"Bingo, memory, dictionary, picture text, board game (2nd ed)", link:"https://vk.ru/wall-192843316_9443"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Owl", desc:"Games, test (2nd ed)", link:"https://vk.ru/wall-192843316_9958"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Snail", desc:"Tracing dictionary, picture text, bingo, memory, video для тренировки буквосочетания ai, board game (snakes and ladders) + шаблон бродилки, test (2nd ed)", link:"https://vk.ru/wall-192843316_9312"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Crocodile", desc:"Bingo, memory, feed the dragon cards, games and test (2nd & 3rd ed)", link:"https://vk.ru/wall-192843316_8172"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Bee", desc:"Games (2nd ed)", link:""},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Panda", desc:"Test, dictionary, memory, bingo, board game (2nd ed)", link:"https://vk.ru/wall-192843316_9440"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Доп. тесты", desc:"Дополнительные тесты к Pig, Hen, Bug (2nd ed)", link:"https://vk.ru/wall-192843316_9099"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Доп. игры", desc:"Дополнительные игры для распечатки: hen — memory (updated), cards for feeding the dragon. bug — bingo, memory, feeding dragon cards", link:"https://vk.ru/wall-192843316_7133"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Общие материалы", desc:"Словарик к курсу (1st & 2nd ed) + шаблон. Games: bingo, memory, picture text, tracing dictionary. Тексты с картинками", link:"https://vk.ru/wall-192843316_5221"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1: Snails — Colours", desc:"Чудесная презентация Snails-Colours (My lovely pets 2)", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_2472"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP2: Charley the ostrich", desc:"Карточки для пересказа", link:"https://vk.ru/wall-192843316_8061"},
+{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP2: Sally the snail", desc:"Новые игры, словарик и презентация", link:"https://vk.ru/wall-192843316_9574"},
+{cat:"coursebooks", sub:"Daddy Cat", title:"Daddy Cat: Final lesson", desc:"Final lesson games (board game, memory, miming game) + карточки для чтения для итогового урока", link:"https://vk.ru/wall-192843316_8291"},
+{cat:"coursebooks", sub:"Daddy Cat", title:"Daddy Cat: Mini dictionary", desc:"Мини словарик к курсу Daddy Cat", link:"https://vk.ru/wall-192843316_8492"},
+{cat:"coursebooks", sub:"Solutions", title:"Solutions Pre-Int: Appearance", desc:"Topic: Appearance and clothes. Additional video and worksheet (3rd ed)", link:"https://vk.ru/wall-192843316_6990"},
+{cat:"coursebooks", sub:"Solutions", title:"Solutions Pre-Int: Robots-teachers", desc:"Extra video to unit ID (articles) (3rd ed)", link:"https://vk.ru/wall-192843316_7033"},
+{cat:"coursebooks", sub:"Solutions", title:"Solutions Pre-Int: Unit 2F", desc:"Extra video and text (Fyodor Konyukhov)", link:"https://vk.ru/wall-192843316_8091"},
+{cat:"coursebooks", sub:"Solutions", title:"Solutions Pre-Int: Unit 6a", desc:"Vocabulary drills — 3 новых урока на Взнаниях", link:"https://vk.ru/wall-192843316_9336"},
+{cat:"coursebooks", sub:"Roadmap", title:"Roadmap B1+: 10a", desc:"Взнания", link:"https://vk.ru/wall-192843316_9410"},
+{cat:"coursebooks", sub:"Roadmap", title:"Roadmap B1+: 7c", desc:"New presentation", link:"https://vk.ru/wall-192843316_9487"},
+{cat:"coursebooks", sub:"Fun for Flyers", title:"Fun for Flyers: Lesson 11", desc:"Интерактивная презентация — The world around us", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1489"},
+{cat:"coursebooks", sub:"Fun for Flyers", title:"Fun for Flyers: Lesson 9", desc:"Интерактивная презентация. Звук встроен", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1647"},
+{cat:"coursebooks", sub:"Fun for Flyers", title:"Fun for Flyers: Lesson 31", desc:"Интерактивная презентация. Встроенное аудио, автопроверка заданий", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1887"},
+{cat:"coursebooks", sub:"Другие", title:"Fun+", desc:"Абсолютный маст хэв для учителя английского — серия учебников Fun + опыт применения", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1406"},
+{cat:"coursebooks", sub:"Другие", title:"Side by Side", desc:"Ценнейший ресурс для дриллинга грамматики!!! Вечно актуальный Side by Side! + методика работы (из личного опыта)", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1424"},
+{cat:"coursebooks", sub:"Другие", title:"New EF Intermediate: Friendship", desc:"Презентация для введения темы Friendship. Содержит вопросы для warm up, видео для обсуждения", link:"https://vk.ru/wall-192843316_3938"},
+{cat:"coursebooks", sub:"Другие", title:"Ideas and Issues", desc:"Отличное пособие для прокачки навыков говорения! Уровень В1-В2", link:""},
+{cat:"games", sub:"Wordwall / Genially", title:"Счет и числительные", desc:"Интерактивная игра на WordWall — тренируем счет и числительные в пределах 10 в примерах", link:"https://wordwall.net/resource/28575339"},
+{cat:"games", sub:"Wordwall / Genially", title:"Бродилка 1-20", desc:"Классная бродилка (genially) на повторение числительных 1-20, со встроенными ресурсами (Wordwall, Baamboozle, Vznaniya) и веселыми заданиями", link:"https://vk.ru/wall-192843316_8163"},
+{cat:"games", sub:"Wordwall / Genially", title:"Plurals of nouns", desc:"Презентация на genial.ly", link:"https://vk.ru/wall-192843316_8109"},
+{cat:"games", sub:"Wordwall / Genially", title:"Гласные в закрытом слоге", desc:"Небольшая презентация на чтение гласных в закрытом слоге (genially)", link:"https://vk.ru/wall-192843316_8201"},
+{cat:"games", sub:"Wordwall / Genially", title:"Disney Jeopardy", desc:"Викторина на знание героев мультфильмов Диснея. Выполнена в стиле Jeopardy (Своя игра)", link:"https://vk.ru/wall-192843316_8577"},
+{cat:"games", sub:"Оффлайн / Печать", title:"Roll and Read", desc:"Отличная игра Roll and Read и ее модификации — Roll and Colour, Roll and Say, Roll and Draw", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1478"},
+{cat:"games", sub:"Оффлайн / Печать", title:"Read and feed Cheburashka", desc:"Игра (pdf) + Игра на Wordwall", link:"https://vk.ru/wall-192843316_4769"},
+{cat:"games", sub:"Оффлайн / Печать", title:"ABC Game Wheel", desc:"Для распечатки", link:"https://vk.ru/wall-192843316_4947"},
+{cat:"games", sub:"Оффлайн / Печать", title:"Circus Fun (сортер)", desc:"Новый веселый сортер поможет закрепить конструкцию have/has got в утверждениях, отрицаниях и вопросах", link:"https://vk.ru/wall-192843316_5052"},
+{cat:"games", sub:"Оффлайн / Печать", title:"Сортер to be / have got", desc:"Простой и милый сортер на глаголы to be и have got + дополнительные слова для конструирования предложений (+/-/?): pdf, ppt", link:"https://vk.ru/wall-192843316_4052"},
+{cat:"games", sub:"Презентации", title:"Guess who I am (Wednesday)", desc:"Новая презентация-игра с героями популярного сериала Wednesday. Лексика: описание внешности", link:"https://vk.ru/wall-192843316_3745"},
+{cat:"games", sub:"Презентации", title:"Present Continuous (животные)", desc:"Красочная презентация с милыми животными на тренировку Present Continuous в утвердительных и отрицательных предложениях", link:"https://vk.ru/wall-192843316_5069"},
+{cat:"games", sub:"Презентации", title:"Secret life of pets", desc:"Презентация «First lesson with Secret life of pets»", link:"https://vk.ru/wall-192843316_6540"},
+{cat:"games", sub:"Для малышей", title:"My first numbers", desc:"Рабочие листы для самых маленьких (3+)", link:"https://vk.ru/wall-192843316_8632"},
+{cat:"games", sub:"Для малышей", title:"10 мини-книжек", desc:"10 мини книжек на основные цвета для самых маленьких", link:"https://vk.ru/wall-192843316_8679"},
+{cat:"games", sub:"Для малышей", title:"Вводные уроки с собачкой Соней", desc:"Фразы Hello. What's your name? How are you? QR-коды к песням для повторения дома", link:"https://vk.ru/wall-192843316_6983"},
+{cat:"games", sub:"Дриллы", title:"Christmas Tenses Drill", desc:"Новая зимняя разработка по временам", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1522"},
+{cat:"games", sub:"Дриллы", title:"Чайные активитиз", desc:"Веселый набор чайных активитиз для введения и тренировки глаголов to be и have got (Present Simple)", link:"https://vk.ru/wall-192843316_6298"},
+{cat:"games", sub:"Дриллы", title:"Spring vocabulary drilling", desc:"The spring is beginning: видео урок, vocabulary drilling и quiz (на Взнания)", link:"https://vk.ru/wall-192843316_4413"},
+{cat:"readers", sub:"Muzzy", title:"Muzzy: Great Gondoland games", desc:"Новый ридер. Уровень — начальная школа, 3-4-5 кл", link:"https://vk.ru/wall-192843316_7035"},
+{cat:"readers", sub:"Muzzy", title:"Muzzy: Mystery plant", desc:"Новый ридер с заданиями. Во вложении книга в pdf и аудио", link:"https://vk.ru/wall-192843316_7196"},
+{cat:"readers", sub:"Muzzy", title:"Muzzy: King's birthday", desc:"Новый ридер с заданиями", link:""},
+{cat:"readers", sub:"J. Donaldson", title:"Zog + Zog and the flying doctors", desc:"Марафон #2 по книгам Джулии Дональдсона! Zog (1-4ep), Zog and the flying doctors (1-4ep). Папка MCE Донат", link:"https://vk.ru/wall-192843316_7154"},
+{cat:"readers", sub:"J. Donaldson", title:"Room on the broom", desc:"Марафон на Взнаниях (ер 1-5)", link:"https://vk.ru/wall-192843316_8066"},
+{cat:"readers", sub:"Другие", title:"Catch Pat! ('A' reader)", desc:"Лексика, мемори и видео с заданиями. Папка First readers / Catch Pat", link:"https://vk.ru/wall-192843316_5561"},
+{cat:"readers", sub:"Другие", title:"Super Dad", desc:"Reader (Взнания)", link:"https://vk.ru/wall-192843316_7995"},
+{cat:"readers", sub:"Другие", title:"My Mum", desc:"Новые уроки к книге на Взнаниях, флешкарточки (цветные и ч/б) и текст", link:"https://vk.ru/wall-192843316_8040"},
+{cat:"readers", sub:"Другие", title:"Meg at sea", desc:"Новые уроки на Взнания", link:"https://vk.ru/wall-192843316_8502"},
+{cat:"readers", sub:"Книги", title:"Pancakes, Pancakes (Eric Carle)", desc:"Очаровательная книга Pancakes, Pancakes by Eric Carle! 🥞", link:"https://vk.ru/wall-192843316_4281"},
+{cat:"readers", sub:"Книги", title:"Harry Potter", desc:"Книга персонажей, волшебных объектов и магический мини-словарь по мотивам фильма Harry Potter: the Sorcerer's Stone! Плюс настольная игра в подарок + ключи!", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_2338"},
+{cat:"grammar", sub:"Грамматика", title:"Present Simple Pack", desc:"Набор наглядных пособий для тренировки построения предложений в Present Simple (+,-,?) — pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1431"},
+{cat:"grammar", sub:"Грамматика", title:"Present Perfect Continuous", desc:"Present Perfect Continuous + Emotions (Intermediate). Warm-up: How are you feeling today and why?", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_3015"},
+{cat:"grammar", sub:"Грамматика", title:"Grammar Super Pack (Among Us)", desc:"По суперпопулярной игре AMONG US", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_2848"},
+{cat:"grammar", sub:"Грамматика", title:"Possessive Case (Peppa Pig)", desc:"Peppa Pig family: Взнания и worksheet (pdf)", link:"https://vk.ru/wall-192843316_6930"},
+{cat:"grammar", sub:"Грамматика", title:"Таблицы с can (6 вариантов)", desc:"Грамматические таблички с can +/-/? — Barbie, Wednesday, cat, dog, Cheburashka, Spiderman. Можно распечатать и вклеить в тетрадь", link:"https://vk.ru/wall-192843316_7114"},
+{cat:"grammar", sub:"Грамматика", title:"Таблицы с Гарри Поттером", desc:"Грамматические таблицы с героями Гарри Поттера", link:"https://vk.ru/wall-192843316_6427"},
+{cat:"grammar", sub:"Грамматика", title:"Времена + спец. вопросы (Wednesday)", desc:"Шикарная презентация по временам и специальным вопросам с тематикой Wednesday", link:"https://vk.ru/wall-192843316_5860"},
+{cat:"grammar", sub:"Грамматика", title:"Карточки на времена (Wednesday)", desc:"Крутые грамматические карточки на времена по материалам сериала Wednesday", link:"https://vk.ru/wall-192843316_4021"},
+{cat:"grammar", sub:"Грамматика", title:"There is / there are", desc:"Добавление к ИТ шаблонам", link:"https://vk.ru/wall-192843316_7132"},
+{cat:"grammar", sub:"Грамматика", title:"This/that — these/those", desc:"Шаблоны по теме", link:"https://vk.ru/wall-192843316_9427"},
+{cat:"grammar", sub:"Неправильные глаголы", title:"105 карточек (4 сезона)", desc:"Классный набор с неправильными глаголами в стиле времен года (на основе irregular verbs list из Spotlight 9): winter, spring, summer, autumn", link:"https://vk.ru/wall-192843316_7530"},
+{cat:"grammar", sub:"Неправильные глаголы", title:"Irregular verbs 2.0 (капибара)", desc:"История с капибарой №1 + активности. История 2", link:"https://vk.ru/wall-192843316_10109"},
+{cat:"grammar", sub:"Неправильные глаголы", title:"Рабочие листы", desc:"Рабочие листы с неправильными глаголами", link:"https://vk.ru/wall-192843316_9401"},
+{cat:"grammar", sub:"Фонетика", title:"Гласные в 4 типах слога", desc:"Красочная разработка на тренировку чтения гласных! ppt, pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1397"},
+{cat:"grammar", sub:"Фонетика", title:"Magic e + открытый слог 'a'", desc:"Шаблоны для чтения", link:"https://vk.ru/wall-192843316_7440"},
+{cat:"grammar", sub:"Фонетика", title:"Дифтонг [au] (ow/ou)", desc:"Тренировка произношения", link:"https://vk.ru/wall-192843316_8537"},
+{cat:"grammar", sub:"Фонетика", title:"Долгий и краткий [oo]", desc:"Тренировка произношения", link:"https://vk.ru/wall-192843316_8644"},
+{cat:"grammar", sub:"Фонетика", title:"Phonics with Dolly: A", desc:"Closed syllable", link:"https://vk.ru/wall-192843316_9950"},
+{cat:"grammar", sub:"Фонетика", title:"Phonics with Dolly: E", desc:"Closed syllable", link:"https://vk.ru/wall-192843316_9969"},
+{cat:"grammar", sub:"Фонетика", title:"AI-шаблоны для чтения", desc:"В 4х вариантах: по My lovely Pets 2nd, 3rd ed: snail, по двум фонетическим видео (with links)", link:"https://vk.ru/wall-192843316_7451"},
+{cat:"grammar", sub:"Фонетика", title:"Fast Phonics (640 стр.)", desc:"Полезная подборка по чтению с сайта reading eggs, 640 pdf pages", link:"https://vk.ru/wall-192843316_5073"},
+{cat:"grammar", sub:"Лексика", title:"Флэшкарточки — Еда", desc:"Аппетитные демонстрационные флэшкарточки с транскрипцией — все, что связано с едой. С картинками и без", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1826"},
+{cat:"grammar", sub:"Лексика", title:"Prepositions (Lily the Capybara)", desc:"Веселый набор Prepositions of place with Lily the Capybara", link:"https://vk.ru/wall-192843316_8313"},
+{cat:"grammar", sub:"Лексика", title:"Календарь для small talk", desc:"Новый календарь. Обсуждаем дату, день недели, погоду, время года", link:"https://vk.ru/wall-192843316_8572"},
+{cat:"grammar", sub:"Лексика", title:"Warm up: Knowledge Day", desc:"Разработка к 1 сентября", link:"https://vk.ru/wall-192843316_10077"},
+{cat:"grammar", sub:"Песни", title:"The Beatles — I love her", desc:"Повторение местоимений (personal, object, possessive)", link:"https://vk.ru/wall-192843316_6789"},
+{cat:"grammar", sub:"Песни", title:"Lenka — My love", desc:"Отличная веселая песня для аудирования к празднику (pdf, wordwall)", link:"https://vk.ru/wall-192843316_7892"},
+{cat:"holidays", sub:"Christmas / New Year", title:"Describe the picture", desc:"Отличное рождественское задание. Open one square at a time. Выберите количество квадратов — 9, 18 или 36. Тренируем числительные", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1619"},
+{cat:"holidays", sub:"Christmas / New Year", title:"Last Christmas (песня)", desc:"Самая рождественская песня с упражнениями на понимание", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1632"},
+{cat:"holidays", sub:"Christmas / New Year", title:"Рождественский квиз", desc:"Для работы оффлайн (распечатать board game и картинки с вопросами) и онлайн (презентация)!", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1637"},
+{cat:"holidays", sub:"Christmas / New Year", title:"Новогодние буквы и цифры", desc:"Самые новогодние буквы алфавита и цифры в 3 веселых дизайнах", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1665"},
+{cat:"holidays", sub:"Christmas / New Year", title:"Present Simple (рождество)", desc:"Наглядность для тренировки Present Simple в рождественском стиле", link:"https://vk.ru/wall-192843316_9163"},
+{cat:"holidays", sub:"Easter / Spring", title:"Easter chicks", desc:"Два набора наглядности в пасхальной тематике", link:"https://vk.ru/wall-192843316_4583"},
+{cat:"holidays", sub:"Easter / Spring", title:"Pancake Day", desc:"Новые уроки на Взнаниях. Папка МСЕ Донат/Pancake Day/What is Pancake day? + Pancakes Day in the UK", link:"https://vk.ru/wall-192843316_8070"},
+{cat:"holidays", sub:"Easter / Spring", title:"Valentine's Day", desc:"Valentine's Day — Little Fox", link:"https://vk.ru/wall-192843316_4008"},
+{cat:"holidays", sub:"Easter / Spring", title:"St. Patrick's Day", desc:"St.Patrick's Day (history) (Взнания)", link:"https://vk.ru/wall-192843316_4455"},
+{cat:"holidays", sub:"Halloween / Autumn", title:"Halloween игры (GG)", desc:"Веселые игры к празднику Halloween с героями GG: matching cards, memory, bingo, templates", link:"https://vk.ru/wall-192843316_10271"},
+{cat:"holidays", sub:"Другие", title:"Thanksgiving lessons", desc:"1) 2) + Pete the Cat: the First Thanksgiving + простое видео (A2)", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_3372"},
+{cat:"holidays", sub:"Другие", title:"Earth Day", desc:"The Earth Day with Peppa Pig — Recycling (на Взнаниях)", link:"https://vk.ru/wall-192843316_4966"},
+{cat:"holidays", sub:"Другие", title:"День Космонавтики", desc:"Уроки к Дню Космонавтики + Worksheets к видео Oliver's English: Planets", link:"https://vk.ru/wall-192843316_9479"},
+{cat:"holidays", sub:"Другие", title:"8 марта", desc:"Материалы к 8 марта", link:"https://vk.ru/wall-192843316_9386"},
+{cat:"holidays", sub:"Другие", title:"April Fools & Tricks", desc:"Взнания", link:"https://vk.ru/wall-192843316_4512"},
+{cat:"holidays", sub:"Другие", title:"Elf Joke Day", desc:"Ben and Holly (Взнания)", link:"https://vk.ru/wall-192843316_4480"},
+{cat:"teacher", sub:"PowerPoint", title:"Создание презентаций с нуля", desc:"Power point: видео о создании презентаций с нуля", link:"https://vk.ru/wall-192843316_6542"},
+{cat:"teacher", sub:"PowerPoint", title:"Вставка ссылок, видео, аудио", desc:"Видеоурок: как в презентациях вставлять ссылки на сторонние ресурсы, а также видео и аудио материалы", link:"https://vk.ru/wall-192843316_6698"},
+{cat:"teacher", sub:"PowerPoint", title:"Вставка 3D моделей", desc:"Видео урок о вставке 3d моделей в презентацию Power Point", link:"https://vk.ru/wall-192843316_6701"},
+{cat:"teacher", sub:"Первые уроки", title:"First lesson (adults)", desc:"Презентация для первого пробного урока-знакомства + ссылка на очень хороший онлайн тест на определение уровня", link:"https://vk.ru/wall-192843316_7169"},
+{cat:"teacher", sub:"Первые уроки", title:"Знакомство (школьники и взрослые)", desc:"Презентации на знакомство для школьников и взрослых", link:"https://vk.ru/wall-192843316_8765"},
+{cat:"teacher", sub:"Шаблоны", title:"11 шаблонов (Wednesday)", desc:"Для описания внешности, характера, внесения личной информации с героями сериала Wednesday", link:"https://vk.ru/wall-192843316_4017"},
+{cat:"teacher", sub:"Шаблоны", title:"Letter craft", desc:"Яркая подборка шаблонов на каждую букву", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_3075"},
+{cat:"teacher", sub:"Шаблоны", title:"Шаблон Colours", desc:"Красочный авторский шаблон по теме Сolours! Уровень: дошкольники и начальная школа", link:"https://vk.ru/wall-192843316_6212"},
+{cat:"teacher", sub:"Организация", title:"Стикеры + хранение", desc:"Стикеры + организация хранения", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_1353"},
+{cat:"teacher", sub:"Организация", title:"Мотивационные наклейки", desc:"Новые красочные мотивационные наклейки с надписями. Part 1 + Part 2", link:"https://vk.ru/wall-192843316_4915"},
+{cat:"teacher", sub:"Организация", title:"Календарь погоды", desc:"Календарь погоды перекидной", link:"https://vk.ru/wall-192843316_8604"},
+{cat:"teacher", sub:"Разное", title:"Считалочки", desc:"Считалочки на уроках", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_2383"},
+{cat:"teacher", sub:"Разное", title:"Limericks and tongue-twisters", desc:"Подборка для уроков", link:"https://vk.ru/wall-192843316_5197"},
+{cat:"teacher", sub:"Разное", title:"Chico the Capybara", desc:"Напоминалка Speak English, please", link:"https://vk.ru/wall-192843316_6781"}
+// ===== НОВЫЕ МАТЕРИАЛЫ (ноябрь 2025 — сентябрь 2026) =====
+,{cat:"coursebooks", sub:"Go Getter 2", title:"GG2: unit 1 update (school subjects and items)", desc:"Шаблоны к юниту 1: школьные предметы и предметы. Файл: gg2 1.1 templates.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10298"}
+,{cat:"cartoons", sub:"Magic Marker", title:"Magic Marker 58: videobook", desc:"Новый видеобук к 58 серии", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10300"}
+,{cat:"coursebooks", sub:"Go Getter 2", title:"GG2: шаблоны к юниту 2", desc:"Шаблоны для интерактивной тетради", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10301"}
+,{cat:"coursebooks", sub:"Go Getter 1", title:"GG1, unit 2.5: My things", desc:"Дополнительные активити: matching cards, memory game, tic-tac-toe, bingo, describing cards (What has Hammy got?)", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10303"}
+,{cat:"coursebooks", sub:"Go Getter 2", title:"GG2, unit 2: board game (vocabulary 2.1)", desc:"Настольная игра с лексикой из раздела 2.1", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10306"}
+,{cat:"coursebooks", sub:"Go Getter 2", title:"GG2, board game 2: вся еда (юнит 2)", desc:"Настольная игра + лексика с 2.2 до конца юнита 2, вся еда", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10307"}
+,{cat:"grammar", sub:"Грамматика", title:"Possessive adjectives", desc:"Важная тема (встречается в GG1 unit 1, GG2 unit 0). Worksheet + два урока на Взнаниях + ссылка на Possessive case", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10309"}
+,{cat:"coursebooks", sub:"Go Getter 2", title:"GG2: food, unit 2", desc:"Speaking cards (describe breakfast/lunch/dinner), Matching cards (containers), Countable/uncountable sorting. Файл: gg2 extra templates unit 2.3.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10320"}
+,{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1 (2nd ed): bee + тест", desc:"Все допы и игры в папке, плюс добавила тест. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10325"}
+,{cat:"holidays", sub:"Thanksgiving", title:"Готовые материалы к Thanksgiving", desc:"5 материалов: видео (A2), Pete the Cat First Thanksgiving, Thanksgiving+Food, History of first Thanksgiving, НОВАЯ разработка Peppa Pig: Thanksgiving!", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10336"}
+,{cat:"cartoons", sub:"Magic Marker", title:"Magic Marker, видеобук 59", desc:"Видеобук, скрипт, видео, миникнижка. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10338"}
+,{cat:"coursebooks", sub:"Own It 4", title:"Own it 4: extra activities unit 2.1", desc:"Дополнительные задания. Файл: OI4 Unit 2.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10354"}
+,{cat:"coursebooks", sub:"Go Getter 2", title:"Go Getter 2: обновления к юниту 3", desc:"Файл: gg2 unit 3 extra templates.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10364"}
+,{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP2: Betty the bird", desc:"Games: bingo, memory, cards, board game. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10376"}
+,{cat:"coursebooks", sub:"Go Getter 2", title:"GG2: Present Continuous cards (unit 3.3)", desc:"Карточки для дрила + вопросы в парах + Miming game. Файл: gg2 un 3 present cont cards + miming.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10383"}
+,{cat:"cartoons", sub:"Magic Marker", title:"Magic Marker, видеобук 60", desc:"Видеобук, скрипт, видео, миникнижка. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10394"}
+,{cat:"holidays", sub:"Christmas / New Year", title:"Christmas lessons: большая подборка", desc:"12 материалов: Tenses Drill, Peppa Pig Father Christmas, Pete the Cat saves Christmas, Describe the picture, Last Christmas, квиз, буквы и цифры, марафон, Home Alone part 1&2", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10399"}
+,{cat:"cartoons", sub:"Magic Marker", title:"Magic Marker, видеобук 61", desc:"Видеобук, скрипт, видео, миникнижка. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10408"}
+,{cat:"coursebooks", sub:"Go Getter", title:"Бродилка с хомячком Hammy", desc:"Легко использовать с любой темой. Добавила лексику по теме Food. Загружена на Взнания. Файл: Hammy board game xmas.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10412"}
+,{cat:"holidays", sub:"Christmas / New Year", title:"Праздничный песенный марафон", desc:"8 рождественских и новогодних песен (17.12-25.12). На Взнаниях + закрытая группа ВК. Для донов бесплатно", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10416"}
+,{cat:"holidays", sub:"Christmas / New Year", title:"Last Christmas: песня с заданиями", desc:"Первая песня из марафона. Группа марафона + Взнания", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10428"}
+,{cat:"holidays", sub:"Christmas / New Year", title:"Xmas marathon Day 2: ABBA Happy New Year", desc:"Материалы на Взнания и в закрытой группе", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10437"}
+,{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1 (2nd ed): caterpillar + тест", desc:"Новый тест. Ссылка на Яндекс Диск. Файл: caterpillar test.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10440"}
+,{cat:"cartoons", sub:"Другие", title:"Stickman: рождественский мультик", desc:"Уроки на Взнаниях (5 эпизодов по 5 минут). Папка МСЕ Донат/Марафоны. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10441"}
+,{cat:"holidays", sub:"Christmas / New Year", title:"Xmas marathon Day 3: Jingle Bell Rock", desc:"Зажигательная песня из Home Alone. Материалы на Взнания и Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10446"}
+,{cat:"holidays", sub:"Christmas / New Year", title:"Xmas marathon Day 5: All I want for Xmas", desc:"Для донов бесплатно. Группа марафона", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10453"}
+,{cat:"holidays", sub:"Christmas / New Year", title:"Xmas marathon Day 6: Rocking around the Xmas tree", desc:"Песня и материалы в закрытой группе и на Взнания", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10457"}
+,{cat:"holidays", sub:"Christmas / New Year", title:"Xmas marathon финал: Let it snow", desc:"Бонусный урок (Dean Martin). Завершение марафона", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10460"}
+,{cat:"cartoons", sub:"Gogo loves English", title:"Лэпбук по первым 7 сериям Gogo", desc:"Новогодний подарок! Лэпбук по первым семи сериям сериала. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10488"}
+,{cat:"coursebooks", sub:"Go Getter", title:"Веселый счет с Hammy (1-10)", desc:"Сложение и вычитание в пределах 10 + карточки для примеров. Файл: gg1 hammy sums 1-10.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10498"}
+,{cat:"holidays", sub:"Christmas / New Year", title:"Рождественская песня (лирическая)", desc:"Скрипт песни + лист с пропусками для аудирования. Файл: chr 2026 files.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10508"}
+,{cat:"cartoons", sub:"The Grinch", title:"Карточки с Гринчем: 18 winter activities", desc:"18 зимних активностей + 3 модели для тренировки (пары, тройки, группы). Файл: Grinch winter activities.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10509"}
+,{cat:"cartoons", sub:"The Grinch", title:"The Grinch kid: seasons", desc:"Flashcards, Tic Tac Toe, карточки с временами года и месяцами, I have Who has (ABC game). Файл: grinch kid seasons abc.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10515"}
+,{cat:"cartoons", sub:"The Grinch", title:"Weather cards with Grinch", desc:"12 видов погоды. Большие карточки с подписями и без + мемори. Файл: grinch kid weather.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10521"}
+,{cat:"coursebooks", sub:"Go Getter 2", title:"GG2: unit 4 (geographical features)", desc:"Карточки с подписями и без, игра мемори. Файл: gg2 un 4 updates.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10527"}
+,{cat:"cartoons", sub:"Paddington", title:"Paddington and the painting", desc:"Новый видеобук! Задания, скрипт и эпизод. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10537"}
+,{cat:"holidays", sub:"Valentine's Day", title:"Go Getter: Valentine's Day пазлы", desc:"3 варианта изображений: без линий, с линиями (2 варианта пазлов). Файл: valentine puzzles.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10548"}
+,{cat:"holidays", sub:"Valentine's Day", title:"Go Getter: Valentine's сравнение", desc:"Картинки на сравнение и описание одежды/действий. Файл: valentines difference gogetter.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10552"}
+,{cat:"holidays", sub:"Valentine's Day", title:"Материалы к Valentine's Day", desc:"Peppa Pig's Valentine, Paddington Love Day cards (+Взнания), Lenka My love, Valentine's marathon на Взнания", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10557"}
+,{cat:"holidays", sub:"Valentine's Day", title:"Pete the Cat: Valentine's Day is cool", desc:"Рабочие листы, видео начитки, книга в пдф (скан). Файл: Pete the cat Valentines day videolesson.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10565"}
+,{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1 (3rd ed): Caterpillar reading time", desc:"Собираем части гусеницы и читаем слова из истории + незаполненный шаблон", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10582"}
+,{cat:"coursebooks", sub:"Go Getter 2", title:"GG2: unit 5 updates (Places in town)", desc:"Preposition of place. Flashcards, memory, tic-tac-toe, Speaking cards. Файл: gg2 un 5 updates.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10606"}
+,{cat:"holidays", sub:"Pancake Day", title:"Pancake week: большая подборка", desc:"8 материалов: Peppa Pig Pancakes, Paddington makes pancakes, Pancake Day UK, Pancake cats sorters, Eric Carle, GG2 текст, презентация warm up, Pancake party", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10609"}
+,{cat:"holidays", sub:"Pancake Day", title:"Hammy's pancake week", desc:"Большие карточки на мэтчинг, мемори и рабочие листы на лексику. Файл: pancakes hammy.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10617"}
+,{cat:"coursebooks", sub:"Go Getter 3", title:"GG3: back translation cards (все в одной папке)", desc:"Папка в процессе наполнения. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10622"}
+,{cat:"cartoons", sub:"Paddington", title:"Paddington and the Monster hunt", desc:"Новый видеобук! Разработка, скрипт и эпизод. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10623"}
+,{cat:"cartoons", sub:"Space Patrol", title:"Новый сериал: Space Patrol!", desc:"Для 3-4 класса. От Little Fox. 1я миссия - Blue Moon (6 серий). Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10625"}
+,{cat:"coursebooks", sub:"Family & Friends 2", title:"Кото-часы (FF2 unit 8)", desc:"Набор веселых кото-часов с подписями и без + шаблон со стрелками для вырезания. Файл: clocks cards and clock and hands template ff2 unit 8.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10633"}
+,{cat:"coursebooks", sub:"Family & Friends 2", title:"Домино (FF2 unit 8)", desc:"Times of the day, Everyday activities + clocks. Файл: ff2 un 8 dominoes.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10639"}
+,{cat:"holidays", sub:"8 марта", title:"Подборка материалов к 8 марта", desc:"My Mum (карточки, видео, пдф, Взнания), Peppa Pig Mummy Pig's Birthday, презентация The best present, карточки gg и мамы. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10660"}
+,{cat:"cartoons", sub:"Space Patrol", title:"Space Patrol: новая серия", desc:"Видеобук с заданиями, эпизод, скрипт, книжка с историей, аудио-озвучка. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10698"}
+,{cat:"coursebooks", sub:"Go Getter 2", title:"GG2, модуль 6.1: Профессии", desc:"Matching cards, мемори, бинго, крестики-нолики, шаблон для заполнения", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10703"}
+,{cat:"cartoons", sub:"Paddington", title:"Paddington and the stamp", desc:"Новый видеобук, скрипт и видеоэпизод. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10711"}
+,{cat:"holidays", sub:"St. Patrick's Day", title:"Материалы к St Patrick's Day", desc:"Pete the Cat Great Leprechaun Chase (+Взнания), Peppa Pig loves St.Patrick's Day", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10712"}
+,{cat:"holidays", sub:"St. Patrick's Day", title:"St Patrick's day (history)", desc:"Обновленная папка на Взнания. Все уроки в одной папке. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10722"}
+,{cat:"cartoons", sub:"Paddington", title:"Paddington helps with homework", desc:"Новый видеобук! Удобно для печати. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10771"}
+,{cat:"holidays", sub:"April Fool's Day", title:"Материалы к April Fool's Day", desc:"Разработки к 4м мультикам на Взнаниях + видео файлы на диске + 2 видео с Оливером", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10791"}
+,{cat:"holidays", sub:"April Fool's Day", title:"April Fool's Day: шутки с Оливером", desc:"Презентация и пдф к видео с Оливером (английские шутки). Файл: Ol_jokes.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10797"}
+,{cat:"grammar", sub:"Неправильные глаголы", title:"Первые 32 неправильных глагола с хомячком (GG2)", desc:"2 варианта: с 3 формами и с 1й формой. Файл: hammy irregular verbs part 1.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10845"}
+,{cat:"grammar", sub:"Неправильные глаголы", title:"60 неправильных глаголов с хомячком", desc:"60 глаголов в 2 вариантах. Файл: hammy irregular verbs1.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10850"}
+,{cat:"games", sub:"", title:"Все игры с неправильными глаголами", desc:"60 карточек + 4 бинго + 4 мемори. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10851"}
+,{cat:"holidays", sub:"Space Day", title:"Космические разработки к Дню Космонавтики", desc:"Space Patrol, Oliver's English Planets, Paddington space adventure, Peppa Pig Space Day, GG2 Space and USA", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10852"}
+,{cat:"holidays", sub:"Easter / Spring", title:"Материалы к пасхальным урокам", desc:"Peppa Pig Easter bunny, Pete the Cat Big Easter Adventure, Easter basket bandit, 2 набора наглядности, 7 мультиков на Взнаниях", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10859"}
+,{cat:"holidays", sub:"Easter / Spring", title:"Easter сортер (Spotlight 2)", desc:"Сортер на повторение лексики из 2й части Spotlight 2 (5 тем, 9-12 слов). Файл: easter sorter sp2 modules 3-5.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10888"}
+,{cat:"coursebooks", sub:"My Lovely Pets", title:"Цветы с подписями (тема Crocodile)", desc:"Для тренировки What's your favourite flower? Флешкарточки с цветами. Файл: flowers1.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10896"}
+,{cat:"coursebooks", sub:"Go Getter 2", title:"Презентации с неправильными глаголами (4 шт.)", desc:"Для введения/повторения с хомячком Hammy. Все глаголы из GG2. Power Point. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10905"}
+,{cat:"cartoons", sub:"Peppa Pig", title:"Материалы к Дню Земли", desc:"Peppa Pig recycling (видео урок, лексика, мемори, квиз) на Взнаниях + рабочие листы", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10914"}
+,{cat:"grammar", sub:"Фонетика", title:"Гласные в 4 типах слога (домики корги)", desc:"Форматы pdf и презентация. Найдем домик малюткам корги. Файл: 4_syllable_types_final.pptx", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_10936"}
+,{cat:"grammar", sub:"Числительные", title:"My number book-3", desc:"Десятки, сложение, вычитание, умножение, деление, четные/нечетные, решение задач. Бродилка в конце. Файл: My numbers with Sonya the dog3 final.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11002"}
+,{cat:"cartoons", sub:"Paddington", title:"Paddington and the Solar Eclipse", desc:"Новый видеобук! Задания, скрипт и видео. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11022"}
+,{cat:"coursebooks", sub:"Go Getter 2", title:"GG2: Jobs about the house (un 6.5)", desc:"Карточки с подписями, крестики-нолики, бинго, мемори. Файл: gg2 extra 6.5.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11024"}
+,{cat:"coursebooks", sub:"My Lovely Pets", title:"MLP1 (3rd ed): тесты Goat, Black Bug", desc:"Тесты + допы к историям. Ссылки на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11240"}
+,{cat:"coursebooks", sub:"Go Getter 3", title:"GG3: back translation unit 1 (англ. версия)", desc:"Обновлено + английская версия. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11242"}
+,{cat:"coursebooks", sub:"Go Getter 3", title:"GG3: back translation unit 2", desc:"Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11245"}
+,{cat:"cartoons", sub:"Paddington", title:"Летний марафон Summer with Paddington", desc:"9 эпизодов, 9 презентаций, 9 рабочих листов, 18 игр Wordwall. Для 4-6 классов. С 5 по 22 июня", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11265"}
+,{cat:"coursebooks", sub:"Go Getter 2", title:"GG2, unit 8.3: Хэмми по музыкальным стилям", desc:"Карточки на мэтчинг и мемори. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11285"}
+,{cat:"coursebooks", sub:"Go Getter 3", title:"GG3: back translation unit 3 (англ. версия)", desc:"Две странички на одном слайде. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11328"}
+,{cat:"coursebooks", sub:"Go Getter 3", title:"GG3: back translation unit 4", desc:"Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11345"}
+,{cat:"cartoons", sub:"Binka", title:"Binka 2.0: новый формат", desc:"Автопроверка, интерактивные ссылки (Wordwall, Baamboozle, Взнания), ppt + видеобук пдф. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11348"}
+,{cat:"cartoons", sub:"Binka", title:"Binka episode 2: Binka and three suppers", desc:"Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11384"}
+,{cat:"coursebooks", sub:"Go Getter 3", title:"GG3: back translation unit 5", desc:"Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11388"}
+,{cat:"cartoons", sub:"Tom and Keri", title:"Tom and Keri: обновленный видеокурс", desc:"Для дошкольников. Видео, песенки, задания, лист для дз, QR-коды. Диск 1 (1-8), Диск 2 (9-14). Ссылки на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11406"}
+,{cat:"coursebooks", sub:"Go Getter 3", title:"GG3: готовы все юниты с back translation", desc:"Все карточки на обратный перевод. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11410"}
+,{cat:"cartoons", sub:"Binka", title:"Binka 2.0, episode 3", desc:"Самопроверка + интерактивные ссылки + встроенное видео. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11424"}
+,{cat:"cartoons", sub:"Binka", title:"Binka and the quiet place (episode 4)", desc:"Самопроверка + ссылки на интерактивные ресурсы. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11453"}
+,{cat:"cartoons", sub:"Magic Marker", title:"Magic Marker серия 62: The storm", desc:"Видеобук, скрипт, аудио и видео, миникнижка. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11560"}
+,{cat:"cartoons", sub:"Magic Marker", title:"Magic Marker, videobook 63", desc:"Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11574"}
+,{cat:"cartoons", sub:"Magic Marker", title:"Magic Marker videobook 64", desc:"Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11580"}
+,{cat:"grammar", sub:"Phonics with Dolly", title:"Phonics with Dolly: урок #3 - short i", desc:"Для детей, знакомых с алфавитом/фониксами. Идеально для повторения после лета", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11590"}
+,{cat:"grammar", sub:"Phonics with Dolly", title:"Dolly Phonics: short u (lesson 4)", desc:"Файл: Dolly4 short u.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11597"}
+,{cat:"grammar", sub:"Phonics with Dolly", title:"Dolly Phonics: 1я часть курса (закрытый слог)", desc:"Все 5 уроков. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11603"}
+,{cat:"teacher", sub:"Инструменты и программы", title:"СловоЛёт — конструктор упражнений", desc:"Без интернета, без подписок. 12 упражнений из одного списка слов. Работает в одном файле. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11615"}
+,{cat:"cartoons", sub:"Binka", title:"Бинка серия 5", desc:"Интерактивная презентация + видеобук + видео + скрипт. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11640"}
+,{cat:"cartoons", sub:"Magic Marker", title:"Magic Marker 65", desc:"Видеобук с заданиями, видео, скрипт, миникнижка. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11650"}
+,{cat:"cartoons", sub:"Binka", title:"Binka 2.0, episode 6", desc:"Интерактивная презентация + видеобук. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11653"}
+,{cat:"cartoons", sub:"Binka", title:"Бинка серия 7", desc:"Интерактивная презентация + видеобук + видео + скрипт. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11661"}
+,{cat:"cartoons", sub:"Magic Marker", title:"Magic Marker 66", desc:"Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11740"}
+,{cat:"coursebooks", sub:"Go Getter 2", title:"GG2: обновления на Взнаниях (юнит 0)", desc:"Уроки по подпапкам, пропавшие картинки, фоны, итоговый тест по юниту 0", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11782"}
+,{cat:"coursebooks", sub:"Own It 4", title:"Own it-4: первая презентация!", desc:"Начинаем новый уровень. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11890"}
+,{cat:"coursebooks", sub:"Solutions", title:"Solutions Pre-Int: 1я презентация!", desc:"Аудио, видео ресурсы, Взнания, Wordwall, back translation. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11908"}
+,{cat:"coursebooks", sub:"Own It 4", title:"OI4, unit 0.2 Reading", desc:"Интерактивная презентация. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11920"}
+,{cat:"coursebooks", sub:"Solutions", title:"Solutions PI: презентация 0.2", desc:"Ссылка на Яндекс Диск + Workbook на Взнаниях", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11953"}
+,{cat:"grammar", sub:"Грамматика", title:"Object pronouns: табличка + игра", desc:"Help the detective find... Соответствует GG2 unit 8.2. Файл: object pronouns templates.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_11964"}
+,{cat:"coursebooks", sub:"Solutions", title:"Solutions PI, unit IC: внешность и одежда", desc:"Видео с заданиями + карточка на перевод. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12017"}
+,{cat:"teacher", sub:"", title:"Видео урок для начала учебного года", desc:"Веселый, несложный. Можно обсудить поведение героев. Файл: gg4 video back to school 1.2.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12021"}
+,{cat:"coursebooks", sub:"Go Getter 1", title:"GG1, unit 0.2: миникнижечка цветов", desc:"Миникнижечка для подписывания цветов с кроссвордом. Файл: gg1 starter 0.2 colour minibook.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12025"}
+,{cat:"grammar", sub:"Фонетика", title:"Разработка по чтению: диграф ch", desc:"Тренируем диграф ch (на повторение после лета). Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12028"}
+,{cat:"coursebooks", sub:"Go Getter 1", title:"Презентация: Countries and nationalities", desc:"Для GG1 unit 1.3 и GG2 unit 0.1 + квиз в конце. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12037"}
+,{cat:"coursebooks", sub:"Solutions", title:"Solutions PI, unit ID: articles", desc:"Презентация + обновленный урок на Взнания + задание на Wordwall. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12039"}
+,{cat:"coursebooks", sub:"Go Getter 1", title:"GG1, unit 1.1: Hammy's family tree", desc:"Hammy's family tree + флешкарточки членов семьи. Файл: gg1 unit 1.1 family tree.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12042"}
+,{cat:"grammar", sub:"Phonics with Dolly", title:"Dolly phonics: digraph sh", desc:"Новый урок с встроенными ссылками на игры на Wordwall. Файл: Dolly part 1 digraph sh.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12060"}
+,{cat:"cinema", sub:"Harry Potter", title:"Harry Potter: кинокласс!", desc:"Интерактивные презентации с видео, видеобук для распечатки, ключи, скрипт, видеоэпизоды. Для B1+ (7-8 класс). Ссылки на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12069"}
+,{cat:"coursebooks", sub:"Own It 4", title:"OI4, starter unit 0.3", desc:"Интерактивная презентация. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12067"}
+,{cat:"cinema", sub:"Mulan", title:"Mulan: мультик для средней/старшей школы", desc:"Ч/б сканированный вариант. С 7/8 класса. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12068"}
+,{cat:"coursebooks", sub:"Go Getter", title:"Classroom language с Hammy", desc:"Популярные фразы, карточки с подписями и без, бинго, мемори, памятка-вклейка. Файл: gg1-2 classroom language+games.pdf", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12107"}
+,{cat:"cinema", sub:"Harry Potter", title:"Harry Potter: комплект ко 2му эпизоду", desc:"Prisoner of Azkaban. Ссылки на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12137"}
+,{cat:"coursebooks", sub:"Own It 4", title:"Own it 4, unit 0.4: ways of communicating", desc:"Интерактивная презентация с допами. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12147"}
+,{cat:"teacher", sub:"Инструменты и программы", title:"My Crazy English TTS", desc:"Бесплатная программа для озвучки. 15+ голосов, британский/американский/австралийский акцент, сохранение в MP3. Windows. Ссылка на Яндекс Диск", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12148"}
+,{cat:"grammar", sub:"Phonics with Dolly", title:"Dolly phonics: voiceless th", desc:"Новый урок по voiceless th! Скачать: disk.yandex.ru/i/TV2k8mFO... Связанные материалы: диграф sh — wall-192843316_12060, диграф ch — wall-192843316_12028, 1я часть пособия (закрытый слог) — wall-192843316_11603", link:"https://vk.ru/mycrazyenglishgroup?w=wall-192843316_12149"},];
+
+const catNames = {
+    cinema: "🎬 Киноклассы",
+    cartoons: "📺 Мультфильмы",
+    coursebooks: "📚 УМК и Курсы",
+    games: "🧩 Игры и Интерактив",
+    readers: "📖 Ридеры и Книги",
+    grammar: "📝 Грамматика и Лексика",
+    holidays: "🎄 Праздники",
+    teacher: "🛠 Для учителя"
+};
+
+let activeCat = "all";
+let activeSub = "all";
+
+const searchInput = document.getElementById("searchInput");
+const filtersEl = document.getElementById("filters");
+const subfiltersEl = document.getElementById("subfilters");
+const container = document.getElementById("cardsContainer");
+const noResults = document.getElementById("noResults");
+const counter = document.getElementById("counter");
+
+function buildFilters() {
+    let html = `<button class="filter-btn active" data-cat="all">✨ Все</button>`;
+    for (const [key, name] of Object.entries(catNames)) {
+        html += `<button class="filter-btn" data-cat="${key}">${name}</button>`;
+    }
+    filtersEl.innerHTML = html;
+}
+
+function buildSubfilters() {
+    if (activeCat === "all") { subfiltersEl.innerHTML = ""; return; }
+    const subs = [...new Set(materials.filter(m => m.cat === activeCat && m.sub).map(m => m.sub))];
+    if (subs.length === 0) { subfiltersEl.innerHTML = ""; return; }
+    let html = `<button class="subfilter-btn active" data-sub="all">Все</button>`;
+    subs.forEach(s => { html += `<button class="subfilter-btn" data-sub="${s}">${s}</button>`; });
+    subfiltersEl.innerHTML = html;
+}
+
+function render() {
+    const q = searchInput.value.toLowerCase().trim();
+    let filtered = materials.filter(m => {
+        const matchCat = activeCat === "all" || m.cat === activeCat;
+        const matchSub = activeSub === "all" || m.sub === activeSub;
+        const matchQ = !q || m.title.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q) || m.sub.toLowerCase().includes(q);
+        return matchCat && matchSub && matchQ;
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML = "";
+        noResults.style.display = "block";
+    } else {
+        noResults.style.display = "none";
+        container.innerHTML = filtered.map(m => {
+            const linkBtn = m.link
+                ? `<a href="${m.link}" target="_blank" class="card-link">Открыть материал →</a>`
+                : `<span class="card-link no-link">Ссылка скоро появится</span>`;
+                        const pid = (m.link.match(/wall-\d+_(\d+)/) || [])[1] || "";
+            const thumbSrc = imgs[pid] || "";
+            const thumb = thumbSrc ? `<img class="card-thumb" src="${thumbSrc}" onerror="this.style.display='none'">` : "";
+            return `<div class="card" data-cat="${m.cat}">
+                <div class="card-top">
+                    <div class="card-top-text">
+                        <div class="card-category">${catNames[m.cat]}</div>
+                        ${m.sub ? `<div class="card-subcategory">📂 ${m.sub}</div>` : ""}
+                        <div class="card-title">${m.title}</div>
+                    </div>
+                    ${thumb}
+                </div>
+                <div class="card-desc">${m.desc}</div>
+                ${linkBtn}
+            </div>`;
+        }).join("");
+    }
+    counter.textContent = `Показано материалов: ${filtered.length} из ${materials.length}`;
+}
+
+filtersEl.addEventListener("click", e => {
+    if (!e.target.classList.contains("filter-btn")) return;
+    activeCat = e.target.dataset.cat;
+    activeSub = "all";
+    filtersEl.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    e.target.classList.add("active");
+    buildSubfilters();
+    render();
+});
+
+subfiltersEl.addEventListener("click", e => {
+    if (!e.target.classList.contains("subfilter-btn")) return;
+    activeSub = e.target.dataset.sub;
+    subfiltersEl.querySelectorAll(".subfilter-btn").forEach(b => b.classList.remove("active"));
+    e.target.classList.add("active");
+    render();
+});
+
+searchInput.addEventListener("input", render);
+
+buildFilters();
+render();
+</script>
+</body>
+</html>
