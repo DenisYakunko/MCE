@@ -230,6 +230,17 @@
         .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
 		.card-top-text { flex: 1; }
 		.card-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: 10px; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.2); flex-shrink: 0; 		transition: transform .2s; }
+		.vpn-badge {
+   			color: #e74c3c;
+    		font-size: 0.75em;
+    		font-weight: 700;
+    		letter-spacing: 0.5px;
+    		text-transform: uppercase;
+    		margin-left: 8px;
+		}
+		.card-badges { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+		.card-badges .card-subcategory { margin-bottom: 0; }
+		
 		.card:hover .card-thumb { transform: scale(6.1); }
 
         @media (max-width: 600px) {
@@ -270,7 +281,14 @@
 </div>
 
 <script>
-
+// ===== 🛡 МАТЕРИАЛЫ, ТРЕБУЮЩИЕ VPN =====
+// Список доменов зарубежных платформ. Если ссылка карточки содержит любой из них —
+// автоматически появляется красный бейдж "VPN" справа от подкатегории.
+const vpnIds = [
+ //   "joyteka.com",
+    "joyteka_100007340"
+];
+	
 // ===== 🖼 КАРТИНКИ К ПОСТАМ =====
 // Формат: "ID поста": "ссылка на картинку"
 // Добавляй сюда новые картинки, копируя ID из конца ссылки поста (wall-192843316_12149 → "12149")
@@ -437,10 +455,11 @@ const imgs = {
 ,"10888": "https://sun9-18.vkuserphoto.ru/s/v1/ig2/i45ic84JaazPaiNPWj2XolqO_s8eBiDPP9i8zsJFReXQ6_nehaTYfuv7FKbG3ZQaRVfo5BODlBc4dz4dS3G0ZC4Q.jpg?quality=95&crop=0,0,1678,1162&as=32x22,48x33,72x50,108x75,160x111,240x166,360x249,480x332,540x374,640x443,720x499,1080x748,1280x886,1440x997,1678x1162&from=bu&u=R9hbA9PKrDWAiEy8YhTyHXbtCghxks9GczyK5uNPxqg&cs=640x0"
 ,"joyteka_100007340": "https://raw.githubusercontent.com/DenisYakunko/MCE/main/assets/vkcatalog/joyteka_100007340.PNG"
 ,"2603": "https://sun9-35.vkuserphoto.ru/s/v1/ig2/ogycMBtUh7eBFa0nOb6ZrSiThZg_tTWJOpfCSv6qcp9WCX6Pp-SvXgSammRyHtOnnwA_arjAgdcIDytv1y3I7OJ8.jpg?quality=96&size=600x450"
-
-
-
-
+,"4046": "https://sun9-68.userapi.com/s/v1/ig2/ad8T1FGpmimvOXilj8KbAppEirvIRawG2YbmlDiUXp2ygrjRmMny88JTd41_LYYQSIXSutfehJH4q1Amt-eKB5Up.jpg?quality=96&size=720x405"
+,"4423": "https://sun9-29.userapi.com/s/v1/ig2/wdVYimuP8FcrSCT4y8xVACmBH8oL2jZCDEiQAmOYzqfFNLsdVeWSp6cgu5vMnyyjFxAovg614D7ovMJPwMLVuw87.jpg?quality=95&as=32x17,48x26,72x39,108x58,160x87,240x130,360x195,480x260,540x292,640x346,720x389,747x404&from=bu&u=DU1uGnNSwW0IhHsrEG0pMAYUZlErXQ-ZEPxoaMfEnyI&cs=747x0"	
+,"4445": "https://sun9-55.userapi.com/s/v1/ig2/2KZiruHmGeIxAqOfStj99nz7ryr2EqSI8PR7vCpT4NuwrZNc27FrMSeynwFluAyjRAgK7OIRTOri8s13s8gwP1nR.jpg?quality=95&as=32x18,48x27,72x40,108x61,160x90,240x135,360x202,480x270,540x303,640x359,720x404,892x501&from=bu&u=uILONPt9w2kST7K1YxPhNboCt4j80Moy_DfovF_f8vE&cs=892x0"
+,"4654": "https://sun9-61.userapi.com/s/v1/ig2/NWQcD8-txTWAicxd-dmyxgu8G3HHeNt1jSN77nBvRghtmx1oPv3kZldA3K9nT3lpAOAgbBWU5Oyd_MojgNjixq9K.jpg?quality=95&as=32x18,48x27,72x40,108x60,160x89,240x133,360x199,480x266,540x299,640x355,720x399,890x493&from=bu&u=yavCAVDIbjlu1EoYmpNz15_Uc1eeosWmppcNIJREZFY&cs=890x0"
+,"4694": "https://sun9-61.userapi.com/s/v1/ig2/NWQcD8-txTWAicxd-dmyxgu8G3HHeNt1jSN77nBvRghtmx1oPv3kZldA3K9nT3lpAOAgbBWU5Oyd_MojgNjixq9K.jpg?quality=95&as=32x18,48x27,72x40,108x60,160x89,240x133,360x199,480x266,540x299,640x355,720x399,890x493&from=bu&u=yavCAVDIbjlu1EoYmpNz15_Uc1eeosWmppcNIJREZFY&cs=890x0"
 
 	
 
@@ -859,26 +878,38 @@ function render() {
         noResults.style.display = "block";
     } else {
         noResults.style.display = "none";
-        container.innerHTML = filtered.map(m => {
-            const linkBtn = m.link
-                ? `<a href="${m.link}" target="_blank" class="card-link">Открыть материал →</a>`
-                : `<span class="card-link no-link">Ссылка скоро появится</span>`;
-                        const pid = (m.link.match(/wall-\d+_(\d+)/) || [])[1] || "";
-            const thumbSrc = imgs[pid] || imgs[m.imgId] || m.img || "";
-            const thumb = thumbSrc ? `<img class="card-thumb" src="${thumbSrc}" onerror="this.style.display='none'">` : "";
-            return `<div class="card" data-cat="${m.cat}">
-                <div class="card-top">
-                    <div class="card-top-text">
-                        <div class="card-category">${catNames[m.cat]}</div>
-                        ${m.sub ? `<div class="card-subcategory">📂 ${m.sub}</div>` : ""}
-                        <div class="card-title">${m.title}</div>
-                    </div>
-                    ${thumb}
-                </div>
-                <div class="card-desc">${m.desc}</div>
-                ${linkBtn}
-            </div>`;
-        }).join("");
+container.innerHTML = filtered.map(m => {
+    const linkBtn = m.link
+        ? `<a href="${m.link}" target="_blank" class="card-link">Открыть материал →</a>`
+        : `<span class="card-link no-link">Ссылка скоро появится</span>`;
+    const pid = (m.link.match(/wall-\d+_(\d+)/) || [])[1] || "";
+    const thumbSrc = imgs[pid] || imgs[m.imgId] || m.img || "";
+    const thumb = thumbSrc ? `<img class="card-thumb" src="${thumbSrc}" onerror="this.style.display='none'">` : "";
+    
+    // Проверка VPN: по ID поста ВК, по imgId или по домену ссылки
+    const needsVpn = vpnIds.some(v => 
+        (m.link && m.link.includes(v)) || 
+        (m.imgId && m.imgId.includes(v))
+    );
+    const vpnBadge = needsVpn ? `<span class="vpn-badge">VPN</span>` : "";
+    
+    const subBlock = m.sub 
+        ? `<div class="card-badges"><div class="card-subcategory">📂 ${m.sub}</div>${vpnBadge}</div>` 
+        : (vpnBadge ? `<div class="card-badges">${vpnBadge}</div>` : "");
+    
+    return `<div class="card" data-cat="${m.cat}">
+        <div class="card-top">
+            <div class="card-top-text">
+                <div class="card-category">${catNames[m.cat]}</div>
+                ${subBlock}
+                <div class="card-title">${m.title}</div>
+            </div>
+            ${thumb}
+        </div>
+        <div class="card-desc">${m.desc}</div>
+        ${linkBtn}
+    </div>`;
+}).join("");
     }
     counter.textContent = `Показано материалов: ${filtered.length} из ${materials.length}`;
 }
