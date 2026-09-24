@@ -834,7 +834,7 @@ function render() {
                 ? `<a href="${m.link}" target="_blank" class="card-link">Открыть материал →</a>`
                 : `<span class="card-link no-link">Ссылка скоро появится</span>`;
                         const pid = (m.link.match(/wall-\d+_(\d+)/) || [])[1] || "";
-            const thumbSrc = imgs[pid] || "";
+            const thumbSrc = imgs[pid] || imgs[m.imgId] || m.img || "";
             const thumb = thumbSrc ? `<img class="card-thumb" src="${thumbSrc}" onerror="this.style.display='none'">` : "";
             return `<div class="card" data-cat="${m.cat}">
                 <div class="card-top">
