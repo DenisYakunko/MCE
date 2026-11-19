@@ -6,6 +6,9 @@ const el = h => { const t = document.createElement('template'); t.innerHTML = h.
 const json = async n => { const r = await fetch('data/' + n); if (!r.ok) throw new Error('Не загрузился ' + n); return r.json(); };
 const fmtPrice = n => n.toLocaleString('ru-RU') + ' ₽';
 const fmtDate = s => new Date(s).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+/* Сортировка по дате — самые новые сверху (дата новости: date, товара/игры: createdAt) */
+const dateOf = x => String(x?.date || x?.createdAt || '');
+const byDateDesc = (a, b) => dateOf(b).localeCompare(dateOf(a)) || (b.id || 0) - (a.id || 0);
 
 /* ========== ШАПКА И ПОДВАЛ ========== */
 const NAV = [
@@ -191,7 +194,7 @@ async function initHome() {
 
   const np = $('#news-preview');
   if (np) np.append(...news.filter(n => n.published)
-    .sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3).map(newsCard));
+    .sort(byDateDesc).slice(0, 3).map(newsCard));
 
   const pp = $('#products-preview .scroller');
   if (pp) {
@@ -268,7 +271,7 @@ function filtered() {
   if (state.sort === 'price-asc') list.sort((a, b) => a.price - b.price);
   else if (state.sort === 'price-desc') list.sort((a, b) => b.price - a.price);
   else if (state.sort === 'pop') list.sort((a, b) => b.popularity - a.popularity);
-  else list.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  else list.sort(byDateDesc); // «Сначала новые» — по дате, самые последние сверху
   return list;
 }
 
@@ -343,7 +346,7 @@ function closeModal() {
 
 /* ========== НОВОСТИ ========== */
 async function initNews() {
-  const news = (await json('news.json')).filter(n => n.published).sort((a, b) => b.date.localeCompare(a.date));
+  const news = (await json('news.json')).filter(n => n.published).sort(byDateDesc);
   const id = new URLSearchParams(location.search).get('id');
   const wrap = $('#news-wrap');
   if (!id) {
@@ -370,7 +373,7 @@ async function initNews() {
 
 /* ========== ИГРЫ ========== */
 async function initGames() {
-  const games = (await json('games.json')).filter(g => g.published);
+  const games = (await json('games.json')).filter(g => g.published).sort(byDateDesc);
   $('#games-grid').append(...games.map(g => el(`
     <article class="card game-card">
       <div class="card-media hover-zoom">${badges(g.badges)}<img src="${g.image}" alt="${esc(g.title)}"></div>
