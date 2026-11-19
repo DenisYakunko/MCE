@@ -46,15 +46,17 @@ $$('.tab').forEach(t => t.onclick = () => {
 const nextId = k => DB[k].reduce((m, x) => Math.max(m, x.id || 0), 0) + 1;
 
 function renderLists() {
-  fillList('products', p => p.title, p => `${p.price} ₽ · ${p.published ? 'опубликован' : 'скрыт'}`, editProduct);
-  fillList('news', n => n.title, n => `${n.date} · ${n.published ? 'опубликована' : 'скрыта'}`, editNews);
+  const byDate = (a, b) => String(b.date || b.createdAt || '').localeCompare(String(a.date || a.createdAt || ''));
+  fillList('products', p => p.title, p => `${p.price} ₽ · ${p.published ? 'опубликован' : 'скрыт'}`, editProduct, [...DB.products].sort(byDate));
+  fillList('news', n => n.title, n => `${n.date} · ${n.published ? 'опубликована' : 'скрыта'}`, editNews, [...DB.news].sort(byDate));
   fillList('reviews', r => r.name, r => '★'.repeat(r.rating), editReview);
   fillList('banners', b => b.title, b => b.active ? 'активный' : 'выключен', editBanner);
 }
-function fillList(key, titleOf, metaOf, editFn) {
+function fillList(key, titleOf, metaOf, editFn, items = DB[key]) {
   const wrap = $('#list-' + key); wrap.innerHTML = '';
-  if (!DB[key].length) { wrap.innerHTML = '<p class="empty">Пока пусто. Нажми «＋ Добавить».</p>'; return; }
-  DB[key].forEach((item, i) => {
+  if (!items.length) { wrap.innerHTML = '<p class="empty">Пока пусто. Нажми «＋ Добавить».</p>'; return; }
+  items.forEach(item => {
+    const i = DB[key].indexOf(item);
     const r = el(`<div class="admin-row">
       <div><strong>${esc(titleOf(item))}</strong><small>${esc(metaOf(item))}</small></div>
       <div style="display:flex;gap:8px">
